@@ -31,3 +31,19 @@ test('màn hình giới hạn 10 lựa chọn và hiển thị việc vừa xế
   assert.match(maNguon, /ketQua\.duLieu\.map\(/);
   assert.match(maNguon, /ketQua\?\.canhBao\.map\(/);
 });
+
+test('màn hình hỏi tiến độ đến khi cả lô kết thúc và hiển thị bài hoàn tất', () => {
+  const maNguon = doc('man-hinh-hang-loat.tsx');
+
+  assert.match(maNguon, /useEffectEvent/);
+  assert.match(maNguon, /guiDocTrangThaiLo/);
+  assert.match(maNguon, /setTimeout\(capNhat, 2_000\)/);
+  assert.match(maNguon, /clearTimeout\(henGio\)/);
+  assert.match(maNguon, /useRef\(0\)/);
+  assert.match(maNguon, /maLoHienTai\.current \+= 1/);
+  assert.match(maNguon, /maLo !== maLoHienTai\.current/);
+  assert.match(maNguon, /\['xong', 'loi', 'huy'\]/);
+  assert.match(maNguon, /muc\.banNhap\.tieuDe/);
+  assert.match(maNguon, /muc\.banNhap\.noiDung/);
+  assert.match(maNguon, /muc\.banNhap\.hashtag/);
+});

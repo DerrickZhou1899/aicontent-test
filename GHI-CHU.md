@@ -34,7 +34,9 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Đọc và chuẩn hóa trạng thái cả lô bằng một truy vấn theo workspace.
 - [x] Action xếp lô và đọc tiến độ luôn lấy workspace từ phiên đăng nhập.
 - [x] Trang chọn tối đa 10 ý tưởng chưa dùng và hiển thị các job vừa xếp.
-- [ ] Sinh hàng loạt và sinh ảnh.
+- [x] Tự động đọc tiến độ đến khi cả lô kết thúc và hiển thị bài hoàn tất.
+- [x] Sinh hàng loạt.
+- [ ] Sinh ảnh.
 
 ## Luồng đề xuất ý tưởng
 
@@ -83,7 +85,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `app/(dash)/studio/bien-soan/xem-kich-ban.tsx`: chọn thời lượng và hiển thị khung hình, lời thoại từng cảnh.
 - `app/(dash)/studio/hang-loat/actions.ts`: nối service xếp lô và đọc trạng thái với workspace trong phiên.
 - `app/(dash)/studio/hang-loat/page.tsx`: đọc ý tưởng chưa dùng của workspace để chuẩn bị lô.
-- `app/(dash)/studio/hang-loat/man-hinh-hang-loat.tsx`: giới hạn lựa chọn và hiển thị job vừa xếp.
+- `app/(dash)/studio/hang-loat/man-hinh-hang-loat.tsx`: giới hạn lựa chọn, hỏi tiến độ và hiển thị bài hoàn tất.
 - `tests/`: kiểm tra hợp đồng, hành vi, cô lập workspace và rollback.
 
 ## Kết quả kiểm tra
@@ -108,7 +110,7 @@ node --test tests/studio-sinh-kich-ban-service.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 96 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 97 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
@@ -122,4 +124,4 @@ Kết quả gần nhất: 96 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Tự động hỏi tiến độ và hiển thị bài hoàn tất trên màn hình sinh hàng loạt.
+3. Dựng luồng sinh ảnh cho bài đăng qua hàng đợi mô hình.
