@@ -12,14 +12,19 @@
 
 const os = require('node:os');
 
-const { LOAI_VIEC_THEO_NHIEM_VU } = require('../../lib/model-runner/chon-mo-hinh');
+const {
+  LOAI_VIEC_THEO_NHIEM_VU,
+  NHIEM_VU_VAN_BAN,
+} = require('../../lib/model-runner/chon-mo-hinh');
 const { ghiNhatKyChay } = require('../../lib/model-runner/ghi-nhat-ky');
 const { thucThiNhiemVu } = require('../../lib/model-runner/thuc-thi-nhiem-vu');
 const { beKetNoi, dongBeKetNoi } = require('../../db/client-worker');
 const { taoVongLap, HET_GIO_VIEC_MS } = require('./vong-lap');
 
 /** Chi nhan cac loai viec goi mo hinh; sinh anh / keo so lieu la worker khac. */
-const LOAI_VIEC_NHAN = [...new Set(Object.values(LOAI_VIEC_THEO_NHIEM_VU))];
+const LOAI_VIEC_NHAN = [...new Set(
+  NHIEM_VU_VAN_BAN.map((nhiemVu) => LOAI_VIEC_THEO_NHIEM_VU[nhiemVu]),
+)];
 
 /**
  * Chay mot viec: goi mo hinh roi ghi `model_runs` + `cost_log`.

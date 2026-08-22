@@ -10,6 +10,7 @@ const {
   MO_HINH_MANH,
   MO_HINH_NHANH,
   NHIEM_VU_HOP_LE,
+  NHIEM_VU_VAN_BAN,
   chonMoHinh,
   loaiViecCuaNhiemVu,
 } = require('../lib/model-runner/chon-mo-hinh');
@@ -19,8 +20,12 @@ const { tinhChiPhiUocTinh } = require('../lib/model-runner/ghi-nhat-ky');
 const runnerApi = require('../lib/model-runner/runner-api');
 
 describe('chon mo hinh (PRD 8.3)', () => {
-  it('bay nhiem vu cua PRD muc 8.2 deu co mac dinh va co loai viec tuong ung', () => {
-    assert.equal(NHIEM_VU_HOP_LE.length, 7);
+  it('tam nhiem vu deu co mac dinh va co loai viec tuong ung', () => {
+    assert.equal(NHIEM_VU_HOP_LE.length, 8);
+    assert.deepEqual(NHIEM_VU_VAN_BAN, [
+      'viet-bai', 'viet-kich-ban', 'de-xuat-y-tuong', 'cham-chat-luong',
+      'phan-loai-binh-luan', 'boc-tach-ho-so', 'cham-diem-lien-quan',
+    ]);
     for (const nhiemVu of NHIEM_VU_HOP_LE) {
       assert.ok(MAC_DINH_THEO_NHIEM_VU[nhiemVu], `thieu mac dinh cho ${nhiemVu}`);
       assert.ok(loaiViecCuaNhiemVu(nhiemVu), `thieu loai viec cho ${nhiemVu}`);
@@ -127,7 +132,7 @@ describe('loi nhac', () => {
   });
 
   it('moi nhiem vu co loi nhac va danh sach truong bat buoc', () => {
-    for (const nhiemVu of NHIEM_VU_HOP_LE) {
+    for (const nhiemVu of NHIEM_VU_VAN_BAN) {
       const muc = layLoiNhac(nhiemVu);
       assert.ok(muc.loiNhac.length > 50);
       assert.ok(muc.truongBatBuoc.length > 0);
