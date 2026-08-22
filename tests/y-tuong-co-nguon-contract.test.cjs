@@ -61,6 +61,23 @@ test('layChiTietTheoId loc ca workspace va ID y tuong', async () => {
   assert.deepEqual(thamSo, ['ws-A', 'ws-A', 'ws-A', 'ws-A', id, 1]);
 });
 
+test('nhanQuyenSuDung chi claim y tuong chua dung trong workspace', async () => {
+  const { ketNoi, nhatKy } = ketNoiGhiSql();
+  const id   = randomUUID();
+  const repo = ideasRepo(ketNoi, 'ws-A');
+
+  assert.equal(typeof repo.nhanQuyenSuDung, 'function');
+  await repo.nhanQuyenSuDung(id, 'Tiêu đề đã duyệt');
+
+  assert.equal(nhatKy.length, 1);
+  const { cau } = nhatKy[0];
+  assert.match(cau, /^update "ideas"/);
+  assert.match(cau, /where .*"workspace_id" = \$\d+/);
+  assert.match(cau, /where .*"id" = \$\d+/);
+  assert.match(cau, /where .*"da_dung" = \$\d+/);
+  assert.match(cau, /returning/);
+});
+
 test('migration tieu de backfill du lieu cu truoc khi bat buoc', () => {
   const duongDan = path.join(__dirname, '../db/migrations/0009_add_idea_title.sql');
   const sql      = fs.readFileSync(duongDan, 'utf8');

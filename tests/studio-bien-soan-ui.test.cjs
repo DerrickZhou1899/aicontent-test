@@ -26,6 +26,17 @@ test('server action chỉ nhận ideaId và gọi service sinh bài', () => {
   assert.doesNotMatch(maNguon, /form\.get\(['"]workspaceId['"]\)/);
 });
 
+test('server action lưu lấy người tạo và workspace từ phiên đăng nhập', () => {
+  const maNguon = doc('actions.ts');
+
+  assert.match(maNguon, /nguoiDungHienTai\(\)/);
+  assert.match(maNguon, /luuBanNhapBai\(/);
+  assert.match(maNguon, /typeof thamSo\.ideaId/);
+  assert.match(maNguon, /typeof thamSo\.noiDung/);
+  assert.doesNotMatch(maNguon, /form\.get\(['"]userId['"]\)/);
+  assert.doesNotMatch(maNguon, /form\.get\(['"]workspaceId['"]\)/);
+});
+
 test('bản nháp cho sửa đủ nội dung và nói rõ chưa lưu', () => {
   const maNguon = doc('man-hinh-bien-soan.tsx');
 
@@ -34,4 +45,14 @@ test('bản nháp cho sửa đủ nội dung và nói rõ chưa lưu', () => {
   assert.match(maNguon, /name="noiDung"/);
   assert.match(maNguon, /name="hashtag"/);
   assert.match(maNguon, /chưa được lưu/i);
+});
+
+test('bản nháp gửi đúng nội dung đang sửa và báo kết quả lưu', () => {
+  const maNguon = doc('man-hinh-bien-soan.tsx');
+
+  assert.match(maNguon, /luuBanNhap/);
+  assert.match(maNguon, /Lưu bản nháp/);
+  assert.match(maNguon, /Đã lưu vào kho nội dung/);
+  assert.match(maNguon, /ketQuaLuu\?\.ok \? 'Bản nháp đã lưu'/);
+  assert.match(maNguon, /\|\| ketQuaLuu\?\.ok/);
 });

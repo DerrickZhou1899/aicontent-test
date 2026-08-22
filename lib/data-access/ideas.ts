@@ -77,5 +77,19 @@ export function ideasRepo(db: KetNoiDrizzle, workspaceId: string) {
         .limit(1);
       return dong ?? null;
     },
+
+    async nhanQuyenSuDung(id: string, tieuDe: string): Promise<Idea | null> {
+      // Claim có điều kiện để hai request đồng thời không cùng tạo bài từ một ý tưởng.
+      const [dong] = await db
+        .update(ideas)
+        .set({ tieuDe, daDung: true })
+        .where(and(
+          eq(ideas.workspaceId, workspaceId),
+          eq(ideas.id, id),
+          eq(ideas.daDung, false),
+        ))
+        .returning();
+      return dong ?? null;
+    },
   };
 }

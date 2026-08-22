@@ -1,10 +1,10 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useTransition } from 'react';
 
 import type { BanNhapBai } from '@/lib/studio/sinh-bai';
 
-import { guiSinhBai, type TrangThaiBienSoan } from './actions';
+import { guiSinhBai, luuBanNhap, type TrangThaiBienSoan } from './actions';
 
 type YTuongChon = {
   id     : string;
@@ -19,16 +19,30 @@ function demTu(noiDung: string): number {
   return sach === '' ? 0 : sach.split(/\s+/).length;
 }
 
-function BanNhapCoTheSua({ banDau }: { banDau: BanNhapBai }) {
-  const [tieuDe, datTieuDe]   = useState(banDau.tieuDe);
-  const [noiDung, datNoiDung] = useState(banDau.noiDung);
-  const [hashtag, datHashtag] = useState(banDau.hashtag.join(' '));
+function BanNhapCoTheSua({ ideaId, banDau }: { ideaId: string; banDau: BanNhapBai }) {
+  const [tieuDe, datTieuDe]         = useState(banDau.tieuDe);
+  const [noiDung, datNoiDung]       = useState(banDau.noiDung);
+  const [hashtag, datHashtag]       = useState(banDau.hashtag.join(' '));
+  const [ketQuaLuu, datKetQuaLuu]   = useState<Awaited<ReturnType<typeof luuBanNhap>> | null>(null);
+  const [dangLuu, batDauLuu]        = useTransition();
+  const daLuu                       = ketQuaLuu?.ok === true;
+
+  function guiLuu() {
+    datKetQuaLuu(null);
+    batDauLuu(async () => {
+      datKetQuaLuu(await luuBanNhap({ ideaId, tieuDe, noiDung, hashtag }));
+    });
+  }
 
   return (
     <div className="ban-nhap">
       <div className="ban-nhap__thong-bao" role="status">
-        <strong>Bản nháp đang chỉnh sửa</strong>
-        <span>Nội dung này chưa được lưu vào kho. Thay đổi trong ô sẽ là bản đem đi lưu.</span>
+        <strong>{ketQuaLuu?.ok ? 'Bản nháp đã lưu' : 'Bản nháp đang chỉnh sửa'}</strong>
+        <span>
+          {daLuu
+            ? 'Nội dung đã nằm trong kho và ý tưởng được đánh dấu đã dùng.'
+            : 'Nội dung này chưa được lưu vào kho. Thay đổi trong ô sẽ là bản đem đi lưu.'}
+        </span>
       </div>
 
       <label className="o" htmlFor="ban-nhap-tieu-de">
@@ -36,6 +50,7 @@ function BanNhapCoTheSua({ banDau }: { banDau: BanNhapBai }) {
         <input
           id="ban-nhap-tieu-de"
           name="tieuDe"
+          disabled={daLuu}
           value={tieuDe}
           onChange={(suKien) => datTieuDe(suKien.target.value)}
         />
@@ -47,6 +62,7 @@ function BanNhapCoTheSua({ banDau }: { banDau: BanNhapBai }) {
           className="soan__o"
           id="ban-nhap-noi-dung"
           name="noiDung"
+          disabled={daLuu}
           value={noiDung}
           onChange={(suKien) => datNoiDung(suKien.target.value)}
         />
@@ -58,10 +74,28 @@ function BanNhapCoTheSua({ banDau }: { banDau: BanNhapBai }) {
         <input
           id="ban-nhap-hashtag"
           name="hashtag"
+          disabled={daLuu}
           value={hashtag}
           onChange={(suKien) => datHashtag(suKien.target.value)}
         />
       </label>
+
+      <div className="ban-nhap__luu">
+        <button
+          className="btn btn--primary"
+          type="button"
+          disabled={dangLuu || tieuDe.trim() === '' || noiDung.trim() === '' || ketQuaLuu?.ok}
+          onClick={guiLuu}
+        >
+          {dangLuu ? 'Đang lưu…' : daLuu ? 'Đã lưu' : 'Lưu bản nháp'}
+        </button>
+        {ketQuaLuu?.ok ? (
+          <span className="ban-nhap__thanh-cong" role="status">Đã lưu vào kho nội dung.</span>
+        ) : null}
+        {ketQuaLuu && !ketQuaLuu.ok ? (
+          <span className="bien-soan-loi" role="alert">{ketQuaLuu.loi}</span>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -110,8 +144,9 @@ export function ManHinhBienSoan({ yTuong }: { yTuong: YTuongChon[] }) {
         {ketQua && !ketQua.ok ? <p className="bien-soan-loi" role="alert">{ketQua.loi}</p> : null}
         {ketQua?.ok ? (
           <BanNhapCoTheSua
-            key={`${ketQua.duLieu.tieuDe}-${ketQua.duLieu.noiDung}`}
-            banDau={ketQua.duLieu}
+            key={`${ketQua.duLieu.ideaId}-${ketQua.duLieu.banNhap.noiDung}`}
+            ideaId={ketQua.duLieu.ideaId}
+            banDau={ketQua.duLieu.banNhap}
           />
         ) : null}
       </section>

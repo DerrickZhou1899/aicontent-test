@@ -129,6 +129,19 @@
   justify-content: flex-end;
 }
 
+.ban-nhap__luu {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ban-nhap__thanh-cong {
+  color: var(--sage);
+  font-size: 13px;
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
   .bien-soan-layout {
     grid-template-columns: 1fr;

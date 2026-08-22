@@ -25,7 +25,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Lời nhắc sinh bài bám ý tưởng, hồ sơ và ràng buộc độ dài.
 - [x] Dịch vụ sinh bản nháp từ một ý tưởng trong workspace.
 - [x] Giao diện chọn ý tưởng, sinh và chỉnh sửa bản nháp.
-- [ ] Sinh, chỉnh sửa và lưu bài đăng.
+- [x] Sinh, chỉnh sửa và lưu bài đăng.
 - [ ] Sinh kịch bản quay theo từng phân cảnh.
 - [ ] Sinh hàng loạt và sinh ảnh.
 
@@ -62,6 +62,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `lib/studio/de-xuat-thuan.ts`: chuẩn hóa, tạo slot, phân bổ và chống trùng.
 - `lib/studio/de-xuat-service.ts`: điều phối toàn bộ luồng đề xuất và lưu dữ liệu.
 - `lib/studio/sinh-bai.ts`: dựng payload allowlist, gọi mô hình và dọn bản nháp bài đăng.
+- `lib/studio/luu-bai.ts`: lưu bản đã duyệt và đánh dấu ý tưởng đã dùng trong cùng giao dịch.
 - `lib/model-runner/loi-nhac-xu-huong.js`: ràng buộc học công thức kể nhưng không sao chép bài nguồn.
 - `lib/model-runner/loi-nhac-sinh-bai.js`: ràng buộc bài hoàn chỉnh bám dữ liệu thật và không lặp mạch.
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
@@ -80,21 +81,23 @@ node --test tests/studio-de-xuat-ui-contract.test.cjs
 node --test tests/studio-danh-sach-y-tuong-ui.test.cjs
 node --test tests/loi-nhac-sinh-bai.test.cjs
 node --test tests/studio-sinh-bai-service.test.cjs
+node --test tests/studio-luu-bai-service.test.cjs
 node --test tests/studio-bien-soan-ui.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 52 test tính năng, 9 test hợp đồng giao diện và 37 test data-access guard đều pass; TypeScript thoát mã 0.
+Kết quả gần nhất: 69 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
-- DB integration test chưa chạy được vì chưa có `DATABASE_URL` và PostgreSQL/Docker trong môi trường hiện tại.
-- Secret guard và production build cần `.env` hợp lệ, tối thiểu có `AUTH_SECRET` và `DATABASE_URL`.
+- DB integration test chưa hoàn tất vì PostgreSQL tại `127.0.0.1:35443` chưa chạy trong môi trường hiện tại.
+- Toàn bộ suite hiện có 225 test pass; các ca DB còn lại dừng vì PostgreSQL tại `127.0.0.1:35443` chưa chạy.
+- Secret guard chạy xanh phần quét lời nhắc; phần quét khóa dừng đúng thiết kế vì chưa có `AUTH_SECRET` trong môi trường.
+- Bước hậu xử lý build dùng `rm` và `cp` nên không chạy trên PowerShell; phần `next build` trước đó đã hoàn tất.
 - Không thêm secret giả và không nới lỏng test để che các giới hạn trên.
 
 ## Việc tiếp theo
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Lưu bản người dùng đã sửa vào `contents` rồi hoàn tất mốc sinh bài đăng.
-4. Tiếp tục mốc sinh kịch bản phân cảnh.
+3. Tiếp tục mốc sinh kịch bản phân cảnh.
