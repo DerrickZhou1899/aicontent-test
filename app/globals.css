@@ -1,0 +1,142 @@
+/* Design tokens — AI Content
+   Tông cam ấm. Nền không dùng trắng tinh, chữ không dùng đen tuyệt đối:
+   cả hai đều lệch ấm để nền cam nhạt không bị xám khi đặt cạnh nhau. */
+
+:root {
+  /* Cam — accent chính. 500 là màu hành động, 050/100 là nền chip và badge. */
+  --brand-050: #fff4e9;
+  --brand-100: #fde3c8;
+  --brand-200: #f7c99e;
+  --brand-400: #f0903c;
+  --brand-500: #e2791e;
+  --brand-600: #c66313;
+  --brand-700: #9d4d0d;
+
+  /* Trung tính ấm */
+  --ink: #211b16;
+  --ink-2: #6d635a;
+  --ink-3: #786d62;
+  --line: #ece3d9;
+  --line-strong: #ded2c5;
+  --surface: #ffffff;
+  --surface-2: #fbf7f2;
+  --canvas-from: #fff5ea;
+  --canvas-to: #fdfbf8;
+
+  /* Màu phụ cho icon chip và trạng thái. Cảnh báo dùng đất nung, KHÔNG dùng
+     cam/vàng — trùng accent chính thì user không phân biệt được cảnh báo. */
+  --sage: #3d7052;
+  --sage-bg: #eaf3ec;
+  --plum: #6f4f9b;
+  --plum-bg: #f2edf8;
+  --clay: #b7452c;
+  --clay-bg: #fceee9;
+
+  /* Nút chính dùng chữ nâu đậm, không dùng trắng: trên nền cam nhạt chữ trắng
+     chỉ đạt 2.4:1. Muốn giữ chữ trắng thì phải đẩy cam xuống nâu sẫm, mất tông. */
+  --btn-from: #f2953f;
+  --btn-to: #e2791e;
+  --btn-ink: #2b1a0a;
+
+  /* Chữ */
+  --font-display: "Bricolage Grotesque", Georgia, serif;
+  --font-ui: "Be Vietnam Pro", -apple-system, "Segoe UI", sans-serif;
+
+  /* Bo góc */
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* Đổ bóng — ấm và thấp, không dùng bóng xám xanh mặc định */
+  --shadow-sm: 0 1px 2px rgba(72, 47, 24, .06);
+  --shadow-md: 0 4px 14px rgba(72, 47, 24, .07);
+  --shadow-lg: 0 12px 32px rgba(72, 47, 24, .10);
+  --shadow-brand: 0 6px 16px rgba(198, 99, 19, .26);
+
+  --sidebar-w: 278px;
+  --ease: cubic-bezier(.32, .72, 0, 1);
+}
+
+/* Dark mode: chỉ đảo lại giá trị token, không sửa selector ở nơi khác. */
+:root[data-theme="dark"] {
+  --brand-050: #33210f;
+  --brand-100: #4a2f14;
+  --brand-200: #6b4319;
+  --brand-400: #f0903c;
+  --brand-500: #f18c33;
+  --brand-600: #f7a154;
+  --brand-700: #fbbd82;
+
+  --ink: #f5efe8;
+  --ink-2: #b3a89d;
+  --ink-3: #948a80;
+  --line: #322a23;
+  --line-strong: #453a31;
+  --surface: #1d1814;
+  --surface-2: #241e19;
+  --canvas-from: #17120f;
+  --canvas-to: #1b1613;
+
+  /* Màu phụ phải sáng hơn hẳn bản sáng, nếu giữ nguyên thì badge chìm vào nền. */
+  --sage: #7cc396;
+  --sage-bg: #1d2b22;
+  --plum: #b89ce0;
+  --plum-bg: #251d33;
+  --clay: #ef8a6e;
+  --clay-bg: #331e18;
+
+  --btn-from: #f7a154;
+  --btn-to: #e2791e;
+  --btn-ink: #2b1a0a;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, .45);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, .5);
+  --shadow-brand: 0 6px 16px rgba(0, 0, 0, .45);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--canvas-to);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, figure { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+svg { display: block; flex: none; }
+
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

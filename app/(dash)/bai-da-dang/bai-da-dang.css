@@ -1,0 +1,134 @@
+/* Bang bai da dang — moi bai MOT DONG cao hai dong chu, cuon ngang khi nhieu cot. */
+
+.bang__dau {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Cuon ngang nam o day chu khong o ca trang: tieu de trang va thanh ben phai
+   dung yen khi nguoi dung keo bang sang phai. */
+.bang-cuon {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.bang {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  /* Ep bang rong hon khung de cac cot so khong bi bop lai khi noi dung dai. */
+  min-width: 1120px;
+}
+
+.bang th,
+.bang td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+}
+
+.bang thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface-2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bang__hang-loc td {
+  position: sticky;
+  top: 33px;
+  z-index: 1;
+  background: var(--surface-2);
+  padding: 4px 6px;
+}
+
+.bang__loc {
+  width: 100%;
+  min-width: 0;
+  padding: 3px 6px;
+  font-size: 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+
+.bang tbody tr:hover {
+  background: var(--surface-2);
+}
+
+.bang__c-ngay { width: 92px; white-space: nowrap; }
+.bang__c-dang { width: 62px; white-space: nowrap; }
+.bang__c-noi-dung { min-width: 320px; }
+.bang__c-so { width: 76px; text-align: right; white-space: nowrap; }
+.bang__c-phu-de { width: 72px; white-space: nowrap; }
+.bang__c-link { width: 60px; white-space: nowrap; }
+
+.bang th.bang__c-so { text-align: right; }
+
+/* Noi dung: nut chu de bam mo rong, mac dinh cat dung HAI dong. */
+.bang__chu {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  line-height: 1.5;
+  cursor: pointer;
+  white-space: pre-wrap;
+}
+
+.bang__chu--gon {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bang__hang--mo {
+  background: var(--surface-2);
+}
+
+.bang__mo-rong {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line-strong);
+}
+
+.bai-anh {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bai-anh img {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+}
+
+.bai-video {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-sm);
+}
+
+.bai-video__phu-de {
+  margin-top: 8px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--ink-2);
+}

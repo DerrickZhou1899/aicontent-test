@@ -1,0 +1,157 @@
+/* Studio (Phase 9) — dung lai lop cua brand.css, chi them phan rieng. */
+
+.chon-be-mat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* O soan bai: van ban + dong do dai + canh bao tu ngu. */
+.soan {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.soan__o {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+}
+
+.soan__do {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+/* Ba trang thai do dai phai phan biet duoc NGAY, khong phai doc chu moi hieu. */
+.soan__dem--dat {
+  color: var(--sage);
+}
+
+.soan__dem--dai,
+.soan__dem--ngan {
+  color: var(--clay);
+  font-weight: 600;
+}
+
+.soan__lech {
+  color: var(--ink-2);
+}
+
+/* Thanh tien do cua lo sinh hang loat. */
+.tien-do {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.tien-do__thanh {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.tien-do__chay {
+  display: block;
+  height: 100%;
+  background: var(--sage);
+  transition: width 0.3s ease;
+}
+
+/* Hai cot cua man bien soan — mot cot tren man hinh hep. */
+.hai-cot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .hai-cot {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Muc chon duoc bang o tick (man sinh hang loat). */
+.muc--chon {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.muc--chon > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Bon cot so giong — bay bon ban canh nhau de doc, khong phai de sua. */
+.bon-cot {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+/* Duoi 1200px bon cot thanh hai; duoi 760px thanh mot. Doc bai 250 tu trong mot
+   cot rong 200px la khong doc duoc. */
+@media (max-width: 1200px) {
+  .bon-cot {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .bon-cot {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cot-be-mat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.cot-be-mat__dau {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cot-be-mat__ten {
+  font-weight: 600;
+}
+
+.cot-be-mat__tieu-de {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.cot-be-mat__than {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.cot-be-mat__the {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* Bai trong mot chuoi: thut vao de nhin ra chung mot mach. */
+.muc--trong-chuoi {
+  margin-left: 18px;
+  border-left: 2px solid var(--sage);
+}

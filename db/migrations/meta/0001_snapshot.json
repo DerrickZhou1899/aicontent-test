@@ -1,0 +1,3751 @@
+{
+  "id": "ede94972-4f6e-4eba-aecd-5a9c77da5b72",
+  "prevId": "086b8ea7-cc36-4244-9bda-394df2e8f9e7",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.oauth_accounts": {
+      "name": "oauth_accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "loai": {
+          "name": "loai",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_account_id": {
+          "name": "provider_account_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_type": {
+          "name": "token_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id_token": {
+          "name": "id_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "session_state": {
+          "name": "session_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "oauth_accounts_user_id_idx": {
+          "name": "oauth_accounts_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "oauth_accounts_user_id_users_id_fk": {
+          "name": "oauth_accounts_user_id_users_id_fk",
+          "tableFrom": "oauth_accounts",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "tableTo": "users",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "oauth_accounts_provider_tai_khoan_key": {
+          "name": "oauth_accounts_provider_tai_khoan_key",
+          "columns": [
+            "provider",
+            "provider_account_id"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.sessions": {
+      "name": "sessions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "session_token": {
+          "name": "session_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dau_vet_thiet_bi": {
+          "name": "dau_vet_thiet_bi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "sessions_user_id_idx": {
+          "name": "sessions_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "sessions_user_id_users_id_fk": {
+          "name": "sessions_user_id_users_id_fk",
+          "tableFrom": "sessions",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "tableTo": "users",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "sessions_session_token_unique": {
+          "name": "sessions_session_token_unique",
+          "columns": [
+            "session_token"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ten": {
+          "name": "ten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email_xac_thuc_luc": {
+          "name": "email_xac_thuc_luc",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "anh": {
+          "name": "anh",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "lan_dang_nhap_cuoi": {
+          "name": "lan_dang_nhap_cuoi",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.verification_tokens": {
+      "name": "verification_tokens",
+      "schema": "",
+      "columns": {
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "verification_tokens_identifier_token_pk": {
+          "name": "verification_tokens_identifier_token_pk",
+          "columns": [
+            "identifier",
+            "token"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.workspace_members": {
+      "name": "workspace_members",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vai_tro": {
+          "name": "vai_tro",
+          "type": "vai_tro_thanh_vien",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'thanh_vien'"
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "workspace_members_user_id_idx": {
+          "name": "workspace_members_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "workspace_members_workspace_id_workspaces_id_fk": {
+          "name": "workspace_members_workspace_id_workspaces_id_fk",
+          "tableFrom": "workspace_members",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "workspace_members_user_id_users_id_fk": {
+          "name": "workspace_members_user_id_users_id_fk",
+          "tableFrom": "workspace_members",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "tableTo": "users",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "workspace_members_workspace_user_key": {
+          "name": "workspace_members_workspace_user_key",
+          "columns": [
+            "workspace_id",
+            "user_id"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.workspaces": {
+      "name": "workspaces",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ten": {
+          "name": "ten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chu_so_huu_id": {
+          "name": "chu_so_huu_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ngon_ngu": {
+          "name": "ngon_ngu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'vi'"
+        },
+        "mui_gio": {
+          "name": "mui_gio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Asia/Ho_Chi_Minh'"
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "workspaces_chu_so_huu_id_users_id_fk": {
+          "name": "workspaces_chu_so_huu_id_users_id_fk",
+          "tableFrom": "workspaces",
+          "columnsFrom": [
+            "chu_so_huu_id"
+          ],
+          "tableTo": "users",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.brand_profiles": {
+      "name": "brand_profiles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mo_ta": {
+          "name": "mo_ta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "giong_dieu": {
+          "name": "giong_dieu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dieu_cam_ky": {
+          "name": "dieu_cam_ky",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mau_sac": {
+          "name": "mau_sac",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phong_chu": {
+          "name": "phong_chu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "do_day_du": {
+          "name": "do_day_du",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "brand_profiles_workspace_id_workspaces_id_fk": {
+          "name": "brand_profiles_workspace_id_workspaces_id_fk",
+          "tableFrom": "brand_profiles",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "brand_profiles_workspace_id_key": {
+          "name": "brand_profiles_workspace_id_key",
+          "columns": [
+            "workspace_id"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.content_pillars": {
+      "name": "content_pillars",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ten": {
+          "name": "ten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "muc_dich": {
+          "name": "muc_dich",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ti_le_muc_tieu": {
+          "name": "ti_le_muc_tieu",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "khoa_khong_tu_giam": {
+          "name": "khoa_khong_tu_giam",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "content_pillars_workspace_id_idx": {
+          "name": "content_pillars_workspace_id_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "content_pillars_workspace_id_workspaces_id_fk": {
+          "name": "content_pillars_workspace_id_workspaces_id_fk",
+          "tableFrom": "content_pillars",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.insights": {
+      "name": "insights",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "noi_dung": {
+          "name": "noi_dung",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bang_chung": {
+          "name": "bang_chung",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nguon": {
+          "name": "nguon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "insights_workspace_id_idx": {
+          "name": "insights_workspace_id_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "insights_workspace_id_workspaces_id_fk": {
+          "name": "insights_workspace_id_workspaces_id_fk",
+          "tableFrom": "insights",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.personas": {
+      "name": "personas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ten": {
+          "name": "ten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "do_tuoi": {
+          "name": "do_tuoi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nghe_nghiep": {
+          "name": "nghe_nghiep",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "noi_dau": {
+          "name": "noi_dau",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mong_muon": {
+          "name": "mong_muon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cau_noi_thuong_dung": {
+          "name": "cau_noi_thuong_dung",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "personas_workspace_id_idx": {
+          "name": "personas_workspace_id_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "personas_workspace_id_workspaces_id_fk": {
+          "name": "personas_workspace_id_workspaces_id_fk",
+          "tableFrom": "personas",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.products": {
+      "name": "products",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ten": {
+          "name": "ten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gia": {
+          "name": "gia",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "loi_ich": {
+          "name": "loi_ich",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phan_doi_thuong_gap": {
+          "name": "phan_doi_thuong_gap",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "loi_keu_goi": {
+          "name": "loi_keu_goi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lien_ket": {
+          "name": "lien_ket",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "products_workspace_id_idx": {
+          "name": "products_workspace_id_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "products_workspace_id_workspaces_id_fk": {
+          "name": "products_workspace_id_workspaces_id_fk",
+          "tableFrom": "products",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.cost_log": {
+      "name": "cost_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "loai_chi_phi": {
+          "name": "loai_chi_phi",
+          "type": "loai_chi_phi",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "so_luong": {
+          "name": "so_luong",
+          "type": "numeric(12, 4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chi_phi_uoc_tinh": {
+          "name": "chi_phi_uoc_tinh",
+          "type": "numeric(12, 4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "don_vi_tien": {
+          "name": "don_vi_tien",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'VND'"
+        },
+        "model_run_id": {
+          "name": "model_run_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ghi_chu": {
+          "name": "ghi_chu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay": {
+          "name": "ngay",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "cost_log_workspace_ngay_idx": {
+          "name": "cost_log_workspace_ngay_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "ngay",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "cost_log_workspace_id_workspaces_id_fk": {
+          "name": "cost_log_workspace_id_workspaces_id_fk",
+          "tableFrom": "cost_log",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "cost_log_model_run_id_model_runs_id_fk": {
+          "name": "cost_log_model_run_id_model_runs_id_fk",
+          "tableFrom": "cost_log",
+          "columnsFrom": [
+            "model_run_id"
+          ],
+          "tableTo": "model_runs",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.credit_ledger": {
+      "name": "credit_ledger",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bien_dong_luot": {
+          "name": "bien_dong_luot",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ly_do": {
+          "name": "ly_do",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "so_du_sau": {
+          "name": "so_du_sau",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "credit_ledger_workspace_ngay_tao_idx": {
+          "name": "credit_ledger_workspace_ngay_tao_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "ngay_tao",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "credit_ledger_workspace_id_workspaces_id_fk": {
+          "name": "credit_ledger_workspace_id_workspaces_id_fk",
+          "tableFrom": "credit_ledger",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.jobs": {
+      "name": "jobs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "loai_viec": {
+          "name": "loai_viec",
+          "type": "loai_viec",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "du_lieu_vao": {
+          "name": "du_lieu_vao",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "trang_thai": {
+          "name": "trang_thai",
+          "type": "trang_thai_job",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'cho'"
+        },
+        "so_lan_thu": {
+          "name": "so_lan_thu",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "idempotency_key": {
+          "name": "idempotency_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thoi_diem_chay": {
+          "name": "thoi_diem_chay",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "locked_by": {
+          "name": "locked_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "locked_at": {
+          "name": "locked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "loi": {
+          "name": "loi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ket_qua": {
+          "name": "ket_qua",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "jobs_trang_thai_thoi_diem_chay_idx": {
+          "name": "jobs_trang_thai_thoi_diem_chay_idx",
+          "columns": [
+            {
+              "expression": "trang_thai",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "thoi_diem_chay",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "jobs_locked_at_idx": {
+          "name": "jobs_locked_at_idx",
+          "columns": [
+            {
+              "expression": "locked_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "jobs_workspace_id_idx": {
+          "name": "jobs_workspace_id_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "jobs_workspace_id_workspaces_id_fk": {
+          "name": "jobs_workspace_id_workspaces_id_fk",
+          "tableFrom": "jobs",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "jobs_idempotency_key_key": {
+          "name": "jobs_idempotency_key_key",
+          "columns": [
+            "idempotency_key"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.model_runs": {
+      "name": "model_runs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_id": {
+          "name": "job_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nhiem_vu": {
+          "name": "nhiem_vu",
+          "type": "nhiem_vu_mo_hinh",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mo_hinh": {
+          "name": "mo_hinh",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "do_dai_vao": {
+          "name": "do_dai_vao",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "do_dai_ra": {
+          "name": "do_dai_ra",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thoi_gian_chay_ms": {
+          "name": "thoi_gian_chay_ms",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thanh_cong": {
+          "name": "thanh_cong",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "loi": {
+          "name": "loi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "model_runs_workspace_ngay_tao_idx": {
+          "name": "model_runs_workspace_ngay_tao_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "ngay_tao",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "model_runs_content_id_idx": {
+          "name": "model_runs_content_id_idx",
+          "columns": [
+            {
+              "expression": "content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "model_runs_workspace_id_workspaces_id_fk": {
+          "name": "model_runs_workspace_id_workspaces_id_fk",
+          "tableFrom": "model_runs",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "model_runs_job_id_jobs_id_fk": {
+          "name": "model_runs_job_id_jobs_id_fk",
+          "tableFrom": "model_runs",
+          "columnsFrom": [
+            "job_id"
+          ],
+          "tableTo": "jobs",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.assets": {
+      "name": "assets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "loai": {
+          "name": "loai",
+          "type": "loai_asset",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'anh'"
+        },
+        "duong_dan": {
+          "name": "duong_dan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ti_le": {
+          "name": "ti_le",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kich_thuoc_byte": {
+          "name": "kich_thuoc_byte",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model_run_id": {
+          "name": "model_run_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "assets_content_id_idx": {
+          "name": "assets_content_id_idx",
+          "columns": [
+            {
+              "expression": "content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "assets_workspace_id_workspaces_id_fk": {
+          "name": "assets_workspace_id_workspaces_id_fk",
+          "tableFrom": "assets",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "assets_content_id_contents_id_fk": {
+          "name": "assets_content_id_contents_id_fk",
+          "tableFrom": "assets",
+          "columnsFrom": [
+            "content_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "assets_model_run_id_model_runs_id_fk": {
+          "name": "assets_model_run_id_model_runs_id_fk",
+          "tableFrom": "assets",
+          "columnsFrom": [
+            "model_run_id"
+          ],
+          "tableTo": "model_runs",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.che_do_xem": {
+      "name": "che_do_xem",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ten": {
+          "name": "ten",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cot_hien": {
+          "name": "cot_hien",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bo_loc": {
+          "name": "bo_loc",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "che_do_xem_workspace_id_workspaces_id_fk": {
+          "name": "che_do_xem_workspace_id_workspaces_id_fk",
+          "tableFrom": "che_do_xem",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "che_do_xem_user_id_users_id_fk": {
+          "name": "che_do_xem_user_id_users_id_fk",
+          "tableFrom": "che_do_xem",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "tableTo": "users",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "che_do_xem_workspace_user_ten_key": {
+          "name": "che_do_xem_workspace_user_ten_key",
+          "columns": [
+            "workspace_id",
+            "user_id",
+            "ten"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.contents": {
+      "name": "contents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "idea_id": {
+          "name": "idea_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent_content_id": {
+          "name": "parent_content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kenh_dang_id": {
+          "name": "kenh_dang_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "be_mat": {
+          "name": "be_mat",
+          "type": "be_mat",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pillar_id": {
+          "name": "pillar_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "persona_id": {
+          "name": "persona_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "goc_tiep_can": {
+          "name": "goc_tiep_can",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dang_bai": {
+          "name": "dang_bai",
+          "type": "dang_bai",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nguon_y_tuong": {
+          "name": "nguon_y_tuong",
+          "type": "nguon_y_tuong",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'may-de-xuat'"
+        },
+        "cau_mo_dau": {
+          "name": "cau_mo_dau",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "noi_dung": {
+          "name": "noi_dung",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "so_ky_tu": {
+          "name": "so_ky_tu",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "generated": {
+            "type": "stored",
+            "as": "char_length(coalesce(noi_dung, ''))"
+          }
+        },
+        "mo_hinh_da_sinh": {
+          "name": "mo_hinh_da_sinh",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trang_thai": {
+          "name": "trang_thai",
+          "type": "trang_thai_noi_dung",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'y_tuong'"
+        },
+        "nguoi_tao": {
+          "name": "nguoi_tao",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_du_kien_dang": {
+          "name": "ngay_du_kien_dang",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_dang": {
+          "name": "ngay_dang",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lien_ket_goc": {
+          "name": "lien_ket_goc",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ma_bai": {
+          "name": "ma_bai",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trang_thai_theo_doi": {
+          "name": "trang_thai_theo_doi",
+          "type": "trang_thai_theo_doi",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'chua_dang'"
+        },
+        "lan_keo_gan_nhat": {
+          "name": "lan_keo_gan_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "noi_dung_lau_dai": {
+          "name": "noi_dung_lau_dai",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "nhan_ban_mau_nay": {
+          "name": "nhan_ban_mau_nay",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "ly_do_bo": {
+          "name": "ly_do_bo",
+          "type": "ly_do_bo",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ghi_chu": {
+          "name": "ghi_chu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "contents_workspace_be_mat_trang_thai_idx": {
+          "name": "contents_workspace_be_mat_trang_thai_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "be_mat",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "trang_thai",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "contents_workspace_ngay_dang_idx": {
+          "name": "contents_workspace_ngay_dang_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "ngay_dang",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "contents_parent_content_id_idx": {
+          "name": "contents_parent_content_id_idx",
+          "columns": [
+            {
+              "expression": "parent_content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "contents_theo_doi_idx": {
+          "name": "contents_theo_doi_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "trang_thai_theo_doi",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "contents_noi_dung_trgm_idx": {
+          "name": "contents_noi_dung_trgm_idx",
+          "columns": [
+            {
+              "expression": "\"noi_dung\" gin_trgm_ops",
+              "isExpression": true,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "gin",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "contents_workspace_id_workspaces_id_fk": {
+          "name": "contents_workspace_id_workspaces_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "contents_idea_id_ideas_id_fk": {
+          "name": "contents_idea_id_ideas_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "idea_id"
+          ],
+          "tableTo": "ideas",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "contents_parent_content_id_contents_id_fk": {
+          "name": "contents_parent_content_id_contents_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "parent_content_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "contents_kenh_dang_id_kenh_dang_id_fk": {
+          "name": "contents_kenh_dang_id_kenh_dang_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "kenh_dang_id"
+          ],
+          "tableTo": "kenh_dang",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "contents_pillar_id_content_pillars_id_fk": {
+          "name": "contents_pillar_id_content_pillars_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "pillar_id"
+          ],
+          "tableTo": "content_pillars",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "contents_persona_id_personas_id_fk": {
+          "name": "contents_persona_id_personas_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "persona_id"
+          ],
+          "tableTo": "personas",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "contents_product_id_products_id_fk": {
+          "name": "contents_product_id_products_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "tableTo": "products",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "contents_nguoi_tao_users_id_fk": {
+          "name": "contents_nguoi_tao_users_id_fk",
+          "tableFrom": "contents",
+          "columnsFrom": [
+            "nguoi_tao"
+          ],
+          "tableTo": "users",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ideas": {
+      "name": "ideas",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "be_mat": {
+          "name": "be_mat",
+          "type": "be_mat",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "goc_tiep_can": {
+          "name": "goc_tiep_can",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pillar_id": {
+          "name": "pillar_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "persona_id": {
+          "name": "persona_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cau_mo_dau": {
+          "name": "cau_mo_dau",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ly_do_de_xuat": {
+          "name": "ly_do_de_xuat",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nguon_y_tuong": {
+          "name": "nguon_y_tuong",
+          "type": "nguon_y_tuong",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'may-de-xuat'"
+        },
+        "trend_signal_id": {
+          "name": "trend_signal_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model_run_id": {
+          "name": "model_run_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "da_dung": {
+          "name": "da_dung",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ideas_workspace_ngay_tao_idx": {
+          "name": "ideas_workspace_ngay_tao_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "ngay_tao",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "ideas_workspace_id_workspaces_id_fk": {
+          "name": "ideas_workspace_id_workspaces_id_fk",
+          "tableFrom": "ideas",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "ideas_pillar_id_content_pillars_id_fk": {
+          "name": "ideas_pillar_id_content_pillars_id_fk",
+          "tableFrom": "ideas",
+          "columnsFrom": [
+            "pillar_id"
+          ],
+          "tableTo": "content_pillars",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "ideas_persona_id_personas_id_fk": {
+          "name": "ideas_persona_id_personas_id_fk",
+          "tableFrom": "ideas",
+          "columnsFrom": [
+            "persona_id"
+          ],
+          "tableTo": "personas",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "ideas_product_id_products_id_fk": {
+          "name": "ideas_product_id_products_id_fk",
+          "tableFrom": "ideas",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "tableTo": "products",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "ideas_trend_signal_id_trend_signals_id_fk": {
+          "name": "ideas_trend_signal_id_trend_signals_id_fk",
+          "tableFrom": "ideas",
+          "columnsFrom": [
+            "trend_signal_id"
+          ],
+          "tableTo": "trend_signals",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "ideas_model_run_id_model_runs_id_fk": {
+          "name": "ideas_model_run_id_model_runs_id_fk",
+          "tableFrom": "ideas",
+          "columnsFrom": [
+            "model_run_id"
+          ],
+          "tableTo": "model_runs",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.kenh_dang": {
+      "name": "kenh_dang",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "be_mat": {
+          "name": "be_mat",
+          "type": "be_mat",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url_kenh": {
+          "name": "url_kenh",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ten_hien_thi": {
+          "name": "ten_hien_thi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dang_hoat_dong": {
+          "name": "dang_hoat_dong",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "cap_nhat": {
+          "name": "cap_nhat",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "kenh_dang_workspace_id_workspaces_id_fk": {
+          "name": "kenh_dang_workspace_id_workspaces_id_fk",
+          "tableFrom": "kenh_dang",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "kenh_dang_workspace_url_key": {
+          "name": "kenh_dang_workspace_url_key",
+          "columns": [
+            "workspace_id",
+            "url_kenh"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.quality_scores": {
+      "name": "quality_scores",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "diem_bam_tru_cot": {
+          "name": "diem_bam_tru_cot",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_dung_giong": {
+          "name": "diem_dung_giong",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_cau_mo_dau": {
+          "name": "diem_cau_mo_dau",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_ro_hanh_dong": {
+          "name": "diem_ro_hanh_dong",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_tinh_xac_thuc": {
+          "name": "diem_tinh_xac_thuc",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_do_moi": {
+          "name": "diem_do_moi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_tong": {
+          "name": "diem_tong",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "co_xac_thuc_dat": {
+          "name": "co_xac_thuc_dat",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "gop_y_sua": {
+          "name": "gop_y_sua",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_cham_tay": {
+          "name": "diem_cham_tay",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "canh_bao_trung_goc": {
+          "name": "canh_bao_trung_goc",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "content_trung_id": {
+          "name": "content_trung_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model_run_id": {
+          "name": "model_run_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phien_ban_bo_tieu_chi": {
+          "name": "phien_ban_bo_tieu_chi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "quality_scores_content_id_idx": {
+          "name": "quality_scores_content_id_idx",
+          "columns": [
+            {
+              "expression": "content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "quality_scores_workspace_id_workspaces_id_fk": {
+          "name": "quality_scores_workspace_id_workspaces_id_fk",
+          "tableFrom": "quality_scores",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "quality_scores_content_id_contents_id_fk": {
+          "name": "quality_scores_content_id_contents_id_fk",
+          "tableFrom": "quality_scores",
+          "columnsFrom": [
+            "content_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "quality_scores_content_trung_id_contents_id_fk": {
+          "name": "quality_scores_content_trung_id_contents_id_fk",
+          "tableFrom": "quality_scores",
+          "columnsFrom": [
+            "content_trung_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        },
+        "quality_scores_model_run_id_model_runs_id_fk": {
+          "name": "quality_scores_model_run_id_model_runs_id_fk",
+          "tableFrom": "quality_scores",
+          "columnsFrom": [
+            "model_run_id"
+          ],
+          "tableTo": "model_runs",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.trend_signals": {
+      "name": "trend_signals",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nguon": {
+          "name": "nguon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tieu_de": {
+          "name": "tieu_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lien_ket": {
+          "name": "lien_ket",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thoi_diem": {
+          "name": "thoi_diem",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diem_lien_quan": {
+          "name": "diem_lien_quan",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "da_dung": {
+          "name": "da_dung",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "trend_signals_workspace_thoi_diem_idx": {
+          "name": "trend_signals_workspace_thoi_diem_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "thoi_diem",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "trend_signals_workspace_id_workspaces_id_fk": {
+          "name": "trend_signals_workspace_id_workspaces_id_fk",
+          "tableFrom": "trend_signals",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.comment_classifications": {
+      "name": "comment_classifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "comment_id": {
+          "name": "comment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nhom_y_dinh": {
+          "name": "nhom_y_dinh",
+          "type": "nhom_y_dinh",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "diem": {
+          "name": "diem",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "model_run_id": {
+          "name": "model_run_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phien_ban_bo_phan_loai": {
+          "name": "phien_ban_bo_phan_loai",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "comment_classifications_nhom_y_dinh_idx": {
+          "name": "comment_classifications_nhom_y_dinh_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "nhom_y_dinh",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "comment_classifications_workspace_id_workspaces_id_fk": {
+          "name": "comment_classifications_workspace_id_workspaces_id_fk",
+          "tableFrom": "comment_classifications",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "comment_classifications_comment_id_comments_raw_id_fk": {
+          "name": "comment_classifications_comment_id_comments_raw_id_fk",
+          "tableFrom": "comment_classifications",
+          "columnsFrom": [
+            "comment_id"
+          ],
+          "tableTo": "comments_raw",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "comment_classifications_model_run_id_model_runs_id_fk": {
+          "name": "comment_classifications_model_run_id_model_runs_id_fk",
+          "tableFrom": "comment_classifications",
+          "columnsFrom": [
+            "model_run_id"
+          ],
+          "tableTo": "model_runs",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "comment_classifications_comment_phien_ban_key": {
+          "name": "comment_classifications_comment_phien_ban_key",
+          "columns": [
+            "comment_id",
+            "phien_ban_bo_phan_loai"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.comments_raw": {
+      "name": "comments_raw",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "snapshot_id": {
+          "name": "snapshot_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ma_binh_luan": {
+          "name": "ma_binh_luan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "noi_dung": {
+          "name": "noi_dung",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tac_gia_an_danh": {
+          "name": "tac_gia_an_danh",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "thoi_diem": {
+          "name": "thoi_diem",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "comments_raw_content_id_idx": {
+          "name": "comments_raw_content_id_idx",
+          "columns": [
+            {
+              "expression": "content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "comments_raw_snapshot_id_idx": {
+          "name": "comments_raw_snapshot_id_idx",
+          "columns": [
+            {
+              "expression": "snapshot_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "comments_raw_workspace_id_workspaces_id_fk": {
+          "name": "comments_raw_workspace_id_workspaces_id_fk",
+          "tableFrom": "comments_raw",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "comments_raw_content_id_contents_id_fk": {
+          "name": "comments_raw_content_id_contents_id_fk",
+          "tableFrom": "comments_raw",
+          "columnsFrom": [
+            "content_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "comments_raw_snapshot_id_metric_snapshots_id_fk": {
+          "name": "comments_raw_snapshot_id_metric_snapshots_id_fk",
+          "tableFrom": "comments_raw",
+          "columnsFrom": [
+            "snapshot_id"
+          ],
+          "tableTo": "metric_snapshots",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "comments_raw_content_ma_binh_luan_key": {
+          "name": "comments_raw_content_ma_binh_luan_key",
+          "columns": [
+            "content_id",
+            "ma_binh_luan"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.effectiveness_scores": {
+      "name": "effectiveness_scores",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "snapshot_id": {
+          "name": "snapshot_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "formula_version": {
+          "name": "formula_version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "diem_thanh_phan": {
+          "name": "diem_thanh_phan",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "diem_tong_chuan_hoa": {
+          "name": "diem_tong_chuan_hoa",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "so_trung_vi": {
+          "name": "so_trung_vi",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "xep_hang_trong_tuan": {
+          "name": "xep_hang_trong_tuan",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tuan_bat_dau": {
+          "name": "tuan_bat_dau",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "do_tin_cay_thap": {
+          "name": "do_tin_cay_thap",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "effectiveness_scores_content_id_idx": {
+          "name": "effectiveness_scores_content_id_idx",
+          "columns": [
+            {
+              "expression": "content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "effectiveness_scores_workspace_tuan_idx": {
+          "name": "effectiveness_scores_workspace_tuan_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "tuan_bat_dau",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "effectiveness_scores_workspace_id_workspaces_id_fk": {
+          "name": "effectiveness_scores_workspace_id_workspaces_id_fk",
+          "tableFrom": "effectiveness_scores",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "effectiveness_scores_content_id_contents_id_fk": {
+          "name": "effectiveness_scores_content_id_contents_id_fk",
+          "tableFrom": "effectiveness_scores",
+          "columnsFrom": [
+            "content_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "effectiveness_scores_snapshot_id_metric_snapshots_id_fk": {
+          "name": "effectiveness_scores_snapshot_id_metric_snapshots_id_fk",
+          "tableFrom": "effectiveness_scores",
+          "columnsFrom": [
+            "snapshot_id"
+          ],
+          "tableTo": "metric_snapshots",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "effectiveness_scores_snapshot_formula_key": {
+          "name": "effectiveness_scores_snapshot_formula_key",
+          "columns": [
+            "snapshot_id",
+            "formula_version"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.metric_snapshots": {
+      "name": "metric_snapshots",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_id": {
+          "name": "content_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "moc": {
+          "name": "moc",
+          "type": "moc_do_luong",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "thoi_diem_keo": {
+          "name": "thoi_diem_keo",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "nguon": {
+          "name": "nguon",
+          "type": "nguon_so_lieu",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "thich": {
+          "name": "thich",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "binh_luan": {
+          "name": "binh_luan",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chia_se": {
+          "name": "chia_se",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "luu": {
+          "name": "luu",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "luot_xem": {
+          "name": "luot_xem",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tin_nhan_hoi": {
+          "name": "tin_nhan_hoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "raw_payload": {
+          "name": "raw_payload",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "trang_thai_snapshot",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phien_ban_trinh_thu_thap": {
+          "name": "phien_ban_trinh_thu_thap",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "loi": {
+          "name": "loi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "metric_snapshots_content_moc_idx": {
+          "name": "metric_snapshots_content_moc_idx",
+          "columns": [
+            {
+              "expression": "content_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "moc",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "metric_snapshots_workspace_thoi_diem_idx": {
+          "name": "metric_snapshots_workspace_thoi_diem_idx",
+          "columns": [
+            {
+              "expression": "workspace_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "thoi_diem_keo",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "metric_snapshots_status_idx": {
+          "name": "metric_snapshots_status_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        }
+      },
+      "foreignKeys": {
+        "metric_snapshots_workspace_id_workspaces_id_fk": {
+          "name": "metric_snapshots_workspace_id_workspaces_id_fk",
+          "tableFrom": "metric_snapshots",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "metric_snapshots_content_id_contents_id_fk": {
+          "name": "metric_snapshots_content_id_contents_id_fk",
+          "tableFrom": "metric_snapshots",
+          "columnsFrom": [
+            "content_id"
+          ],
+          "tableTo": "contents",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pillar_stats": {
+      "name": "pillar_stats",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pillar_id": {
+          "name": "pillar_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "be_mat": {
+          "name": "be_mat",
+          "type": "be_mat",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ky_bat_dau": {
+          "name": "ky_bat_dau",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ky_ket_thuc": {
+          "name": "ky_ket_thuc",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "so_bai_du_mau": {
+          "name": "so_bai_du_mau",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "diem_trung_binh": {
+          "name": "diem_trung_binh",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "formula_version": {
+          "name": "formula_version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ngay_tao": {
+          "name": "ngay_tao",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "pillar_stats_workspace_id_workspaces_id_fk": {
+          "name": "pillar_stats_workspace_id_workspaces_id_fk",
+          "tableFrom": "pillar_stats",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "tableTo": "workspaces",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        },
+        "pillar_stats_pillar_id_content_pillars_id_fk": {
+          "name": "pillar_stats_pillar_id_content_pillars_id_fk",
+          "tableFrom": "pillar_stats",
+          "columnsFrom": [
+            "pillar_id"
+          ],
+          "tableTo": "content_pillars",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "pillar_stats_ky_key": {
+          "name": "pillar_stats_ky_key",
+          "columns": [
+            "workspace_id",
+            "pillar_id",
+            "be_mat",
+            "ky_bat_dau"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.vai_tro_thanh_vien": {
+      "name": "vai_tro_thanh_vien",
+      "schema": "public",
+      "values": [
+        "chu_so_huu",
+        "thanh_vien",
+        "quan_tri_he_thong"
+      ]
+    },
+    "public.loai_chi_phi": {
+      "name": "loai_chi_phi",
+      "schema": "public",
+      "values": [
+        "goi-mo-hinh",
+        "sinh-anh",
+        "apify",
+        "luu-tru",
+        "khac"
+      ]
+    },
+    "public.loai_viec": {
+      "name": "loai_viec",
+      "schema": "public",
+      "values": [
+        "sinh-y-tuong",
+        "sinh-bai",
+        "sinh-kich-ban",
+        "cham-chat-luong",
+        "boc-tach-ho-so",
+        "sinh-anh",
+        "kiem-tra-lien-ket",
+        "keo-so-lieu-lo",
+        "quet-xu-huong",
+        "phan-loai-binh-luan",
+        "tinh-diem-hieu-qua",
+        "tong-hop-tuan"
+      ]
+    },
+    "public.nhiem_vu_mo_hinh": {
+      "name": "nhiem_vu_mo_hinh",
+      "schema": "public",
+      "values": [
+        "viet-bai",
+        "viet-kich-ban",
+        "de-xuat-y-tuong",
+        "cham-chat-luong",
+        "phan-loai-binh-luan",
+        "boc-tach-ho-so",
+        "cham-diem-lien-quan",
+        "sinh-anh"
+      ]
+    },
+    "public.trang_thai_job": {
+      "name": "trang_thai_job",
+      "schema": "public",
+      "values": [
+        "cho",
+        "dang_chay",
+        "xong",
+        "loi",
+        "huy"
+      ]
+    },
+    "public.be_mat": {
+      "name": "be_mat",
+      "schema": "public",
+      "values": [
+        "fanpage",
+        "ho_so_ca_nhan",
+        "tiktok",
+        "zalo"
+      ]
+    },
+    "public.dang_bai": {
+      "name": "dang_bai",
+      "schema": "public",
+      "values": [
+        "chu",
+        "anh_chu",
+        "kich_ban_quay"
+      ]
+    },
+    "public.loai_asset": {
+      "name": "loai_asset",
+      "schema": "public",
+      "values": [
+        "anh",
+        "video",
+        "tep"
+      ]
+    },
+    "public.ly_do_bo": {
+      "name": "ly_do_bo",
+      "schema": "public",
+      "values": [
+        "khong_dung_giong",
+        "sao_nhat",
+        "sai_chan_dung",
+        "trung_bai_da_dang",
+        "khong_hop_be_mat",
+        "thong_tin_sai"
+      ]
+    },
+    "public.nguon_y_tuong": {
+      "name": "nguon_y_tuong",
+      "schema": "public",
+      "values": [
+        "may-de-xuat",
+        "xu-huong",
+        "nguoi-tu-nhap"
+      ]
+    },
+    "public.trang_thai_noi_dung": {
+      "name": "trang_thai_noi_dung",
+      "schema": "public",
+      "values": [
+        "y_tuong",
+        "ban_nhap",
+        "da_cham",
+        "san_sang",
+        "da_dang",
+        "dang_theo_doi",
+        "da_chot_ket_qua",
+        "da_bo"
+      ]
+    },
+    "public.trang_thai_theo_doi": {
+      "name": "trang_thai_theo_doi",
+      "schema": "public",
+      "values": [
+        "chua_dang",
+        "dang_theo_doi",
+        "loi_lien_ket",
+        "da_chot"
+      ]
+    },
+    "public.moc_do_luong": {
+      "name": "moc_do_luong",
+      "schema": "public",
+      "values": [
+        "kiem_tra",
+        "t_24_gio",
+        "t_7_ngay",
+        "t_30_ngay"
+      ]
+    },
+    "public.nguon_so_lieu": {
+      "name": "nguon_so_lieu",
+      "schema": "public",
+      "values": [
+        "apify",
+        "manual"
+      ]
+    },
+    "public.nhom_y_dinh": {
+      "name": "nhom_y_dinh",
+      "schema": "public",
+      "values": [
+        "mua",
+        "quan_tam",
+        "xa_giao",
+        "rac"
+      ]
+    },
+    "public.trang_thai_snapshot": {
+      "name": "trang_thai_snapshot",
+      "schema": "public",
+      "values": [
+        "co_du_lieu",
+        "khong_do_duoc",
+        "loi",
+        "chua_toi_han"
+      ]
+    }
+  },
+  "schemas": {},
+  "views": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

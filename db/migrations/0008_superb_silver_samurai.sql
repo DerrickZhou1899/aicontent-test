@@ -1,0 +1,1 @@
+CREATE INDEX "trend_signals_chua_boc_idx" ON "trend_signals" USING btree ("workspace_id","thoi_diem") WHERE "trend_signals"."cong_thuc" is null;

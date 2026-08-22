@@ -1,0 +1,11 @@
+/* Rieng cot "Kenh" — cac lop bang con lai dung chung voi man "Bai da dang". */
+
+/* Bang nay gom NHIEU kenh nen ten kenh phai cat mot dong: ten Facebook dai
+   khong duoc phep day cac cot so ra khoi khung nhin. */
+.bang__c-kenh {
+  width: 150px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

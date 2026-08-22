@@ -1,0 +1,21 @@
+node_modules/
+.env
+.env.local
+# Ban build cua Next.js (ke ca .next/dev cua `next dev`) — sinh lai bang npm run build.
+.next/
+*.tsbuildinfo
+# next-env.d.ts tro toi file trong .next/types nen chi dung duoc sau khi build.
+next-env.d.ts
+# Bản sao lưu tạo tay trước khi sửa script/vhost — chỉ có ý nghĩa trên máy đó.
+*.bak-*
+*.log
+npm-debug.log*
+proxy_cache_dir/
+.thumbnail/
+.DS_Store
+.claude/settings.local.json
+# ClaudeKit tu sinh theo may/user (skill listing budget), khong dung chung.
+.claude/settings.json
+
+# Kho anh mac dinh cua ban test nam canh thu muc ma nguon.
+../aicontent-media/

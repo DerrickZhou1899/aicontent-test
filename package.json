@@ -1,0 +1,36 @@
+{
+  "name": "aicontent-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Content — bai test tuyen dung",
+  "scripts": {
+    "dev": "next dev -H 127.0.0.1 -p ${PORT:-6980}",
+    "build": "next build && rm -rf .next/standalone/.next/static .next/standalone/public && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
+    "start": "HOSTNAME=127.0.0.1 PORT=${PORT:-6980} node -r dotenv/config .next/standalone/server.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "test": "node --test tests/"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@auth/drizzle-adapter": "1.11.3",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.45.2",
+    "next": "^16.3.0",
+    "next-auth": "5.0.0-beta.32",
+    "pg": "^8.23.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.21.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "4.23.12",
+    "typescript": "^7.0.2"
+  }
+}

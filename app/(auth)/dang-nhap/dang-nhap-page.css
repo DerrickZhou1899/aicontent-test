@@ -1,0 +1,93 @@
+/* Trang dang nhap — dung token mau cam san co trong app/globals.css. */
+
+.dn-canvas {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(160deg, var(--canvas-from), var(--canvas-to));
+  font-family: var(--font-ui);
+  color: var(--ink);
+}
+
+.dn-the {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 36px 28px 30px;
+  text-align: center;
+}
+
+.dn-nhan {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.dn-phu {
+  margin: 0 0 26px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.dn-nut {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: linear-gradient(180deg, var(--btn-from), var(--btn-to));
+  color: var(--btn-ink);
+  font: 600 15px/1 var(--font-ui);
+  cursor: pointer;
+  box-shadow: var(--shadow-brand);
+  transition: transform 0.18s var(--ease), filter 0.18s var(--ease);
+}
+
+.dn-nut:hover {
+  filter: brightness(1.04);
+}
+
+.dn-nut:active {
+  transform: translateY(1px);
+}
+
+.dn-nut:focus-visible {
+  outline: 2px solid var(--brand-700);
+  outline-offset: 3px;
+}
+
+/* Logo Google phai giu nen trang du o giao dien toi — do la yeu cau nhan dien
+   thuong hieu cua Google, khong phai lua chon thiet ke. */
+.dn-logo {
+  flex: 0 0 auto;
+  background: #fff;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+.dn-loi {
+  margin: 0 0 20px;
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  background: var(--clay-bg);
+  color: var(--clay);
+  border: 1px solid currentColor;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.dn-chan {
+  margin: 22px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}

@@ -1,0 +1,4 @@
+# App noi bo, khong muon xuat hien tren cong cu tim kiem
+# (trang cung dat meta robots noindex).
+User-agent: *
+Disallow: /

@@ -1,0 +1,49 @@
+# PostgreSQL cho bài test — chạy trên máy bạn, dữ liệu vứt đi được.
+#
+#   docker compose -f docker/postgres/compose.yml up -d
+#
+# Lần `up` đầu tiên sẽ chạy `init-test/01-vai-tro-va-csdl.sql` để tạo hai vai trò
+# và database `aicontent_test`. Tệp đó CHỈ chạy lúc volume được tạo lần đầu —
+# sửa nó rồi chạy lại mà không thấy gì đổi thì xoá volume đi làm lại:
+#
+#   docker compose -f docker/postgres/compose.yml down -v
+#
+# Cổng bind `127.0.0.1` TƯỜNG MINH. Viết `35443:5432` không có phần host thì
+# Docker bind `0.0.0.0` và publish qua docker-proxy — luật iptables DOCKER-USER
+# không phủ, ufw cũng không quản cổng Docker publish, tức là cơ sở dữ liệu của
+# bạn hở thẳng ra internet. Đừng bỏ phần `127.0.0.1:`.
+
+name: aicontent-test
+
+services:
+  postgres:
+    # Image pgvector chứ không phải `postgres:16`: bản chính thức đã có sẵn
+    # pgcrypto + pg_trgm, và extension `vector` nằm sẵn đó cho việc về sau.
+    image: pgvector/pgvector:pg16
+    container_name: aicontent-test-postgres
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:35443:5432"
+    environment:
+      POSTGRES_USER: postgres
+      # Cơ sở dữ liệu dùng một lần trên máy bạn, không chứa dữ liệu thật của ai.
+      POSTGRES_PASSWORD: aicontent_test
+      POSTGRES_DB: postgres
+      # Locale vi_VN không có trong image; C.UTF-8 cho sắp xếp ổn định.
+      LANG: C.UTF-8
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-test:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    shm_size: 256mb
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+
+volumes:
+  pgdata:
