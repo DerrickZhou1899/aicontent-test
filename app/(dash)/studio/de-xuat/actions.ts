@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import { workspaceHienTai } from '@/lib/auth/current-workspace';
 import { nguoiDungHienTai } from '@/lib/auth/nguoi-dung-tu-phien';
 import { deXuatYTuong } from '@/lib/studio/de-xuat';
@@ -21,5 +23,11 @@ export async function guiDeXuat(
   // Cả hai khóa cô lập đều lấy từ phiên, không tin giá trị do trình duyệt gửi lên.
   const workspaceId = await workspaceHienTai();
   const nguoiDung    = await nguoiDungHienTai();
-  return deXuatYTuong({ workspaceId, beMat: beMat as BeMat, soLuong }, nguoiDung);
+  const ketQua       = await deXuatYTuong(
+    { workspaceId, beMat: beMat as BeMat, soLuong },
+    nguoiDung,
+  );
+
+  if (ketQua.ok) revalidatePath('/studio/de-xuat');
+  return ketQua;
 }

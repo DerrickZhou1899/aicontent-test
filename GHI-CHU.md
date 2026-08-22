@@ -21,7 +21,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Dịch vụ đề xuất ý tưởng từ dữ liệu thật đến bước lưu CSDL.
 - [x] Chống lưu trùng khi nhiều request nhận cùng một job hoàn tất.
 - [x] Giao diện gửi yêu cầu và hiển thị kết quả đề xuất.
-- [ ] Danh sách ý tưởng đã lưu và mở nguồn tham khảo.
+- [x] Danh sách ý tưởng đã lưu và mở nguồn tham khảo.
 - [ ] Sinh, chỉnh sửa và lưu bài đăng.
 - [ ] Sinh kịch bản quay theo từng phân cảnh.
 - [ ] Sinh hàng loạt và sinh ảnh.
@@ -60,6 +60,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `lib/studio/de-xuat-service.ts`: điều phối toàn bộ luồng đề xuất và lưu dữ liệu.
 - `lib/model-runner/loi-nhac-xu-huong.js`: ràng buộc học công thức kể nhưng không sao chép bài nguồn.
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
+- `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
 - `tests/`: kiểm tra hợp đồng, hành vi, cô lập workspace và rollback.
 
 ## Kết quả kiểm tra
@@ -70,10 +71,11 @@ Các kiểm tra đã chạy xanh trong môi trường hiện tại:
 npx tsc --noEmit
 node --test tests/studio-de-xuat.test.cjs tests/studio-de-xuat-slot.test.cjs tests/studio-de-xuat-service.test.cjs tests/studio-khong-chep-bai.test.cjs tests/model-runner-don-vi.test.js tests/jobs-claim-contract.test.cjs tests/y-tuong-co-nguon-contract.test.cjs
 node --test tests/studio-de-xuat-ui-contract.test.cjs
+node --test tests/studio-danh-sach-y-tuong-ui.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 46 test tính năng, 3 test hợp đồng giao diện và 37 test data-access guard đều pass; TypeScript thoát mã 0.
+Kết quả gần nhất: 46 test tính năng, 6 test hợp đồng giao diện và 37 test data-access guard đều pass; TypeScript thoát mã 0.
 
 ## Giới hạn môi trường
 
@@ -85,5 +87,4 @@ Kết quả gần nhất: 46 test tính năng, 3 test hợp đồng giao diện 
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Hiển thị danh sách ý tưởng đã lưu và mở lại nguồn tham khảo.
-4. Tiếp tục mốc sinh bài đăng rồi sinh kịch bản phân cảnh.
+3. Tiếp tục mốc sinh bài đăng rồi sinh kịch bản phân cảnh.

@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
 
+import { workspaceHienTai } from '@/lib/auth/current-workspace';
+import { createRepo } from '@/lib/data-access';
+
 import { Icon } from '../../../sprite-icon';
+import { DanhSachYTuong } from './danh-sach-y-tuong';
 import { ManHinhDeXuat } from './man-hinh-de-xuat';
 import '../../brand/brand.css';
 import '../studio.css';
 import './de-xuat.css';
+import './de-xuat-da-luu.css';
 import './de-xuat-ket-qua.css';
 
 export const metadata: Metadata = {
@@ -12,7 +17,11 @@ export const metadata: Metadata = {
   description : 'Sinh ý tưởng nội dung từ hồ sơ thương hiệu và dữ liệu kênh.',
 };
 
-export default function TrangDeXuat() {
+export default async function TrangDeXuat() {
+  const workspaceId = await workspaceHienTai();
+  const repo        = createRepo(workspaceId);
+  const danhSach    = await repo.yTuong.listChiTiet();
+
   return (
     <>
       <div className="page-head">
@@ -30,6 +39,7 @@ export default function TrangDeXuat() {
       </div>
 
       <ManHinhDeXuat />
+      <DanhSachYTuong danhSach={danhSach} />
     </>
   );
 }
