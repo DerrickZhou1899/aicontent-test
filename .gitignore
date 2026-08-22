@@ -17,5 +17,12 @@ proxy_cache_dir/
 # ClaudeKit tu sinh theo may/user (skill listing budget), khong dung chung.
 .claude/settings.json
 
+# Quy tac Codex chi dung tren may cua ung vien, khong nop cung bai test.
+/AGENTS.md
+
+# Tai lieu lam viec chi dung tren may, ban nop chi giu GHI-CHU.md.
+/docs/superpowers/
+/.superpowers/
+
 # Kho anh mac dinh cua ban test nam canh thu muc ma nguon.
 ../aicontent-media/

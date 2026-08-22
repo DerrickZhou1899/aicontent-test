@@ -1,9 +1,9 @@
 /**
- * Repo bang `trend_signals` — mot bai cua kenh ngoai da keo ve.
+ * Repo bảng `trend_signals` — một bài của kênh ngoài đã kéo về.
  *
- * Bang nay co tu Phase 3 nhung khong ai dung. Mo rong no thay vi tao bang moi
- * vi `ideas.trend_signal_id` da tro vao day: tao bang moi la de bang nay chet
- * vinh vien VA phai them khoa ngoai thu hai len `ideas`.
+ * Bảng này có từ Phase 3 nhưng không ai dùng. Mở rộng nó thay vì tạo bảng mới
+ * vì `ideas.trend_signal_id` đã trỏ vào đây: tạo bảng mới là để bảng này chết
+ * vĩnh viễn VÀ phải thêm khóa ngoại thứ hai lên `ideas`.
  */
 
 import { and, desc, eq, inArray, isNull, sql } from 'drizzle-orm';
@@ -14,23 +14,23 @@ import type { KetNoiDrizzle, NguoiDungTuPhien } from './guard';
 
 export type TinHieuXuHuong = typeof trendSignals.$inferSelect;
 
-/** Mot bai kenh ngoai chuan bi ghi. `null` o cot so lieu = KHONG DO DUOC, khac 0. */
+/** Một bài kênh ngoài chuẩn bị ghi. `null` ở cột số liệu = KHÔNG ĐO ĐƯỢC, khác 0. */
 export type BaiGhiVao = {
-  kenhTheoDoiId: string;
-  nguon: string;
-  maBai: string;
-  lienKet: string | null;
-  noiDung: string;
-  thoiDiem: Date | null;
-  dangBai: TinHieuXuHuong['dangBai'];
-  soThich: number | null;
-  soBinhLuan: number | null;
-  soChiaSe: number | null;
-  thoiLuongVideoMs: number | null;
-  tho: unknown;
+  kenhTheoDoiId    : string;
+  nguon            : string;
+  maBai            : string;
+  lienKet          : string | null;
+  noiDung          : string;
+  thoiDiem         : Date | null;
+  dangBai          : TinHieuXuHuong['dangBai'];
+  soThich          : number | null;
+  soBinhLuan       : number | null;
+  soChiaSe         : number | null;
+  thoiLuongVideoMs : number | null;
+  tho              : unknown;
 };
 
-/** `tieu_de` la NOT NULL tu Phase 3 — dung dong dau cua noi dung lam tieu de. */
+/** `tieu_de` là NOT NULL từ Phase 3 — dùng dòng đầu của nội dung làm tiêu đề. */
 function dungTieuDe(noiDung: string): string {
   const dongDau = noiDung.split('\n').find((d) => d.trim() !== '');
   if (!dongDau) return '(khong co chu)';
@@ -41,13 +41,13 @@ function dungTieuDe(noiDung: string): string {
 export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
   return {
     /**
-     * Ghi nhieu bai, bo qua bai da co.
+     * Ghi nhiều bài, bỏ qua bài đã có.
      *
-     * Chong trung theo `(kenh_theo_doi_id, ma_bai)` — khoa GHEP chu khong phai
-     * `ma_bai` don, vi hai nen tang khac nhau co the sinh ma trung nhau.
+     * Chống trùng theo `(kenh_theo_doi_id, ma_bai)` — khóa GHÉP chứ không phải
+     * `ma_bai` đơn, vì hai nền tảng khác nhau có thể sinh mã trùng nhau.
      *
-     * Tra ve so dong THUC SU them moi, de nguoi goi bao "keo ve N bai moi" that
-     * chu khong phai dem so bai actor tra ve.
+     * Trả về số dòng THỰC SỰ thêm mới, để người gọi báo "kéo về N bài mới" thật
+     * chứ không phải đếm số bài actor trả về.
      */
     async luuNhieu(bai: BaiGhiVao[]): Promise<number> {
       if (bai.length === 0) return 0;
@@ -56,19 +56,19 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
         .values(
           bai.map((b) => ({
             workspaceId,
-            kenhTheoDoiId: b.kenhTheoDoiId,
-            nguon: b.nguon,
-            maBai: b.maBai,
-            tieuDe: dungTieuDe(b.noiDung),
-            lienKet: b.lienKet,
-            noiDung: b.noiDung,
-            thoiDiem: b.thoiDiem,
-            dangBai: b.dangBai,
-            soThich: b.soThich,
-            soBinhLuan: b.soBinhLuan,
-            soChiaSe: b.soChiaSe,
-            thoiLuongVideoMs: b.thoiLuongVideoMs,
-            tho: b.tho as never,
+            kenhTheoDoiId    : b.kenhTheoDoiId,
+            nguon            : b.nguon,
+            maBai            : b.maBai,
+            tieuDe           : dungTieuDe(b.noiDung),
+            lienKet          : b.lienKet,
+            noiDung          : b.noiDung,
+            thoiDiem         : b.thoiDiem,
+            dangBai          : b.dangBai,
+            soThich          : b.soThich,
+            soBinhLuan       : b.soBinhLuan,
+            soChiaSe         : b.soChiaSe,
+            thoiLuongVideoMs : b.thoiLuongVideoMs,
+            tho              : b.tho as never,
           })),
         )
         .onConflictDoNothing({ target: [trendSignals.kenhTheoDoiId, trendSignals.maBai] })
@@ -77,10 +77,10 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
     },
 
     /**
-     * Tin hieu cua cac kenh MOT NGUOI CU THE theo doi.
+     * Tín hiệu của các kênh MỘT NGƯỜI CỤ THỂ theo dõi.
      *
-     * Day la cho duy nhat truc co lap thu hai co hieu luc khi sinh y tuong. Bo
-     * `innerJoin` voi `theo_doi_cua_toi` la B doc duoc tin hieu cua kenh A theo.
+     * Đây là chỗ duy nhất trục cô lập thứ hai có hiệu lực khi sinh ý tưởng. Bỏ
+     * `innerJoin` với `theo_doi_cua_toi` là B đọc được tín hiệu của kênh A theo.
      */
     async theoNguoiDung(nguoi: NguoiDungTuPhien, gioiHan: number) {
       const dong = await db
@@ -95,41 +95,41 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
           ),
         )
         .where(and(eq(trendSignals.workspaceId, workspaceId), eq(trendSignals.daDung, false)))
-        .orderBy(desc(trendSignals.thoiDiem))
+        .orderBy(desc(trendSignals.thoiDiem), desc(trendSignals.id))
         .limit(gioiHan);
       return dong.map((d) => ({ ...d.t, tenKenh: d.tenKenh, urlKenh: d.urlKenh }));
     },
 
     /**
-     * MOI bai cua cac kenh mot nguoi cu the theo doi — cho man tra cuu.
+     * MỌI bài của các kênh một người cụ thể theo dõi — cho màn tra cứu.
      *
-     * Khac `theoNguoiDung()` ngay tren o mot diem: KHONG loc `da_dung`. Ham kia
-     * cap bai cho bo sinh y tuong nen phai bo bai da dung; man tra cuu thi
-     * nguoc lai — bai da sinh thanh y tuong VAN phai tim lai duoc. Vi the la
-     * ham rieng chu khong phai mot co tren ham cu: mot noi doc quyet dinh hanh
-     * vi cua noi kia la cho bug sau nay.
+     * Khác `theoNguoiDung()` ngay trên ở một điểm: KHÔNG lọc `da_dung`. Hàm kia
+     * cấp bài cho bộ sinh ý tưởng nên phải bỏ bài đã dùng; màn tra cứu thì
+     * ngược lại — bài đã sinh thành ý tưởng VẪN phải tìm lại được. Vì thế là
+     * hàm riêng chứ không phải một cờ trên hàm cũ: một nơi đọc quyết định hành
+     * vi của nơi kia là chỗ cho bug sau này.
      *
-     * `innerJoin` voi `theo_doi_cua_toi` la truc co lap THU HAI. Bo no la B
-     * doc duoc bai cua kenh A theo doi.
+     * `innerJoin` với `theo_doi_cua_toi` là trục cô lập THỨ HAI. Bỏ nó là B
+     * đọc được bài của kênh A theo dõi.
      */
     async theoNguoiDungDeTraCuu(nguoi: NguoiDungTuPhien, gioiHan: number) {
       return db
         .select({
-          // Liet ke DUNG cot man hinh dung. `select` ca dong se keo theo `tho` —
-          // ban thô nguyên văn cua Apify, moi muc co the vai chuc KB — cho 200
-          // dong, moi lan tai trang, roi vut di. Be ket noi chi co 10 cho.
-          id: trendSignals.id,
-          maBai: trendSignals.maBai,
-          thoiDiem: trendSignals.thoiDiem,
-          noiDung: trendSignals.noiDung,
-          dangBai: trendSignals.dangBai,
-          lienKet: trendSignals.lienKet,
-          soThich: trendSignals.soThich,
-          soBinhLuan: trendSignals.soBinhLuan,
-          soChiaSe: trendSignals.soChiaSe,
-          thoiLuongVideoMs: trendSignals.thoiLuongVideoMs,
-          tenKenh: kenhTheoDoi.tenHienThi,
-          urlKenh: kenhTheoDoi.urlKenh,
+          // Liệt kê ĐÚNG cột màn hình dùng. `select` cả dòng sẽ kéo theo `tho` —
+          // bản thô nguyên văn của Apify, mỗi mục có thể vài chục KB — cho 200
+          // dòng, mỗi lần tải trang, rồi vứt đi. Bể kết nối chỉ có 10 chỗ.
+          id               : trendSignals.id,
+          maBai            : trendSignals.maBai,
+          thoiDiem         : trendSignals.thoiDiem,
+          noiDung          : trendSignals.noiDung,
+          dangBai          : trendSignals.dangBai,
+          lienKet          : trendSignals.lienKet,
+          soThich          : trendSignals.soThich,
+          soBinhLuan       : trendSignals.soBinhLuan,
+          soChiaSe         : trendSignals.soChiaSe,
+          thoiLuongVideoMs : trendSignals.thoiLuongVideoMs,
+          tenKenh          : kenhTheoDoi.tenHienThi,
+          urlKenh          : kenhTheoDoi.urlKenh,
         })
         .from(trendSignals)
         .innerJoin(kenhTheoDoi, eq(kenhTheoDoi.id, trendSignals.kenhTheoDoiId))
@@ -138,37 +138,37 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
           and(
             eq(theoDoiCuaToi.kenhTheoDoiId, kenhTheoDoi.id),
             eq(theoDoiCuaToi.userId, nguoi.userId),
-            // Thua ve mat dung dan (chuoi join da ep cung workspace) nhung chi
-            // muc duy nhat cua bang nay la (workspace_id, user_id) — thieu cot
-            // dan dau thi khong dung duoc chi muc.
+            // Thừa về mặt đúng đắn (chuỗi join đã ép cùng workspace) nhưng chỉ
+            // mục duy nhất của bảng này là (workspace_id, user_id) — thiếu cột
+            // dẫn đầu thì không dùng được chỉ mục.
             eq(theoDoiCuaToi.workspaceId, workspaceId),
           ),
         )
         .where(eq(trendSignals.workspaceId, workspaceId))
-        // `nulls last` chu khong phai `desc` tran: Postgres xep NULL LEN DAU khi
-        // giam dan, ma `thoi_diem` co that duong sinh null (`ngayAn()` tra null
-        // khi khong doc duoc ngay). Mot me bai khong co ngay se chiem tron
-        // `gioiHan` va day bai moi nhat ra khoi bang.
+        // `nulls last` chứ không phải `desc` trần: Postgres xếp NULL LÊN ĐẦU khi
+        // giảm dần, mà `thoi_diem` có thật đường sinh null (`ngayAn()` trả null
+        // khi không đọc được ngày). Một mẻ bài không có ngày sẽ chiếm trọn
+        // `gioiHan` và đẩy bài mới nhất ra khỏi bảng.
         .orderBy(sql`${trendSignals.thoiDiem} desc nulls last`)
         .limit(gioiHan);
     },
 
     /**
-     * CHIEM cac bai chua boc cong thuc, roi THA KHOA NGAY.
+     * CHIẾM các bài chưa bóc công thức, rồi THẢ KHÓA NGAY.
      *
-     * CO HAI DUONG cung goi boc: nut bam o man de xuat va viec chay theo lich.
-     * Mot cau `where cong_thuc is null` tran thi ca hai cung chon dung mot bai
-     * truoc khi ben nao ghi xong — tra tien mo hinh hai lan cho mot bai.
+     * CÓ HAI ĐƯỜNG cùng gọi bóc: nút bấm ở màn đề xuất và việc chạy theo lịch.
+     * Một câu `where cong_thuc is null` trần thì cả hai cùng chọn đúng một bài
+     * trước khi bên nào ghi xong — trả tiền mô hình hai lần cho một bài.
      *
-     * VI SAO DANH DAU ROI THA CHU KHONG GIU GIAO DICH SUOT LUOT GOI MO HINH:
-     * ban dau ham nay tra ve dong da khoa va de nguoi goi giu giao dich trong
-     * suot luot goi mo hinh (tran 360 giay). Be ket noi chi co 10 cho — vai lan
-     * bam cung luc la can be, keo sap moi truy van khac cua ca ung dung. Chiem
-     * xong tha ngay thi khoa chi giu vai mili giay.
+     * VÌ SAO ĐÁNH DẤU RỒI THẢ CHỨ KHÔNG GIỮ GIAO DỊCH SUỐT LƯỢT GỌI MÔ HÌNH:
+     * ban đầu hàm này trả về dòng đã khóa và để người gọi giữ giao dịch trong
+     * suốt lượt gọi mô hình (trần 360 giây). Bể kết nối chỉ có 10 chỗ — vài lần
+     * bấm cùng lúc là cạn bể, kéo sập mọi truy vấn khác của cả ứng dụng. Chiếm
+     * xong thả ngay thì khóa chỉ giữ vài mili giây.
      *
-     * Danh dau bang `cong_thuc = {}` (doi tuong rong): khac `NULL` nen lan chon
-     * sau bo qua. Goi mo hinh hong thi nguoi goi PHAI goi `traLaiChuaBoc()`,
-     * neu khong bai do mang co `{}` vinh vien va khong bao gio duoc boc nua.
+     * Đánh dấu bằng `cong_thuc = {}` (đối tượng rỗng): khác `NULL` nên lần chọn
+     * sau bỏ qua. Gọi mô hình hỏng thì người gọi PHẢI gọi `traLaiChuaBoc()`,
+     * nếu không bài đó mang cờ `{}` vĩnh viễn và không bao giờ được bóc nữa.
      */
     async chiemBaiChuaBoc(gioiHan: number) {
       return db.transaction(async (tx) => {
@@ -204,7 +204,7 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
       });
     },
 
-    /** Tra bai ve trang thai chua boc khi luot goi mo hinh hong. */
+    /** Trả bài về trạng thái chưa bóc khi lượt gọi mô hình hỏng. */
     async traLaiChuaBoc(ids: string[]) {
       if (ids.length === 0) return;
       await db
@@ -221,12 +221,12 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
     },
 
     /**
-     * Tin hieu nay co thuoc workspace hien tai khong.
+     * Tín hiệu này có thuộc workspace hiện tại không.
      *
-     * Server action la mot endpoint HTTP binh thuong: `trendSignalId` di vong
-     * qua trinh duyet roi quay lai, nen KHONG duoc tin. Moi truong khac cua y
-     * tuong (tru cot, chan dung) deu duoc doi chieu lai theo TEN trong danh sach
-     * cua chinh workspace; cot nay la ID nen phai kiem rieng.
+     * Server action là một endpoint HTTP bình thường: `trendSignalId` đi vòng
+     * qua trình duyệt rồi quay lại, nên KHÔNG được tin. Mọi trường khác của ý
+     * tưởng (trụ cột, chân dung) đều được đối chiếu lại theo TÊN trong danh sách
+     * của chính workspace; cột này là ID nên phải kiểm riêng.
      */
     async coThuocWorkspace(id: string): Promise<boolean> {
       const [dong] = await db
@@ -237,7 +237,7 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
       return dong !== undefined;
     },
 
-    /** Cot `diem_lien_quan` co san tu Phase 3, gio moi co nguoi ghi vao. */
+    /** Cột `diem_lien_quan` có sẵn từ Phase 3, giờ mới có người ghi vào. */
     async ghiDiemLienQuan(id: string, diem: number) {
       await db
         .update(trendSignals)
@@ -245,7 +245,7 @@ export function tinHieuXuHuongRepo(db: KetNoiDrizzle, workspaceId: string) {
         .where(and(eq(trendSignals.workspaceId, workspaceId), eq(trendSignals.id, id)));
     },
 
-    /** Danh dau tin hieu da duoc dung sinh y, de lan bam sau uu tien bai chua khai thac. */
+    /** Đánh dấu tín hiệu đã được dùng sinh ý, để lần bấm sau ưu tiên bài chưa khai thác. */
     async danhDauDaDung(ids: string[]) {
       if (ids.length === 0) return;
       await db

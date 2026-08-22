@@ -1,13 +1,13 @@
 /**
- * Khuon CRUD cho cac bang ho so thuong hieu.
+ * Khuôn CRUD cho các bảng hồ sơ thương hiệu.
  *
- * Bon bang `products` / `personas` / `insights` / `content_pillars` khac nhau
- * dung o danh sach cot, con cach doc ghi thi giong het. Viet tay bon lan la bon
- * co hoi de mot lan quen `eq(bang.workspaceId, workspaceId)` — dung lo hong ma
- * ca tang nay sinh ra de chan.
+ * Bốn bảng `products` / `personas` / `insights` / `content_pillars` khác nhau
+ * đúng ở danh sách cột, còn cách đọc ghi thì giống hết. Viết tay bốn lần là bốn
+ * cơ hội để một lần quên `eq(bang.workspaceId, workspaceId)` — đúng lỗ hổng mà
+ * cả tầng này sinh ra để chặn.
  *
- * Moi ham o day deu neo pham vi bang dieu kien DAU TIEN, khong phu thuoc tham so
- * nguoi goi truyen vao.
+ * Mỗi hàm ở đây đều neo phạm vi bằng điều kiện ĐẦU TIÊN, không phụ thuộc tham số
+ * người gọi truyền vào.
  */
 
 import { and, desc, eq, type SQL } from 'drizzle-orm';
@@ -15,20 +15,20 @@ import { and, desc, eq, type SQL } from 'drizzle-orm';
 import type { KetNoiDrizzle } from './guard';
 
 /**
- * Khuon doi bang phai co du ba manh ghep chung cua `db/schema/auth`: `id`,
- * `workspaceId`, `ngayTao`. Ca bon bang ho so deu co.
+ * Khuôn đòi bảng phải có đủ ba mảnh ghép chung của `db/schema/auth`: `id`,
+ * `workspaceId`, `ngayTao`. Cả bốn bảng hồ sơ đều có.
  *
  *
- * Dung `any` o day la co y va bi khoanh vung trong DUY NHAT file nay: Drizzle
- * suy kieu tung bang qua generic rat sau, mo ta lai cho khuon dung chung thi
- * phai chep gan het he kieu cua no. Nhung ham xuat ra ben duoi van giu kieu
- * that cua tung bang nho `typeof bang.$inferSelect` o cac file goi.
+ * Dùng `any` ở đây là có ý và bị khoanh vùng trong DUY NHẤT file này: Drizzle
+ * suy kiểu từng bảng qua generic rất sâu, mô tả lại cho khuôn dùng chung thì
+ * phải chép gần hết hệ kiểu của nó. Những hàm xuất ra bên dưới vẫn giữ kiểu
+ * thật của từng bảng nhờ `typeof bang.$inferSelect` ở các file gọi.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function crudTheoWorkspace<Bang extends Record<string, any>>(
-  db: KetNoiDrizzle,
-  workspaceId: string,
-  bang: Bang,
+  db          : KetNoiDrizzle,
+  workspaceId : string,
+  bang        : Bang,
 ) {
   const trongPhamVi = (them?: SQL) =>
     them ? and(eq(bang.workspaceId, workspaceId), them) : eq(bang.workspaceId, workspaceId);
@@ -39,7 +39,7 @@ export function crudTheoWorkspace<Bang extends Record<string, any>>(
         .select()
         .from(bang)
         .where(trongPhamVi())
-        .orderBy(desc(bang.ngayTao))
+        .orderBy(desc(bang.ngayTao), desc(bang.id))
         .limit(gioiHan);
     },
 
@@ -53,8 +53,8 @@ export function crudTheoWorkspace<Bang extends Record<string, any>>(
     },
 
     async tao(gia_tri: Record<string, unknown>) {
-      // Ghi de `workspaceId` SAU khi trai gia tri nguoi goi: nguoi goi truyen
-      // workspace khac vao cung khong ghi sang khong gian do duoc.
+      // Ghi đè `workspaceId` SAU khi trải giá trị người gọi: người gọi truyền
+      // workspace khác vào cũng không ghi sang không gian đó được.
       const [dong] = await (db as any)
         .insert(bang)
         .values({ ...gia_tri, workspaceId })
