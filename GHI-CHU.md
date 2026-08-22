@@ -26,6 +26,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Dịch vụ sinh bản nháp từ một ý tưởng trong workspace.
 - [x] Giao diện chọn ý tưởng, sinh và chỉnh sửa bản nháp.
 - [x] Sinh, chỉnh sửa và lưu bài đăng.
+- [x] Lời nhắc và chuẩn hóa kết quả kịch bản phân cảnh.
 - [ ] Sinh kịch bản quay theo từng phân cảnh.
 - [ ] Sinh hàng loạt và sinh ảnh.
 
@@ -63,8 +64,10 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `lib/studio/de-xuat-service.ts`: điều phối toàn bộ luồng đề xuất và lưu dữ liệu.
 - `lib/studio/sinh-bai.ts`: dựng payload allowlist, gọi mô hình và dọn bản nháp bài đăng.
 - `lib/studio/luu-bai.ts`: lưu bản đã duyệt và đánh dấu ý tưởng đã dùng trong cùng giao dịch.
+- `lib/studio/sinh-kich-ban.ts`: dọn kết quả mô hình về danh sách phân cảnh quay được.
 - `lib/model-runner/loi-nhac-xu-huong.js`: ràng buộc học công thức kể nhưng không sao chép bài nguồn.
 - `lib/model-runner/loi-nhac-sinh-bai.js`: ràng buộc bài hoàn chỉnh bám dữ liệu thật và không lặp mạch.
+- `lib/model-runner/loi-nhac-sinh-kich-ban.js`: ràng buộc thời lượng, hình ảnh và lời thoại từng cảnh.
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
 - `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
 - `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu và sửa trước khi lưu.
@@ -83,10 +86,11 @@ node --test tests/loi-nhac-sinh-bai.test.cjs
 node --test tests/studio-sinh-bai-service.test.cjs
 node --test tests/studio-luu-bai-service.test.cjs
 node --test tests/studio-bien-soan-ui.test.cjs
+node --test tests/loi-nhac-kich-ban.test.cjs tests/studio-sinh-kich-ban.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 69 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 75 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
@@ -100,4 +104,4 @@ Kết quả gần nhất: 69 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Tiếp tục mốc sinh kịch bản phân cảnh.
+3. Dựng service đọc ý tưởng và gọi nhiệm vụ `viet-kich-ban` qua hàng đợi.
