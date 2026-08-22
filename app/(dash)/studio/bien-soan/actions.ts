@@ -7,14 +7,23 @@ import {
   sinhBaiTuYTuong,
   type BanNhapBai,
 } from '@/lib/studio/sinh-bai';
+import {
+  sinhKichBanTuYTuong,
+  type BanNhapKichBan,
+} from '@/lib/studio/sinh-kich-ban';
 import type { KetQuaStudio } from '@/lib/studio/kieu';
 
 type BanNhapTheoYTuong = {
   ideaId  : string;
   banNhap : BanNhapBai;
 };
+type KichBanTheoYTuong = {
+  ideaId  : string;
+  kichBan : BanNhapKichBan;
+};
 
 export type TrangThaiBienSoan = KetQuaStudio<BanNhapTheoYTuong> | null;
+export type TrangThaiKichBan  = KetQuaStudio<KichBanTheoYTuong> | null;
 
 export async function guiSinhBai(
   _trangThaiCu : TrangThaiBienSoan,
@@ -31,6 +40,26 @@ export async function guiSinhBai(
   });
   return ketQua.ok
     ? { ok: true, duLieu: { ideaId: ideaId.trim(), banNhap: ketQua.duLieu }, canhBao: ketQua.canhBao }
+    : ketQua;
+}
+
+export async function guiSinhKichBan(
+  _trangThaiCu : TrangThaiKichBan,
+  form         : FormData,
+): Promise<TrangThaiKichBan> {
+  const ideaId      = form.get('ideaId');
+  const thoiLuong   = form.get('thoiLuongMucTieuGiay');
+  if (typeof ideaId !== 'string' || ideaId.trim() === '') {
+    return { ok: false, loi: 'Hãy chọn một ý tưởng để sinh kịch bản.', canhBao: [] };
+  }
+
+  const ketQua = await sinhKichBanTuYTuong({
+    workspaceId              : await workspaceHienTai(),
+    ideaId                   : ideaId.trim(),
+    thoiLuongMucTieuGiay     : typeof thoiLuong === 'string' ? Number(thoiLuong) : undefined,
+  });
+  return ketQua.ok
+    ? { ok: true, duLieu: { ideaId: ideaId.trim(), kichBan: ketQua.duLieu }, canhBao: ketQua.canhBao }
     : ketQua;
 }
 

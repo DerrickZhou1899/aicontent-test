@@ -28,6 +28,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Sinh, chỉnh sửa và lưu bài đăng.
 - [x] Lời nhắc và chuẩn hóa kết quả kịch bản phân cảnh.
 - [x] Dịch vụ sinh kịch bản từ một ý tưởng trong workspace.
+- [x] Action máy chủ sinh kịch bản lấy workspace từ phiên đăng nhập.
 - [ ] Sinh kịch bản quay theo từng phân cảnh.
 - [ ] Sinh hàng loạt và sinh ảnh.
 
@@ -71,7 +72,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `lib/model-runner/loi-nhac-sinh-kich-ban.js`: ràng buộc thời lượng, hình ảnh và lời thoại từng cảnh.
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
 - `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
-- `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu và sửa trước khi lưu.
+- `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu, sửa bài và gọi sinh kịch bản.
 - `tests/`: kiểm tra hợp đồng, hành vi, cô lập workspace và rollback.
 
 ## Kết quả kiểm tra
@@ -92,7 +93,7 @@ node --test tests/studio-sinh-kich-ban-service.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 80 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 81 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
@@ -106,4 +107,4 @@ Kết quả gần nhất: 80 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Nối service kịch bản vào màn hình biên soạn để người dùng xem từng phân cảnh.
+3. Hiển thị kết quả kịch bản theo từng phân cảnh trên màn hình biên soạn.

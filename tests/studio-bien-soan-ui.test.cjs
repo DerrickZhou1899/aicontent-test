@@ -26,6 +26,18 @@ test('server action chỉ nhận ideaId và gọi service sinh bài', () => {
   assert.doesNotMatch(maNguon, /form\.get\(['"]workspaceId['"]\)/);
 });
 
+test('server action sinh kịch bản lấy workspace từ phiên đăng nhập', () => {
+  const maNguon = doc('actions.ts');
+
+  assert.match(maNguon, /export async function guiSinhKichBan/);
+  assert.match(maNguon, /sinhKichBanTuYTuong\(/);
+  assert.match(maNguon, /form\.get\(['"]ideaId['"]\)/);
+  assert.match(maNguon, /form\.get\(['"]thoiLuongMucTieuGiay['"]\)/);
+  assert.match(maNguon, /workspaceId\s*:\s*await workspaceHienTai\(\)/);
+  assert.match(maNguon, /duLieu\s*:\s*\{\s*ideaId:\s*ideaId\.trim\(\),\s*kichBan:\s*ketQua\.duLieu\s*\}/);
+  assert.doesNotMatch(maNguon, /form\.get\(['"]workspaceId['"]\)/);
+});
+
 test('server action lưu lấy người tạo và workspace từ phiên đăng nhập', () => {
   const maNguon = doc('actions.ts');
 
