@@ -32,6 +32,8 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Sinh và hiển thị kịch bản quay theo từng phân cảnh.
 - [x] Xếp tối đa 10 job sinh bài một lượt, không chờ trong request.
 - [x] Đọc và chuẩn hóa trạng thái cả lô bằng một truy vấn theo workspace.
+- [x] Action xếp lô và đọc tiến độ luôn lấy workspace từ phiên đăng nhập.
+- [x] Trang chọn tối đa 10 ý tưởng chưa dùng và hiển thị các job vừa xếp.
 - [ ] Sinh hàng loạt và sinh ảnh.
 
 ## Luồng đề xuất ý tưởng
@@ -79,6 +81,9 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
 - `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu, sửa bài và gọi sinh kịch bản.
 - `app/(dash)/studio/bien-soan/xem-kich-ban.tsx`: chọn thời lượng và hiển thị khung hình, lời thoại từng cảnh.
+- `app/(dash)/studio/hang-loat/actions.ts`: nối service xếp lô và đọc trạng thái với workspace trong phiên.
+- `app/(dash)/studio/hang-loat/page.tsx`: đọc ý tưởng chưa dùng của workspace để chuẩn bị lô.
+- `app/(dash)/studio/hang-loat/man-hinh-hang-loat.tsx`: giới hạn lựa chọn và hiển thị job vừa xếp.
 - `tests/`: kiểm tra hợp đồng, hành vi, cô lập workspace và rollback.
 
 ## Kết quả kiểm tra
@@ -94,6 +99,8 @@ node --test tests/loi-nhac-sinh-bai.test.cjs
 node --test tests/studio-sinh-bai-service.test.cjs
 node --test tests/studio-sinh-hang-loat-service.test.cjs
 node --test tests/studio-trang-thai-hang-loat-service.test.cjs
+node --test tests/studio-hang-loat-actions.test.cjs
+node --test tests/studio-hang-loat-ui.test.cjs
 node --test tests/studio-luu-bai-service.test.cjs
 node --test tests/studio-bien-soan-ui.test.cjs
 node --test tests/loi-nhac-kich-ban.test.cjs tests/studio-sinh-kich-ban.test.cjs
@@ -101,7 +108,7 @@ node --test tests/studio-sinh-kich-ban-service.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 92 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 96 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
@@ -115,4 +122,4 @@ Kết quả gần nhất: 92 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Nối service xếp job và đọc trạng thái vào action của `/studio/hang-loat`.
+3. Tự động hỏi tiến độ và hiển thị bài hoàn tất trên màn hình sinh hàng loạt.
