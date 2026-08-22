@@ -63,7 +63,7 @@ export function donKetQuaSinhBai(tho: unknown): BanNhapBai | null {
   return tieuDe && noiDung ? { tieuDe, noiDung, hashtag } : null;
 }
 
-function dungDuLieuVao(
+export function dungDuLieuVaoSinhBai(
   yTuong   : YTuongNguon,
   hoSo     : Dong,
   truCot   : Dong | null,
@@ -129,7 +129,7 @@ export function taoDichVuSinhBai(phuThuocCoDinh?: PhuThuocSinhBai) {
     try {
       ketQuaMay = await phuThuoc.chayNhiemVu({
         nhiemVu          : 'viet-bai',
-        duLieuVao        : dungDuLieuVao(yTuong, hoSo, truCot, chanDung, sanPham, insight),
+        duLieuVao        : dungDuLieuVaoSinhBai(yTuong, hoSo, truCot, chanDung, sanPham, insight),
         moHinh           : 'auto',
         khongGianLamViec : thamSo.workspaceId,
       });

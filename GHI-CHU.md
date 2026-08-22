@@ -30,6 +30,8 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Dịch vụ sinh kịch bản từ một ý tưởng trong workspace.
 - [x] Action máy chủ sinh kịch bản lấy workspace từ phiên đăng nhập.
 - [x] Sinh và hiển thị kịch bản quay theo từng phân cảnh.
+- [x] Xếp tối đa 10 job sinh bài một lượt, không chờ trong request.
+- [x] Đọc và chuẩn hóa trạng thái cả lô bằng một truy vấn theo workspace.
 - [ ] Sinh hàng loạt và sinh ảnh.
 
 ## Luồng đề xuất ý tưởng
@@ -52,6 +54,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - Trụ cột hoặc chân dung không khớp dữ liệu thật được đặt thành `null`, không lưu tên do mô hình tự đặt.
 - Nguồn và cờ khám phá thuộc quyền sở hữu của mã, không lấy từ kết quả mô hình.
 - Khóa chống trùng dùng JSON chuẩn hóa để thứ tự key không tạo ra job khác nhau.
+- Lô sinh bài thêm `ideaId` vào khóa chống trùng, không thêm ID vào payload gửi mô hình.
 - Claim và insert cùng giao dịch để lỗi lưu có thể rollback và thử lại an toàn.
 - Các truy vấn danh sách có `id DESC` làm tiêu chí phụ để thứ tự luôn xác định.
 
@@ -65,6 +68,8 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `lib/studio/de-xuat-thuan.ts`: chuẩn hóa, tạo slot, phân bổ và chống trùng.
 - `lib/studio/de-xuat-service.ts`: điều phối toàn bộ luồng đề xuất và lưu dữ liệu.
 - `lib/studio/sinh-bai.ts`: dựng payload allowlist, gọi mô hình và dọn bản nháp bài đăng.
+- `lib/studio/sinh-hang-loat.ts`: kiểm tra lô ý tưởng và xếp từng job sinh bài độc lập.
+- `lib/studio/trang-thai-hang-loat.ts`: đọc trạng thái job theo lô và dọn các bài đã hoàn tất.
 - `lib/studio/luu-bai.ts`: lưu bản đã duyệt và đánh dấu ý tưởng đã dùng trong cùng giao dịch.
 - `lib/studio/sinh-kich-ban.ts`: dựng payload allowlist, gọi mô hình và dọn danh sách phân cảnh.
 - `lib/model-runner/loi-nhac-xu-huong.js`: ràng buộc học công thức kể nhưng không sao chép bài nguồn.
@@ -87,6 +92,8 @@ node --test tests/studio-de-xuat-ui-contract.test.cjs
 node --test tests/studio-danh-sach-y-tuong-ui.test.cjs
 node --test tests/loi-nhac-sinh-bai.test.cjs
 node --test tests/studio-sinh-bai-service.test.cjs
+node --test tests/studio-sinh-hang-loat-service.test.cjs
+node --test tests/studio-trang-thai-hang-loat-service.test.cjs
 node --test tests/studio-luu-bai-service.test.cjs
 node --test tests/studio-bien-soan-ui.test.cjs
 node --test tests/loi-nhac-kich-ban.test.cjs tests/studio-sinh-kich-ban.test.cjs
@@ -94,7 +101,7 @@ node --test tests/studio-sinh-kich-ban-service.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 82 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 92 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
@@ -108,4 +115,4 @@ Kết quả gần nhất: 82 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Thiết kế mốc sinh hàng loạt theo mục tiêu 10 bài mỗi ngày.
+3. Nối service xếp job và đọc trạng thái vào action của `/studio/hang-loat`.
