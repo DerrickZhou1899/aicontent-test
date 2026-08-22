@@ -68,3 +68,25 @@ test('bản nháp gửi đúng nội dung đang sửa và báo kết quả lưu'
   assert.match(maNguon, /ketQuaLuu\?\.ok \? 'Bản nháp đã lưu'/);
   assert.match(maNguon, /\|\| ketQuaLuu\?\.ok/);
 });
+
+test('màn hình sinh và hiển thị kịch bản theo từng phân cảnh', () => {
+  const manHinh = doc('man-hinh-bien-soan.tsx');
+
+  assert.match(manHinh, /import \{ XemKichBan \}/);
+  assert.match(manHinh, /<XemKichBan ideaId=\{ideaId\}/);
+
+  const kichBan = doc('xem-kich-ban.tsx');
+  assert.match(kichBan, /useActionState\(guiSinhKichBan/);
+  assert.match(kichBan, /name="ideaId"/);
+  assert.match(kichBan, /name="thoiLuongMucTieuGiay"/);
+  assert.match(kichBan, /value="30"/);
+  assert.match(kichBan, /value="45"/);
+  assert.match(kichBan, /value="60"/);
+  assert.match(kichBan, /disabled=\{dangChay\}/);
+  assert.match(kichBan, /role="alert">\{ketQua\.loi\}/);
+  assert.match(kichBan, /kichBan\.tieuDe/);
+  assert.match(kichBan, /\.phanCanh\.map\(/);
+  assert.match(kichBan, /canh\.thoiLuongGiay/);
+  assert.match(kichBan, /canh\.hinhAnh/);
+  assert.match(kichBan, /canh\.loiThoai/);
+});

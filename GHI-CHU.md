@@ -29,7 +29,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Lời nhắc và chuẩn hóa kết quả kịch bản phân cảnh.
 - [x] Dịch vụ sinh kịch bản từ một ý tưởng trong workspace.
 - [x] Action máy chủ sinh kịch bản lấy workspace từ phiên đăng nhập.
-- [ ] Sinh kịch bản quay theo từng phân cảnh.
+- [x] Sinh và hiển thị kịch bản quay theo từng phân cảnh.
 - [ ] Sinh hàng loạt và sinh ảnh.
 
 ## Luồng đề xuất ý tưởng
@@ -73,6 +73,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
 - `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
 - `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu, sửa bài và gọi sinh kịch bản.
+- `app/(dash)/studio/bien-soan/xem-kich-ban.tsx`: chọn thời lượng và hiển thị khung hình, lời thoại từng cảnh.
 - `tests/`: kiểm tra hợp đồng, hành vi, cô lập workspace và rollback.
 
 ## Kết quả kiểm tra
@@ -93,7 +94,7 @@ node --test tests/studio-sinh-kich-ban-service.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 81 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 82 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
 
 ## Giới hạn môi trường
 
@@ -107,4 +108,4 @@ Kết quả gần nhất: 81 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Hiển thị kết quả kịch bản theo từng phân cảnh trên màn hình biên soạn.
+3. Thiết kế mốc sinh hàng loạt theo mục tiêu 10 bài mỗi ngày.
