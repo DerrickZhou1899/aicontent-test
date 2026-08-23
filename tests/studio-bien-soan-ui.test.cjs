@@ -17,6 +17,24 @@ test('trang biên soạn đọc ý tưởng qua repo workspace trong phiên', ()
   assert.match(maNguon, /yTuong\.listChiTiet\(\)/);
 });
 
+test('trang biên soạn chỉ chọn sẵn ideaId thuộc workspace hiện tại', () => {
+  const trang   = doc('page.tsx');
+  const manHinh = doc('man-hinh-bien-soan.tsx');
+
+  assert.match(trang, /searchParams/);
+  assert.match(trang, /yTuong\.some\(\(muc\) => muc\.id === ideaId\)/);
+  assert.match(trang, /ideaIdMacDinh=\{ideaIdMacDinh\}/);
+  assert.match(manHinh, /ideaIdMacDinh/);
+  assert.match(manHinh, /defaultValue=\{ideaIdMacDinh/);
+});
+
+test('màn hình dùng câu chữ rõ ràng khi chọn và tạo bản nháp', () => {
+  const maNguon = doc('man-hinh-bien-soan.tsx');
+
+  assert.match(maNguon, /Bắt đầu từ ý tưởng đã duyệt/);
+  assert.match(maNguon, /Đang tạo bản nháp…/);
+});
+
 test('server action chỉ nhận ideaId và gọi service sinh bài', () => {
   const maNguon = doc('actions.ts');
 
@@ -85,8 +103,32 @@ test('màn hình sinh và hiển thị kịch bản theo từng phân cảnh', (
   assert.match(kichBan, /disabled=\{dangChay\}/);
   assert.match(kichBan, /role="alert">\{ketQua\.loi\}/);
   assert.match(kichBan, /kichBan\.tieuDe/);
-  assert.match(kichBan, /\.phanCanh\.map\(/);
+  assert.match(kichBan, /phanCanh\.map\(/);
   assert.match(kichBan, /canh\.thoiLuongGiay/);
   assert.match(kichBan, /canh\.hinhAnh/);
   assert.match(kichBan, /canh\.loiThoai/);
+  assert.match(kichBan, /Tạo kịch bản quay/);
+});
+
+test('kịch bản cho sửa từng cảnh trước khi lưu', () => {
+  const kichBan = doc('xem-kich-ban.tsx');
+
+  assert.match(kichBan, /name="tieuDeKichBan"/);
+  assert.match(kichBan, /name="thoiLuongGiay"/);
+  assert.match(kichBan, /name="hinhAnh"/);
+  assert.match(kichBan, /name="loiThoai"/);
+  assert.match(kichBan, /luuKichBan/);
+  assert.match(kichBan, /Lưu kịch bản/);
+  assert.match(kichBan, /Đã lưu vào kho nội dung/);
+});
+
+test('action lưu kịch bản lấy workspace và người tạo từ phiên', () => {
+  const maNguon = doc('actions.ts');
+
+  assert.match(maNguon, /export async function luuKichBan/);
+  assert.match(maNguon, /luuBanNhapKichBan/);
+  assert.match(maNguon, /workspaceHienTai\(\)/);
+  assert.match(maNguon, /nguoiDungHienTai\(\)/);
+  assert.doesNotMatch(maNguon, /thamSo\.workspaceId/);
+  assert.doesNotMatch(maNguon, /thamSo\.nguoiTao/);
 });

@@ -31,7 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
-      <body>{children}</body>
+      {/* Extension có thể gắn thuộc tính vào body trước khi React hydrate. */}
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

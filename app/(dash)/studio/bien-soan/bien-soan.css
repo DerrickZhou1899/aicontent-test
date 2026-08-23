@@ -142,6 +142,28 @@
   font-weight: 700;
 }
 
+.kich-ban-canh {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 14px;
+}
+
+.kich-ban-canh legend {
+  color: var(--sage);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+.kich-ban-canh textarea {
+  line-height: 1.5;
+  min-height: 78px;
+  resize: vertical;
+}
+
 .anh-da-sinh {
   aspect-ratio: 1;
   border: 1px solid var(--line);

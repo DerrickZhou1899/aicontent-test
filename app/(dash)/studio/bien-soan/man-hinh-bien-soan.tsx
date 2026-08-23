@@ -14,6 +14,11 @@ type YTuongChon = {
   beMat  : string;
 };
 
+type ThuocTinhManHinh = {
+  yTuong          : YTuongChon[];
+  ideaIdMacDinh?  : string;
+};
+
 const TRANG_THAI_DAU: TrangThaiBienSoan = null;
 
 function demTu(noiDung: string): number {
@@ -107,14 +112,14 @@ function BanNhapCoTheSua({ ideaId, banDau }: { ideaId: string; banDau: BanNhapBa
   );
 }
 
-export function ManHinhBienSoan({ yTuong }: { yTuong: YTuongChon[] }) {
+export function ManHinhBienSoan({ yTuong, ideaIdMacDinh }: ThuocTinhManHinh) {
   const [ketQua, gui, dangChay] = useActionState(guiSinhBai, TRANG_THAI_DAU);
 
   return (
     <div className="bien-soan-layout">
       <section className="panel bien-soan-chon" aria-labelledby="chon-y-tuong">
         <p className="bien-soan-buoc">01 · Chọn ý tưởng</p>
-        <h2 id="chon-y-tuong">Bắt đầu từ điều đã duyệt</h2>
+        <h2 id="chon-y-tuong">Bắt đầu từ ý tưởng đã duyệt</h2>
         <p className="o__goi-y">
           AI sẽ dùng hồ sơ thương hiệu, trụ cột và chân dung gắn với ý tưởng này.
         </p>
@@ -125,7 +130,12 @@ export function ManHinhBienSoan({ yTuong }: { yTuong: YTuongChon[] }) {
           <form className="bien-soan-form" action={gui}>
             <label className="o" htmlFor="bien-soan-y-tuong">
               <span className="o__nhan">Ý tưởng</span>
-              <select id="bien-soan-y-tuong" name="ideaId" required>
+              <select
+                id="bien-soan-y-tuong"
+                name="ideaId"
+                defaultValue={ideaIdMacDinh ?? yTuong[0]?.id}
+                required
+              >
                 {yTuong.map((muc) => (
                   <option value={muc.id} key={muc.id}>
                     {muc.tieuDe} · {muc.beMat.replaceAll('_', ' ')}
@@ -134,7 +144,7 @@ export function ManHinhBienSoan({ yTuong }: { yTuong: YTuongChon[] }) {
               </select>
             </label>
             <button className="btn btn--primary" type="submit" disabled={dangChay}>
-              {dangChay ? 'Đang viết bản đầu…' : 'Sinh bản nháp'}
+              {dangChay ? 'Đang tạo bản nháp…' : 'Sinh bản nháp'}
             </button>
           </form>
         )}

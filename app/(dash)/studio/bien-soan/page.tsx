@@ -14,15 +14,22 @@ export const metadata: Metadata = {
   description : 'Sinh và chỉnh sửa một bài đăng từ ý tưởng đã lưu.',
 };
 
-export default async function TrangBienSoan() {
+type ThuocTinhTrang = {
+  searchParams : Promise<{ ideaId?: string | string[] }>;
+};
+
+export default async function TrangBienSoan({ searchParams }: ThuocTinhTrang) {
   const workspaceId = await workspaceHienTai();
   const repo        = createRepo(workspaceId);
   const danhSach    = await repo.yTuong.listChiTiet();
+  const thamSo      = await searchParams;
   const yTuong      = danhSach.map((muc) => ({
     id     : muc.id,
     tieuDe : muc.tieuDe,
     beMat  : muc.beMat,
   }));
+  const ideaId         = typeof thamSo.ideaId === 'string' ? thamSo.ideaId : '';
+  const ideaIdMacDinh  = yTuong.some((muc) => muc.id === ideaId) ? ideaId : undefined;
 
   return (
     <>
@@ -39,7 +46,7 @@ export default async function TrangBienSoan() {
         </div>
       </div>
 
-      <ManHinhBienSoan yTuong={yTuong} />
+      <ManHinhBienSoan yTuong={yTuong} ideaIdMacDinh={ideaIdMacDinh} />
     </>
   );
 }

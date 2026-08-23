@@ -3,6 +3,7 @@
 import { workspaceHienTai } from '@/lib/auth/current-workspace';
 import { nguoiDungHienTai } from '@/lib/auth/nguoi-dung-tu-phien';
 import { luuBanNhapBai } from '@/lib/studio/luu-bai';
+import { luuBanNhapKichBan } from '@/lib/studio/luu-kich-ban';
 import { docAnh, sinhAnh } from '@/lib/studio/sinh-anh';
 import {
   sinhBaiTuYTuong,
@@ -92,6 +93,31 @@ export async function luuBanNhap(thamSo: {
       noiDung : thamSo.noiDung,
       hashtag : thamSo.hashtag.split(/\s+/),
     },
+  });
+}
+
+export async function luuKichBan(thamSo: {
+  ideaId  : string;
+  kichBan : BanNhapKichBan;
+}) {
+  if (
+    typeof thamSo.ideaId !== 'string'
+    || !thamSo.kichBan
+    || typeof thamSo.kichBan.tieuDe !== 'string'
+    || !Array.isArray(thamSo.kichBan.phanCanh)
+  ) {
+    return { ok: false as const, loi: 'Dữ liệu kịch bản không hợp lệ.', canhBao: [] };
+  }
+
+  const [workspaceId, nguoiDung] = await Promise.all([
+    workspaceHienTai(),
+    nguoiDungHienTai(),
+  ]);
+  return luuBanNhapKichBan({
+    workspaceId,
+    ideaId   : thamSo.ideaId,
+    nguoiTao : nguoiDung.userId,
+    kichBan  : thamSo.kichBan,
   });
 }
 

@@ -132,6 +132,7 @@ describe('loi nhac', () => {
   });
 
   it('moi nhiem vu co loi nhac va danh sach truong bat buoc', () => {
+    assert.match(layLoiNhac('de-xuat-y-tuong').loiNhac, /tiếng Việt có đầy đủ dấu thanh/);
     for (const nhiemVu of NHIEM_VU_VAN_BAN) {
       const muc = layLoiNhac(nhiemVu);
       assert.ok(muc.loiNhac.length > 50);

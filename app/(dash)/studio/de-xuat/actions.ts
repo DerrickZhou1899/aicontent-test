@@ -17,7 +17,7 @@ export async function guiDeXuat(
   const soLuong = Number(form.get('soLuong'));
 
   if (typeof beMat !== 'string') {
-    return { ok: false, loi: 'Bề mặt đăng không hợp lệ.', canhBao: [] };
+    return { ok: false, loi: 'Nơi đăng nội dung không hợp lệ.', canhBao: [] };
   }
 
   // Cả hai khóa cô lập đều lấy từ phiên, không tin giá trị do trình duyệt gửi lên.

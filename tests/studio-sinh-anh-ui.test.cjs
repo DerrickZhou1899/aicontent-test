@@ -37,6 +37,14 @@ test('khối sinh ảnh tự hỏi trạng thái và đọc ảnh qua tuyến me
   assert.match(maNguon, /setTimeout\(hoiTrangThai,\s*2000\)/);
   assert.match(maNguon, /\/api\/media\//);
   assert.match(maNguon, /encodeURIComponent/);
-  assert.match(maNguon, /Sinh ảnh cho bài/);
+  assert.match(maNguon, /Tạo ảnh cho bài/);
   assert.match(maNguon, /role="alert"/);
+});
+
+test('trạng thái hàng đợi được đổi thành câu chữ dễ hiểu', () => {
+  const maNguon = doc('xem-anh.tsx');
+
+  assert.match(maNguon, /cho\s*:\s*'Chờ xử lý'/);
+  assert.match(maNguon, /dang_chay\s*:\s*'Đang xử lý'/);
+  assert.match(maNguon, /nhanTrangThai\(trangThai\)/);
 });

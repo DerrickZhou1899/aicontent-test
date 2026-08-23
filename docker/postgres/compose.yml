@@ -17,9 +17,9 @@ name: aicontent-test
 
 services:
   postgres:
-    # Image pgvector chứ không phải `postgres:16`: bản chính thức đã có sẵn
+    # Image pgvector chứ không phải `postgres:17`: bản chính thức đã có sẵn
     # pgcrypto + pg_trgm, và extension `vector` nằm sẵn đó cho việc về sau.
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:pg17
     container_name: aicontent-test-postgres
     restart: unless-stopped
     ports:

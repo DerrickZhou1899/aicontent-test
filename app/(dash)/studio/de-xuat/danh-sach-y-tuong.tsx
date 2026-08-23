@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import type { YTuongChiTiet } from '@/lib/data-access/ideas';
 
 type ThuocTinh = {
@@ -56,18 +58,24 @@ export function DanhSachYTuong({ danhSach }: ThuocTinh) {
         <div className="y-tuong-da-luu__danh-sach">
           {danhSach.map((yTuong) => (
             <article className="y-tuong-da-luu__the" key={yTuong.id}>
-              <div className="y-tuong-da-luu__meta">
-                <span>{yTuong.beMat.replaceAll('_', ' ')}</span>
-                <time dateTime={yTuong.ngayTao.toISOString()}>
-                  {DINH_DANG_NGAY.format(yTuong.ngayTao)}
-                </time>
-              </div>
-              <h3>{yTuong.tieuDe}</h3>
-              <div className="y-tuong-da-luu__nhan">
-                <span>{yTuong.tenTruCot ?? 'Chưa gắn trụ cột'}</span>
-                <span>{yTuong.tenChanDung ?? 'Chưa gắn chân dung'}</span>
-              </div>
-              {yTuong.lyDoDeXuat ? <p>{yTuong.lyDoDeXuat}</p> : null}
+              <Link
+                className="y-tuong-da-luu__mo"
+                href={`/studio/bien-soan?ideaId=${encodeURIComponent(yTuong.id)}`}
+              >
+                <div className="y-tuong-da-luu__meta">
+                  <span>{yTuong.beMat.replaceAll('_', ' ')}</span>
+                  <time dateTime={yTuong.ngayTao.toISOString()}>
+                    {DINH_DANG_NGAY.format(yTuong.ngayTao)}
+                  </time>
+                </div>
+                <h3>{yTuong.tieuDe}</h3>
+                <div className="y-tuong-da-luu__nhan">
+                  <span>{yTuong.tenTruCot ?? 'Chưa gắn trụ cột'}</span>
+                  <span>{yTuong.tenChanDung ?? 'Chưa gắn chân dung'}</span>
+                </div>
+                {yTuong.lyDoDeXuat ? <p>{yTuong.lyDoDeXuat}</p> : null}
+                <strong>Biên soạn ý tưởng</strong>
+              </Link>
               <NguonThamKhao yTuong={yTuong} />
             </article>
           ))}

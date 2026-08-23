@@ -20,17 +20,17 @@ export function ManHinhDeXuat() {
     <div className="de-xuat-layout">
       <section className="panel de-xuat-dieu-khien" aria-labelledby="de-xuat-cau-hinh">
         <div>
-          <p className="de-xuat-buoc">01 · Cấu hình</p>
-          <h2 id="de-xuat-cau-hinh">Một lần sinh, một danh sách để duyệt</h2>
+          <p className="de-xuat-buoc">01 · Chọn nội dung</p>
+          <h2 id="de-xuat-cau-hinh">Tạo ý tưởng cho hôm nay</h2>
           <p className="o__goi-y">
-            Mỗi lượt tối đa 20 ý tưởng. Khoảng 20% được dành cho tuyến khám phá để kênh
+            Mỗi lần tạo tối đa 20 ý tưởng. Khoảng 20% là ý tưởng mới để nội dung
             không chỉ lặp lại những gì từng hiệu quả.
           </p>
         </div>
 
         <form className="de-xuat-form" action={gui}>
           <fieldset className="de-xuat-fieldset">
-            <legend>Bề mặt đăng</legend>
+            <legend>Đăng nội dung ở đâu?</legend>
             <div className="chon-be-mat">
               {BE_MAT.map((muc, chiSo) => (
                 <label className="de-xuat-lua-chon" key={muc.giaTri}>
@@ -60,7 +60,7 @@ export function ManHinhDeXuat() {
           </label>
 
           <button className="btn btn--primary de-xuat-gui" type="submit" disabled={dangChay}>
-            {dangChay ? 'Đang tìm góc viết…' : 'Tạo danh sách ý tưởng'}
+            {dangChay ? 'Đang tạo ý tưởng…' : 'Tạo danh sách ý tưởng'}
           </button>
         </form>
       </section>
@@ -69,7 +69,7 @@ export function ManHinhDeXuat() {
         <div className="de-xuat-ket-qua__dau">
           <div>
             <p className="de-xuat-buoc">02 · Kết quả</p>
-            <h2>Ý tưởng để duyệt</h2>
+            <h2>Danh sách ý tưởng</h2>
           </div>
           {ketQua?.ok ? <span className="de-xuat-dem">{ketQua.duLieu.length} ý tưởng</span> : null}
         </div>
@@ -77,7 +77,7 @@ export function ManHinhDeXuat() {
         {ketQua === null ? (
           <div className="de-xuat-trong">
             <span aria-hidden="true">10</span>
-            <p>Chọn bề mặt rồi tạo danh sách đầu tiên cho hôm nay.</p>
+            <p>Chọn nơi đăng rồi tạo danh sách ý tưởng đầu tiên cho hôm nay.</p>
           </div>
         ) : null}
 
@@ -93,7 +93,7 @@ export function ManHinhDeXuat() {
               <article className="de-xuat-the" key={`${chiSo}-${yTuong.tieuDe}`}>
                 <div className="de-xuat-the__dau">
                   <span className="de-xuat-thu-tu">{String(chiSo + 1).padStart(2, '0')}</span>
-                  {yTuong.khamPha ? <span className="de-xuat-kham-pha">Khám phá</span> : null}
+                  {yTuong.khamPha ? <span className="de-xuat-kham-pha">Ý tưởng mới</span> : null}
                 </div>
                 <h3>{yTuong.tieuDe}</h3>
                 <div className="de-xuat-the__the">

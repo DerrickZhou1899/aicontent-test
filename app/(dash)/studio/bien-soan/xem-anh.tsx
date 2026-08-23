@@ -6,6 +6,18 @@ import type { AnhDaSinh } from '@/lib/studio/sinh-anh';
 
 import { guiDocAnh, guiSinhAnh } from './actions';
 
+const NHAN_TRANG_THAI: Record<string, string> = {
+  cho       : 'Chờ xử lý',
+  dang_chay : 'Đang xử lý',
+  xong      : 'Hoàn tất',
+  loi       : 'Có lỗi',
+  huy       : 'Đã hủy',
+};
+
+function nhanTrangThai(trangThai: string): string {
+  return NHAN_TRANG_THAI[trangThai] ?? 'Không xác định';
+}
+
 function urlMedia(duongDan: string): string {
   return `/api/media/${duongDan.split('/').map(encodeURIComponent).join('/')}`;
 }
@@ -72,11 +84,13 @@ export function XemAnh({ contentId }: { contentId: string }) {
           <h3>Ảnh minh họa bài đăng</h3>
         </div>
         <button className="btn" type="button" disabled={dangCho || Boolean(anh)} onClick={batDauSinh}>
-          {dangCho ? 'Đang tạo ảnh…' : anh ? 'Ảnh đã tạo' : 'Sinh ảnh cho bài'}
+          {dangCho ? 'Đang tạo ảnh…' : anh ? 'Ảnh đã tạo' : 'Tạo ảnh cho bài'}
         </button>
       </div>
 
-      {trangThai && !anh && !loi ? <p role="status">Trạng thái: {trangThai}</p> : null}
+      {trangThai && !anh && !loi ? (
+        <p role="status">Trạng thái: {nhanTrangThai(trangThai)}</p>
+      ) : null}
       {loi ? <p className="bien-soan-loi" role="alert">{loi}</p> : null}
       {anh ? (
         <img

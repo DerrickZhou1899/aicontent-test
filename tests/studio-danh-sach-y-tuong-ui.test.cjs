@@ -28,6 +28,13 @@ test('danh sách hiển thị lý do và đúng bài nguồn của ý tưởng',
   assert.match(maNguon, /rel="noreferrer"/);
 });
 
+test('thẻ ý tưởng mở đúng ý tưởng trong màn hình biên soạn', () => {
+  const maNguon = doc('danh-sach-y-tuong.tsx');
+
+  assert.match(maNguon, /import Link from ['"]next\/link['"]/);
+  assert.match(maNguon, /href=\{`\/studio\/bien-soan\?ideaId=\$\{encodeURIComponent\(yTuong\.id\)\}`\}/);
+});
+
 test('sinh thành công làm mới danh sách đã lưu', () => {
   const maNguon = doc('actions.ts');
 

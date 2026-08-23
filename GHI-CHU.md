@@ -30,6 +30,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Dịch vụ sinh kịch bản từ một ý tưởng trong workspace.
 - [x] Action máy chủ sinh kịch bản lấy workspace từ phiên đăng nhập.
 - [x] Sinh và hiển thị kịch bản quay theo từng phân cảnh.
+- [x] Chỉnh sửa từng phân cảnh và lưu kịch bản vào kho nội dung.
 - [x] Xếp tối đa 10 job sinh bài một lượt, không chờ trong request.
 - [x] Đọc và chuẩn hóa trạng thái cả lô bằng một truy vấn theo workspace.
 - [x] Action xếp lô và đọc tiến độ luôn lấy workspace từ phiên đăng nhập.
@@ -102,42 +103,22 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 
 ## Kết quả kiểm tra
 
-Các kiểm tra đã chạy xanh trong môi trường hiện tại:
+Môi trường kiểm tra tích hợp dùng PostgreSQL 17.11 trong Docker tại `127.0.0.1:35443`. Migration và hai tệp seed đã chạy đúng thứ tự; dữ liệu kiểm tra có 6 bài đã đăng và 6 tín hiệu từ kênh theo dõi.
 
 ```sh
-npx tsc --noEmit
-node --test tests/studio-de-xuat.test.cjs tests/studio-de-xuat-slot.test.cjs tests/studio-de-xuat-service.test.cjs tests/studio-khong-chep-bai.test.cjs tests/model-runner-don-vi.test.js tests/jobs-claim-contract.test.cjs tests/y-tuong-co-nguon-contract.test.cjs
-node --test tests/model-runner-sinh-anh.test.js
-node --test tests/studio-sinh-anh-service.test.cjs
-node --test tests/worker-sinh-anh.test.cjs
-node --test tests/studio-sinh-anh-ui.test.cjs
-node --test tests/studio-de-xuat-ui-contract.test.cjs
-node --test tests/studio-danh-sach-y-tuong-ui.test.cjs
-node --test tests/loi-nhac-sinh-bai.test.cjs
-node --test tests/studio-sinh-bai-service.test.cjs
-node --test tests/studio-sinh-hang-loat-service.test.cjs
-node --test tests/studio-trang-thai-hang-loat-service.test.cjs
-node --test tests/studio-hang-loat-actions.test.cjs
-node --test tests/studio-hang-loat-ui.test.cjs
-node --test tests/studio-luu-bai-service.test.cjs
-node --test tests/studio-bien-soan-ui.test.cjs
-node --test tests/loi-nhac-kich-ban.test.cjs tests/studio-sinh-kich-ban.test.cjs
-node --test tests/studio-sinh-kich-ban-service.test.cjs
-node --test tests/data-access-guard.test.cjs
+node node_modules/typescript/bin/tsc --noEmit
+node --test <toàn bộ tệp *.test.* trong tests/>
+node node_modules/next/dist/bin/next build
 ```
 
-Kết quả gần nhất: 113 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0.
+Kết quả gần nhất: `331/331` test pass, không bỏ qua ca nào; TypeScript và production build đều thoát mã 0. Các ca HTTP dùng `AICONTENT_TEST_URL=http://127.0.0.1:6980` để khớp địa chỉ IPv4 của máy chủ kiểm tra trên Windows.
 
 ## Giới hạn môi trường
 
-- DB integration test chưa hoàn tất vì PostgreSQL tại `127.0.0.1:35443` chưa chạy trong môi trường hiện tại.
-- Toàn bộ suite hiện có 225 test pass; các ca DB còn lại dừng vì PostgreSQL tại `127.0.0.1:35443` chưa chạy.
-- Secret guard chạy xanh phần quét lời nhắc; phần quét khóa dừng đúng thiết kế vì chưa có `AUTH_SECRET` trong môi trường.
-- Bước hậu xử lý build dùng `rm` và `cp` nên không chạy trên PowerShell; phần `next build` trước đó đã hoàn tất.
-- Không thêm secret giả và không nới lỏng test để che các giới hạn trên.
+- Gemini 3.6 Flash đã sinh JSON thật thành công. Luồng ảnh đã gọi Gemini 3.1 Flash Image nhưng nhận `429` vì model ảnh không có Free Tier; video demo bỏ qua đầu ra ảnh, không coi đây là lỗi hàng đợi.
+- Build còn cảnh báo Turbopack về đường dẫn filesystem động trong `lib/keo-bai/kho-anh.ts`, nhưng không làm thất bại bản build.
 
 ## Việc tiếp theo
 
-1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
-2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Chạy thử worker ảnh với khóa Gemini thật và kiểm tra ảnh trên màn hình biên soạn.
+1. Rà soát thủ công luồng kịch bản và sinh hàng loạt trên dữ liệu seed.
+2. Chỉ chạy lại worker ảnh khi dự án Gemini đã bật billing.
