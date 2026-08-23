@@ -146,7 +146,7 @@ export function KetQuaKeo({ ket }: { ket: import('@/lib/keo-bai/keo-kenh-theo-do
       {!ket.boLuot && ket.soBaiMoi > 0 ? (
         <div className="bieu-mau__nut">
           <a className="btn btn--primary btn--sm" href="/studio/de-xuat">
-            Sinh ý tưởng từ các bài này
+            Tạo ý tưởng từ các bài này
           </a>
           <a className="btn btn--ghost btn--sm" href="/kenh-ngoai">
             Xem bài vừa kéo

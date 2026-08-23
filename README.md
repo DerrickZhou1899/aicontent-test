@@ -30,10 +30,11 @@ Mở `http://localhost:6980/api/dev-login` — vào thẳng, không cần Google
 Chạy được thì `/bai-da-dang` có 6 bài và `/kenh-ngoai` có 6 bài của hai kênh
 đang theo dõi. Không thấy gì là seed chưa chạy hoặc chạy sai thứ tự.
 
-Việc nền (sinh nội dung) chạy ở tiến trình riêng, mở thêm một cửa sổ:
+Việc nền chạy ở hai tiến trình riêng, mở thêm hai cửa sổ:
 
 ```bash
 node -r dotenv/config workers/model/index.js
+node -r dotenv/config workers/image/index.js
 ```
 
 ## Kiểm trước khi nộp

@@ -1,0 +1,191 @@
+.bien-soan-layout {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+}
+
+.bien-soan-chon,
+.bien-soan-ket-qua {
+  padding: 26px;
+}
+
+.bien-soan-chon {
+  align-self: start;
+  position: sticky;
+  top: 20px;
+}
+
+.bien-soan-chon h2,
+.bien-soan-ket-qua h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin: 4px 0 8px;
+}
+
+.bien-soan-buoc {
+  color: var(--brand-600);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.bien-soan-form {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.bien-soan-form select {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  min-height: 46px;
+  padding: 0 12px;
+  width: 100%;
+}
+
+.bien-soan-ket-qua {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 480px;
+}
+
+.bien-soan-trong {
+  align-items: center;
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-3);
+  display: flex;
+  justify-content: center;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 130px;
+  padding: 20px;
+  text-align: center;
+}
+
+.bien-soan-loi {
+  background: var(--clay-bg);
+  border-left: 3px solid var(--clay);
+  color: var(--clay);
+  margin: 0;
+  padding: 12px 14px;
+}
+
+.ban-nhap {
+  display: grid;
+  gap: 18px;
+}
+
+.ban-nhap__thong-bao {
+  background: var(--sage-bg);
+  border-radius: var(--r-md);
+  color: var(--sage);
+  display: grid;
+  gap: 3px;
+  padding: 12px 14px;
+}
+
+.ban-nhap__thong-bao strong {
+  font-size: 13px;
+}
+
+.ban-nhap__thong-bao span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ban-nhap input,
+.ban-nhap textarea {
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font: inherit;
+  padding: 12px;
+  width: 100%;
+}
+
+.ban-nhap input:focus,
+.ban-nhap textarea:focus,
+.bien-soan-form select:focus {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px var(--brand-100);
+  outline: none;
+}
+
+.ban-nhap .soan__o {
+  line-height: 1.7;
+  min-height: 300px;
+}
+
+.ban-nhap .soan__do {
+  color: var(--ink-2);
+  justify-content: flex-end;
+}
+
+.ban-nhap__luu {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ban-nhap__thanh-cong {
+  color: var(--sage);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.kich-ban-canh {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 14px;
+}
+
+.kich-ban-canh legend {
+  color: var(--sage);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+.kich-ban-canh textarea {
+  line-height: 1.5;
+  min-height: 78px;
+  resize: vertical;
+}
+
+.anh-da-sinh {
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .bien-soan-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .bien-soan-chon {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .bien-soan-chon,
+  .bien-soan-ket-qua {
+    padding: 20px;
+  }
+}

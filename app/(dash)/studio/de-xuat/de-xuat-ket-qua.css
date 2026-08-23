@@ -1,0 +1,143 @@
+.de-xuat-ket-qua { min-width: 0; }
+
+.de-xuat-ket-qua__dau {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.de-xuat-dem,
+.de-xuat-kham-pha {
+  padding: 4px 9px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 650;
+}
+
+.de-xuat-dem {
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+
+.de-xuat-trong {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  padding: 30px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  color: var(--ink-3);
+  text-align: center;
+}
+
+.de-xuat-trong span {
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  border: 1px solid var(--brand-100);
+  border-radius: 50%;
+  background: var(--brand-050);
+  color: var(--brand-600);
+  font-family: var(--font-display);
+  font-size: 31px;
+  font-weight: 700;
+}
+
+.de-xuat-trong p {
+  margin-top: -72px;
+  padding-top: 105px;
+}
+
+.de-xuat-danh-sach {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.de-xuat-the {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.de-xuat-the__dau,
+.de-xuat-the__the {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.de-xuat-thu-tu {
+  color: var(--ink-3);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.de-xuat-kham-pha {
+  background: var(--clay-bg);
+  color: var(--clay);
+}
+
+.de-xuat-the h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.de-xuat-the__the span {
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  background: var(--sage-bg);
+  color: var(--sage);
+  font-size: 11px;
+}
+
+.de-xuat-the blockquote {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--brand-300);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.de-xuat-the > p {
+  margin: auto 0 0;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.de-xuat-loi,
+.de-xuat-canh-bao {
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+}
+
+.de-xuat-loi {
+  border: 1px solid var(--clay);
+  background: var(--clay-bg);
+  color: var(--clay);
+}
+
+.de-xuat-canh-bao {
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+
+@media (max-width: 650px) {
+  .de-xuat-danh-sach { grid-template-columns: 1fr; }
+}

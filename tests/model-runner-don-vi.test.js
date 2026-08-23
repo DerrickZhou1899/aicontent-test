@@ -1,6 +1,6 @@
 'use strict';
 
-/** Cac ham thuan cua lop truu tuong goi mo hinh — khong cham CSDL, khong cham Docker. */
+/** Các hàm thuần của lớp trừu tượng gọi mô hình — không chạm CSDL, không chạm Docker. */
 
 const assert = require('node:assert/strict');
 const { describe, it } = require('node:test');
@@ -10,6 +10,7 @@ const {
   MO_HINH_MANH,
   MO_HINH_NHANH,
   NHIEM_VU_HOP_LE,
+  NHIEM_VU_VAN_BAN,
   chonMoHinh,
   loaiViecCuaNhiemVu,
 } = require('../lib/model-runner/chon-mo-hinh');
@@ -19,8 +20,12 @@ const { tinhChiPhiUocTinh } = require('../lib/model-runner/ghi-nhat-ky');
 const runnerApi = require('../lib/model-runner/runner-api');
 
 describe('chon mo hinh (PRD 8.3)', () => {
-  it('bay nhiem vu cua PRD muc 8.2 deu co mac dinh va co loai viec tuong ung', () => {
-    assert.equal(NHIEM_VU_HOP_LE.length, 7);
+  it('tam nhiem vu deu co mac dinh va co loai viec tuong ung', () => {
+    assert.equal(NHIEM_VU_HOP_LE.length, 8);
+    assert.deepEqual(NHIEM_VU_VAN_BAN, [
+      'viet-bai', 'viet-kich-ban', 'de-xuat-y-tuong', 'cham-chat-luong',
+      'phan-loai-binh-luan', 'boc-tach-ho-so', 'cham-diem-lien-quan',
+    ]);
     for (const nhiemVu of NHIEM_VU_HOP_LE) {
       assert.ok(MAC_DINH_THEO_NHIEM_VU[nhiemVu], `thieu mac dinh cho ${nhiemVu}`);
       assert.ok(loaiViecCuaNhiemVu(nhiemVu), `thieu loai viec cho ${nhiemVu}`);
@@ -51,8 +56,8 @@ describe('chon mo hinh (PRD 8.3)', () => {
   });
 
   it('anh xa loai viec khop enum loai_viec cua luoc do', () => {
-    // Danh sach nay chep tu db/schema/ops.ts (da dong bang). Lech la worker
-    // se nem loi enum luc chen, phat hien luc chay thay vi luc test.
+    // Danh sách này chép từ db/schema/ops.ts (đã đóng băng). Lệch là worker
+    // sẽ ném lỗi enum lúc chèn, phát hiện lúc chạy thay vì lúc test.
     const enumLoaiViec = new Set([
       'sinh-y-tuong', 'sinh-bai', 'sinh-kich-ban', 'cham-chat-luong',
       'boc-tach-ho-so', 'sinh-anh', 'kiem-tra-lien-ket', 'keo-so-lieu-lo',
@@ -94,8 +99,41 @@ describe('doc JSON tu van ban CLI tra ve', () => {
 });
 
 describe('loi nhac', () => {
+  it('giu nguyen hop dong JSON cua ba nhiem vu studio', () => {
+    const deXuatYTuong = layLoiNhac('de-xuat-y-tuong');
+    assert.deepEqual(deXuatYTuong.truongBatBuoc, ['yTuong']);
+    assert.match(deXuatYTuong.loiNhac, /Cau truc: \{"yTuong": \[\{"tieuDe": string/);
+
+    const vietBai = layLoiNhac('viet-bai');
+    assert.deepEqual(vietBai.truongBatBuoc, ['tieuDe', 'noiDung']);
+    assert.match(vietBai.loiNhac, /Cau truc: \{"tieuDe": string, "noiDung": string, "hashtag": string\[\]/);
+
+    const vietKichBan = layLoiNhac('viet-kich-ban');
+    assert.deepEqual(vietKichBan.truongBatBuoc, ['tieuDe', 'phanCanh']);
+    assert.match(vietKichBan.loiNhac, /Cau truc: \{"tieuDe": string, "phanCanh": \[\{"thoiLuongGiay": number/);
+  });
+
+  it('de xuat y tuong chi hoc chu de va cong thuc ke tu xu huong an toan', () => {
+    const loiNhac = layLoiNhac('de-xuat-y-tuong').loiNhac;
+
+    assert.match(loiNhac, /chi hoc chu de va cong thuc ke/i);
+    assert.match(loiNhac, /khong duoc viet lai.*cau chu/i);
+    assert.match(loiNhac, /dung so luong.*dung thu tu slot/i);
+    assert.match(loiNhac, /khamPha=true/i);
+    assert.match(loiNhac, /khong tu bia tru cot.*chan dung/i);
+  });
+
+  it('de xuat y tuong neo vao du lieu that va chi tra JSON dung be mat', () => {
+    const loiNhac = layLoiNhac('de-xuat-y-tuong').loiNhac;
+
+    assert.match(loiNhac, /tru cot va chan dung co trong du lieu/i);
+    assert.match(loiNhac, /beMat duoc yeu cau/i);
+    assert.match(loiNhac, /chi tra ve JSON/i);
+  });
+
   it('moi nhiem vu co loi nhac va danh sach truong bat buoc', () => {
-    for (const nhiemVu of NHIEM_VU_HOP_LE) {
+    assert.match(layLoiNhac('de-xuat-y-tuong').loiNhac, /tiếng Việt có đầy đủ dấu thanh/);
+    for (const nhiemVu of NHIEM_VU_VAN_BAN) {
       const muc = layLoiNhac(nhiemVu);
       assert.ok(muc.loiNhac.length > 50);
       assert.ok(muc.truongBatBuoc.length > 0);
@@ -130,8 +168,8 @@ describe('runner-api', () => {
     delete process.env.AI_PROVIDER;
     try {
       const ban = await runnerApi.chay({ nhiemVu: 'viet-bai', loiNhac: '', duLieuVao: {} });
-      // Ma 2 = dau vao sai, `thuc-thi-nhiem-vu.js` khong thu lai. Nem loi ra
-      // ngoai thi mat dong ghi vao `model_runs` — lan chay hong van phai co so lieu.
+      // Mã 2 = đầu vào sai, `thuc-thi-nhiem-vu.js` không thử lại. Ném lỗi ra
+      // ngoài thì mất dòng ghi vào `model_runs` — lần chạy hỏng vẫn phải có số liệu.
       assert.equal(ban.maThoat, 2);
       assert.equal(ban.ok, false);
       assert.match(ban.nhatKy, /AI_PROVIDER/);

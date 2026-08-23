@@ -1,12 +1,12 @@
 /**
- * Repo bang `jobs` — phan trong pham vi mot khong gian lam viec.
+ * Repo bảng `jobs` — phần trong phạm vi một không gian làm việc.
  *
- * Viec lay viec cheo khong gian lam viec (FOR UPDATE SKIP LOCKED) KHONG o day:
- * no can doc het moi workspace nen phai di qua `createSystemRepo()`, vao vai tro
- * PostgreSQL rieng cua tien trinh nen.
+ * Việc lấy việc chéo không gian làm việc (FOR UPDATE SKIP LOCKED) KHÔNG ở đây:
+ * nó cần đọc hết mọi workspace nên phải đi qua `createSystemRepo()`, vào vai trò
+ * PostgreSQL riêng của tiến trình nền.
  */
 
-import { and, desc, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 
 import { jobs } from '@/db/schema/index';
 
@@ -40,13 +40,13 @@ export function jobsRepo(db: KetNoiDrizzle, workspaceId: string) {
     },
 
     /**
-     * Lay nhieu viec mot luot, LOC THEO WORKSPACE.
+     * Lấy nhiều việc một lượt, LỌC THEO WORKSPACE.
      *
-     * Man sinh hang loat hoi tien do ca lo moi ba giay. Hoi tung viec mot la N
-     * truy van moi nhip tren mot be chi 6 ket noi; hoi bang `layKetQua` cua
-     * model-runner thi dung ID tho khong loc workspace, tuc ai biet mot jobId
-     * cua khach khac la doc duoc nguyen bai cua ho. Mot cau, co dieu kien
-     * workspace, giai quyet ca hai.
+     * Màn sinh hàng loạt hỏi tiến độ cả lô mỗi ba giây. Hỏi từng việc một là N
+     * truy vấn mỗi nhịp trên một bể chỉ 6 kết nối; hỏi bằng `layKetQua` của
+     * model-runner thì dùng ID thô không lọc workspace, tức ai biết một jobId
+     * của khách khác là đọc được nguyên bài của họ. Một câu, có điều kiện
+     * workspace, giải quyết cả hai.
      */
     async layNhieuTheoId(ids: string[]) {
       if (ids.length === 0) return [];
@@ -62,6 +62,32 @@ export function jobsRepo(db: KetNoiDrizzle, workspaceId: string) {
         .values({ ...duLieu, workspaceId })
         .returning();
       return dong;
+    },
+
+    /**
+     * Chỉ một request được phép lưu ý tưởng của một job đã xong. Đánh dấu và
+     * insert nằm trong cùng giao dịch của caller, nên insert hỏng sẽ rollback
+     * marker này và lần thử lại vẫn có thể nhận quyền lưu.
+     */
+    async nhanQuyenLuuYTuong(id: string): Promise<boolean> {
+      const [dong] = await db
+        .update(jobs)
+        .set({
+          ketQua : sql`jsonb_set(
+            coalesce(${jobs.ketQua}, '{}'::jsonb),
+            '{_studioDaLuuYTuong}',
+            'true'::jsonb,
+            true
+          )`,
+        })
+        .where(and(
+          eq(jobs.workspaceId, workspaceId),
+          eq(jobs.id, id),
+          eq(jobs.trangThai, 'xong'),
+          sql`not (coalesce(${jobs.ketQua}, '{}'::jsonb) ? '_studioDaLuuYTuong')`,
+        ))
+        .returning({ id: jobs.id });
+      return dong !== undefined;
     },
 
     async capNhat(id: string, thayDoi: SuaJob) {

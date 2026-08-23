@@ -1,0 +1,96 @@
+.de-xuat-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.65fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.de-xuat-layout h2 {
+  margin: 3px 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(19px, 2vw, 24px);
+}
+
+.de-xuat-buoc {
+  color: var(--brand-600);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.de-xuat-dieu-khien {
+  position: sticky;
+  top: 0;
+  display: grid;
+  gap: 22px;
+  padding: 20px;
+}
+
+.de-xuat-form {
+  display: grid;
+  gap: 18px;
+}
+
+.de-xuat-fieldset {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.de-xuat-fieldset legend,
+.de-xuat-so-luong .o__nhan {
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.de-xuat-lua-chon {
+  position: relative;
+  cursor: pointer;
+}
+
+.de-xuat-lua-chon input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.de-xuat-lua-chon span {
+  display: block;
+  padding: 8px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.de-xuat-lua-chon input:checked + span {
+  border-color: var(--brand-400);
+  background: var(--brand-050);
+  color: var(--brand-700);
+  font-weight: 650;
+}
+
+.de-xuat-lua-chon input:focus-visible + span {
+  outline: 2px solid var(--brand-400);
+  outline-offset: 2px;
+}
+
+.de-xuat-so-luong { max-width: 150px; }
+.de-xuat-so-luong input { min-height: 42px; }
+
+.de-xuat-gui {
+  justify-content: center;
+  min-height: 44px;
+}
+
+@media (max-width: 980px) {
+  .de-xuat-layout { grid-template-columns: 1fr; }
+  .de-xuat-dieu-khien { position: static; }
+}

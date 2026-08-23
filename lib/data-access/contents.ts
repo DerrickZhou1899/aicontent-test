@@ -1,27 +1,32 @@
 /**
- * Repo bang `contents` — ban toi thieu.
+ * Repo bảng `contents` — bản tối thiểu.
  *
- * Phase 9 la chu so huu file nay ve sau (bang quan ly noi dung, bo loc 30 cot,
- * thao tac hang loat). O day chi co du ham de tang truy cap du lieu co the
- * chung minh la no thuc su chan doc cheo khong gian lam viec.
+ * Phase 9 là chủ sở hữu file này về sau (bảng quản lý nội dung, bộ lọc 30 cột,
+ * thao tác hàng loạt). Ở đây chỉ có đủ hàm để tầng truy cập dữ liệu có thể
+ * chứng minh là nó thực sự chặn đọc chéo không gian làm việc.
  */
 
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, getTableColumns, sql } from 'drizzle-orm';
 
-import { contents } from '@/db/schema/index';
+import { contents, ideas } from '@/db/schema/index';
 
 import type { KetNoiDrizzle } from './guard';
 
 type LocNoiDung = {
-  beMat?: typeof contents.$inferSelect.beMat;
-  trangThai?: typeof contents.$inferSelect.trangThai;
-  gioiHan?: number;
+  beMat?     : typeof contents.$inferSelect.beMat;
+  trangThai? : typeof contents.$inferSelect.trangThai;
+  gioiHan?   : number;
+};
+
+const cotBanNhapChiTiet = {
+  ...getTableColumns(contents),
+  tieuDeYTuong : ideas.tieuDe,
 };
 
 export function contentsRepo(db: KetNoiDrizzle, workspaceId: string) {
   return {
     async list(loc?: LocNoiDung) {
-      // Dieu kien pham vi luon la phan tu dau, khong phu thuoc bo loc nguoi dung.
+      // Điều kiện phạm vi luôn là phần tử đầu, không phụ thuộc bộ lọc người dùng.
       const dieuKien = [eq(contents.workspaceId, workspaceId)];
       if (loc?.beMat) dieuKien.push(eq(contents.beMat, loc.beMat));
       if (loc?.trangThai) dieuKien.push(eq(contents.trangThai, loc.trangThai));
@@ -30,13 +35,33 @@ export function contentsRepo(db: KetNoiDrizzle, workspaceId: string) {
         .select()
         .from(contents)
         .where(and(...dieuKien))
-        .orderBy(desc(contents.ngayTao))
+        .orderBy(desc(contents.ngayTao), desc(contents.id))
         .limit(loc?.gioiHan ?? 50);
     },
 
+    async listBanNhapChiTiet(gioiHan = 200) {
+      return db
+        .select(cotBanNhapChiTiet)
+        .from(contents)
+        .leftJoin(ideas, and(eq(ideas.id, contents.ideaId), eq(ideas.workspaceId, workspaceId)))
+        .where(and(eq(contents.workspaceId, workspaceId), eq(contents.trangThai, 'ban_nhap')))
+        .orderBy(desc(contents.ngayTao), desc(contents.id))
+        .limit(gioiHan);
+    },
+
+    async layBanNhapChiTietTheoId(id: string) {
+      const [dong] = await db
+        .select(cotBanNhapChiTiet)
+        .from(contents)
+        .leftJoin(ideas, and(eq(ideas.id, contents.ideaId), eq(ideas.workspaceId, workspaceId)))
+        .where(and(eq(contents.id, id), eq(contents.workspaceId, workspaceId)))
+        .limit(1);
+      return dong ?? null;
+    },
+
     /**
-     * Ghi mot noi dung moi. `workspaceId` ghi de SAU khi trai gia tri nguoi goi:
-     * truyen workspace khac vao cung khong ghi sang khong gian do duoc.
+     * Ghi một nội dung mới. `workspaceId` ghi đè SAU khi trải giá trị người gọi:
+     * truyền workspace khác vào cũng không ghi sang không gian đó được.
      */
     async tao(giaTri: Omit<typeof contents.$inferInsert, 'workspaceId'>) {
       const [dong] = await db
@@ -47,9 +72,9 @@ export function contentsRepo(db: KetNoiDrizzle, workspaceId: string) {
     },
 
     /**
-     * Sua mot noi dung da luu. `workspaceId` nam trong DIEU KIEN chu khong nam
-     * trong gia tri ghi: biet dung `id` cua workspace khac cung khong sua duoc,
-     * va cung khong the doi mot dong sang workspace khac.
+     * Sửa một nội dung đã lưu. `workspaceId` nằm trong ĐIỀU KIỆN chứ không nằm
+     * trong giá trị ghi: biết đúng `id` của workspace khác cũng không sửa được,
+     * và cũng không thể đổi một dòng sang workspace khác.
      */
     async sua(id: string, giaTri: Partial<Omit<typeof contents.$inferInsert, 'workspaceId' | 'id'>>) {
       const [dong] = await db
@@ -70,22 +95,22 @@ export function contentsRepo(db: KetNoiDrizzle, workspaceId: string) {
     },
 
     /**
-     * Tim bai co goc tiep can gan giong, trong `soNgay` ngay gan nhat.
+     * Tìm bài có góc tiếp cận gần giống, trong `soNgay` ngày gần nhất.
      *
-     * Dung `similarity()` cua pg_trgm (bat o Phase 1). Truy van nam O DAY chu
-     * khong o `lib/studio/`: neu tang tren nhan thang mot ket noi `db` de tu
-     * viet SQL thi bat bien "moi truy van deu di qua tang nay" chi con la loi
-     * hua. Studio goi ham nay, khong cam ket noi.
+     * Dùng `similarity()` của pg_trgm (bật ở Phase 1). Truy vấn nằm Ở ĐÂY chứ
+     * không ở `lib/studio/`: nếu tầng trên nhận thẳng một kết nối `db` để tự
+     * viết SQL thì bất biến "mọi truy vấn đều đi qua tầng này" chỉ còn là lời
+     * hứa. Studio gọi hàm này, không cầm kết nối.
      */
     async timTrungGoc(gocTiepCan: string, nguong: number, soNgay: number, gioiHan: number) {
       const goc = gocTiepCan.trim();
       if (goc === '') return [];
 
       const ketQua = await db.execute<{
-        id: string;
-        cau_mo_dau: string | null;
-        goc_tiep_can: string | null;
-        do_giong: number;
+        id           : string;
+        cau_mo_dau   : string | null;
+        goc_tiep_can : string | null;
+        do_giong     : number;
       }>(sql`
         SELECT id, cau_mo_dau, goc_tiep_can, similarity(goc_tiep_can, ${goc}) AS do_giong
         FROM contents

@@ -80,8 +80,16 @@
 .muc--chon {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
+}
+
+.muc--chon input {
+  accent-color: var(--brand-500);
+  flex: 0 0 22px;
+  height: 22px;
+  margin: 0;
+  width: 22px;
 }
 
 .muc--chon > span {
