@@ -5,6 +5,7 @@ import { useActionState, useState, useTransition } from 'react';
 import type { BanNhapBai } from '@/lib/studio/sinh-bai';
 
 import { guiSinhBai, luuBanNhap, type TrangThaiBienSoan } from './actions';
+import { XemAnh } from './xem-anh';
 import { XemKichBan } from './xem-kich-ban';
 
 type YTuongChon = {
@@ -99,6 +100,9 @@ function BanNhapCoTheSua({ ideaId, banDau }: { ideaId: string; banDau: BanNhapBa
       </div>
 
       <XemKichBan ideaId={ideaId} />
+      {ketQuaLuu?.ok ? (
+        <XemAnh contentId={ketQuaLuu.duLieu.contentId} />
+      ) : null}
     </div>
   );
 }

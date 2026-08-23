@@ -37,7 +37,10 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Tự động đọc tiến độ đến khi cả lô kết thúc và hiển thị bài hoàn tất.
 - [x] Sinh hàng loạt.
 - [x] Đăng ký nhiệm vụ sinh ảnh qua hàng đợi và tách khỏi worker văn bản.
-- [ ] Sinh ảnh.
+- [x] Xếp job sinh ảnh cho bài đã lưu và đọc trạng thái theo workspace.
+- [x] Worker gọi Gemini, lưu byte ảnh vào kho media và tạo asset cho bài.
+- [x] Giao diện tự theo dõi job và hiển thị ảnh qua tuyến media có kiểm quyền.
+- [x] Sinh ảnh.
 
 ## Luồng đề xuất ý tưởng
 
@@ -55,6 +58,9 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - Mọi truy vấn đi qua `lib/data-access/` và luôn giới hạn theo `workspaceId`.
 - Danh sách bài ngoài còn được giới hạn theo người dùng đang đăng nhập.
 - Web app không gọi thẳng nhà cung cấp mô hình.
+- Worker ảnh đọc lại nội dung theo workspace; payload job chỉ chứa `contentId` và tỉ lệ ảnh.
+- Lần retry tái sử dụng asset cùng đường dẫn để không tạo dòng trùng khi job chưa kịp đánh dấu hoàn tất.
+- Byte ảnh nằm trong kho media, bảng `assets` chỉ giữ đường dẫn tương đối và metadata.
 - Bảng `ideas` có cột `tieu_de` bắt buộc; migration backfill dữ liệu cũ trước khi đặt `NOT NULL`.
 - Trụ cột hoặc chân dung không khớp dữ liệu thật được đặt thành `null`, không lưu tên do mô hình tự đặt.
 - Nguồn và cờ khám phá thuộc quyền sở hữu của mã, không lấy từ kết quả mô hình.
@@ -82,10 +88,13 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `lib/model-runner/loi-nhac-sinh-kich-ban.js`: ràng buộc thời lượng, hình ảnh và lời thoại từng cảnh.
 - `lib/model-runner/chon-mo-hinh.js`: định tuyến nhiệm vụ sinh ảnh sang worker API riêng.
 - `workers/model/index.js`: chỉ nhận nhiệm vụ văn bản, không claim job sinh ảnh.
+- `lib/studio/sinh-anh.ts`: xếp job và dọn trạng thái ảnh theo workspace.
+- `workers/image/`: gọi Gemini, lưu file, tạo asset và chạy vòng lặp riêng cho job ảnh.
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
 - `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
 - `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu, sửa bài và gọi sinh kịch bản.
 - `app/(dash)/studio/bien-soan/xem-kich-ban.tsx`: chọn thời lượng và hiển thị khung hình, lời thoại từng cảnh.
+- `app/(dash)/studio/bien-soan/xem-anh.tsx`: xếp job, hỏi tiến độ và hiển thị ảnh của bài đã lưu.
 - `app/(dash)/studio/hang-loat/actions.ts`: nối service xếp lô và đọc trạng thái với workspace trong phiên.
 - `app/(dash)/studio/hang-loat/page.tsx`: đọc ý tưởng chưa dùng của workspace để chuẩn bị lô.
 - `app/(dash)/studio/hang-loat/man-hinh-hang-loat.tsx`: giới hạn lựa chọn, hỏi tiến độ và hiển thị bài hoàn tất.
@@ -99,6 +108,9 @@ Các kiểm tra đã chạy xanh trong môi trường hiện tại:
 npx tsc --noEmit
 node --test tests/studio-de-xuat.test.cjs tests/studio-de-xuat-slot.test.cjs tests/studio-de-xuat-service.test.cjs tests/studio-khong-chep-bai.test.cjs tests/model-runner-don-vi.test.js tests/jobs-claim-contract.test.cjs tests/y-tuong-co-nguon-contract.test.cjs
 node --test tests/model-runner-sinh-anh.test.js
+node --test tests/studio-sinh-anh-service.test.cjs
+node --test tests/worker-sinh-anh.test.cjs
+node --test tests/studio-sinh-anh-ui.test.cjs
 node --test tests/studio-de-xuat-ui-contract.test.cjs
 node --test tests/studio-danh-sach-y-tuong-ui.test.cjs
 node --test tests/loi-nhac-sinh-bai.test.cjs
@@ -114,7 +126,7 @@ node --test tests/studio-sinh-kich-ban-service.test.cjs
 node --test tests/data-access-guard.test.cjs
 ```
 
-Kết quả gần nhất: 99 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0. Next.js biên dịch production thành công.
+Kết quả gần nhất: 113 test tính năng và hợp đồng, cùng 37 test data-access guard đều pass; TypeScript thoát mã 0.
 
 ## Giới hạn môi trường
 
@@ -128,4 +140,4 @@ Kết quả gần nhất: 99 test tính năng và hợp đồng, cùng 37 test d
 
 1. Dựng `.env`, PostgreSQL và chạy migration/seed theo `README.md`.
 2. Chạy lại toàn bộ test, DB integration test và production build.
-3. Dựng worker API sinh ảnh và lưu kết quả vào kho ảnh của bài đăng.
+3. Chạy thử worker ảnh với khóa Gemini thật và kiểm tra ảnh trên màn hình biên soạn.

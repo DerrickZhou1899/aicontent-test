@@ -142,6 +142,15 @@
   font-weight: 700;
 }
 
+.anh-da-sinh {
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
 @media (max-width: 900px) {
   .bien-soan-layout {
     grid-template-columns: 1fr;

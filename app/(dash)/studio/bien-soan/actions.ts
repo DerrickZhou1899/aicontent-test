@@ -3,6 +3,7 @@
 import { workspaceHienTai } from '@/lib/auth/current-workspace';
 import { nguoiDungHienTai } from '@/lib/auth/nguoi-dung-tu-phien';
 import { luuBanNhapBai } from '@/lib/studio/luu-bai';
+import { docAnh, sinhAnh } from '@/lib/studio/sinh-anh';
 import {
   sinhBaiTuYTuong,
   type BanNhapBai,
@@ -91,5 +92,25 @@ export async function luuBanNhap(thamSo: {
       noiDung : thamSo.noiDung,
       hashtag : thamSo.hashtag.split(/\s+/),
     },
+  });
+}
+
+export async function guiSinhAnh(contentId: string) {
+  if (typeof contentId !== 'string' || contentId.trim() === '') {
+    return { ok: false as const, loi: 'Bài đăng không hợp lệ.', canhBao: [] };
+  }
+  return sinhAnh({
+    workspaceId : await workspaceHienTai(),
+    contentId   : contentId.trim(),
+  });
+}
+
+export async function guiDocAnh(jobId: string) {
+  if (typeof jobId !== 'string' || jobId.trim() === '') {
+    return { ok: false as const, loi: 'Việc sinh ảnh không hợp lệ.', canhBao: [] };
+  }
+  return docAnh({
+    workspaceId : await workspaceHienTai(),
+    jobId       : jobId.trim(),
   });
 }
