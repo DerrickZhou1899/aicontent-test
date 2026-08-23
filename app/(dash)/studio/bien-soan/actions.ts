@@ -52,7 +52,7 @@ export async function guiSinhKichBan(
   const ideaId      = form.get('ideaId');
   const thoiLuong   = form.get('thoiLuongMucTieuGiay');
   if (typeof ideaId !== 'string' || ideaId.trim() === '') {
-    return { ok: false, loi: 'Hãy chọn một ý tưởng để sinh kịch bản.', canhBao: [] };
+    return { ok: false, loi: 'Hãy chọn một ý tưởng để tạo kịch bản.', canhBao: [] };
   }
 
   const ketQua = await sinhKichBanTuYTuong({
@@ -133,7 +133,7 @@ export async function guiSinhAnh(contentId: string) {
 
 export async function guiDocAnh(jobId: string) {
   if (typeof jobId !== 'string' || jobId.trim() === '') {
-    return { ok: false as const, loi: 'Việc sinh ảnh không hợp lệ.', canhBao: [] };
+    return { ok: false as const, loi: 'Việc tạo ảnh không hợp lệ.', canhBao: [] };
   }
   return docAnh({
     workspaceId : await workspaceHienTai(),

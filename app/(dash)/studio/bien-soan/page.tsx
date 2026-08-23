@@ -11,7 +11,7 @@ import './bien-soan.css';
 
 export const metadata: Metadata = {
   title       : 'Biên soạn bài đăng — AI Content',
-  description : 'Sinh và chỉnh sửa một bài đăng từ ý tưởng đã lưu.',
+  description : 'Tạo và chỉnh sửa một bài đăng từ ý tưởng đã lưu.',
 };
 
 type ThuocTinhTrang = {

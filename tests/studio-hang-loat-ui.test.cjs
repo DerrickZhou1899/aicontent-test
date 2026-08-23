@@ -30,6 +30,18 @@ test('màn hình giới hạn 10 lựa chọn và hiển thị việc vừa xế
   assert.match(maNguon, /daChon\.length >= SO_BAI_TOI_DA/);
   assert.match(maNguon, /ketQua\.duLieu\.map\(/);
   assert.match(maNguon, /ketQua\?\.canhBao\.map\(/);
+  assert.match(maNguon, /`Tạo \$\{daChon\.length\} bài`/);
+  assert.match(maNguon, /Đang tạo bài…/);
+  assert.doesNotMatch(maNguon, /`Sinh \$\{daChon\.length\} bài`/);
+});
+
+test('ô chọn ý tưởng đủ lớn để nhìn và bấm rõ ràng', () => {
+  const duongDan = join(thuMuc, '..', 'studio.css');
+  const css      = readFileSync(duongDan, 'utf8');
+
+  assert.match(css, /\.muc--chon input\s*\{[^}]*width:\s*22px/s);
+  assert.match(css, /\.muc--chon input\s*\{[^}]*height:\s*22px/s);
+  assert.match(css, /\.muc--chon input\s*\{[^}]*flex:\s*0 0 22px/s);
 });
 
 test('màn hình hỏi tiến độ đến khi cả lô kết thúc và hiển thị bài hoàn tất', () => {

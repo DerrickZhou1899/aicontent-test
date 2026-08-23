@@ -37,7 +37,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Action xếp lô và đọc tiến độ luôn lấy workspace từ phiên đăng nhập.
 - [x] Trang chọn tối đa 10 ý tưởng chưa dùng và hiển thị các job vừa xếp.
 - [x] Tự động đọc tiến độ đến khi cả lô kết thúc và hiển thị bài hoàn tất.
-- [x] Sinh hàng loạt.
+- [x] Tạo hàng loạt.
 - [x] Đăng ký nhiệm vụ sinh ảnh qua hàng đợi và tách khỏi worker văn bản.
 - [x] Xếp job sinh ảnh cho bài đã lưu và đọc trạng thái theo workspace.
 - [x] Worker gọi Gemini, lưu byte ảnh vào kho media và tạo asset cho bài.

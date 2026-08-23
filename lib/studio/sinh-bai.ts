@@ -117,7 +117,7 @@ export function taoDichVuSinhBai(phuThuocCoDinh?: PhuThuocSinhBai) {
       repo.hoSo.lay(),
     ]);
     if (!yTuong) return ketQuaLoi('Không tìm thấy ý tưởng trong không gian làm việc này.');
-    if (!hoSo) return ketQuaLoi('Hồ sơ thương hiệu chưa sẵn sàng để sinh bài.');
+    if (!hoSo) return ketQuaLoi('Hồ sơ thương hiệu chưa sẵn sàng để tạo bài.');
 
     const [truCot, chanDung, sanPham, insight] = await Promise.all([
       yTuong.pillarId ? repo.truCot.layTheoId(yTuong.pillarId) : null,
@@ -134,15 +134,15 @@ export function taoDichVuSinhBai(phuThuocCoDinh?: PhuThuocSinhBai) {
         khongGianLamViec : thamSo.workspaceId,
       });
     } catch {
-      return ketQuaLoi('Không thể gửi việc sinh bài. Hãy thử lại sau ít phút.');
+      return ketQuaLoi('Không thể gửi việc tạo bài. Hãy thử lại sau ít phút.');
     }
     if (ketQuaMay.trangThai !== 'xong' || !ketQuaMay.ketQua) {
-      return ketQuaLoi(ketQuaMay.loi ?? 'Việc sinh bài chưa hoàn tất. Hãy thử lại.');
+      return ketQuaLoi(ketQuaMay.loi ?? 'Việc tạo bài chưa hoàn tất. Hãy thử lại.');
     }
     const banNhap = donKetQuaSinhBai(ketQuaMay.ketQua);
     return banNhap
       ? { ok: true, duLieu: banNhap, canhBao: [] }
-      : ketQuaLoi('Kết quả sinh bài không hợp lệ. Hãy thử lại.');
+      : ketQuaLoi('Kết quả tạo bài không hợp lệ. Hãy thử lại.');
   };
 }
 

@@ -96,7 +96,7 @@ export function XemAnh({ contentId }: { contentId: string }) {
         <img
           className="anh-da-sinh"
           src={urlMedia(anh.duongDan)}
-          alt="Ảnh minh họa đã sinh cho bài đăng"
+          alt="Ảnh minh họa đã tạo cho bài đăng"
         />
       ) : null}
     </section>

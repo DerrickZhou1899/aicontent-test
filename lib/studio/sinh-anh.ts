@@ -86,7 +86,7 @@ export function taoDichVuSinhAnh(phuThuocCoDinh?: PhuThuocSinhAnh) {
       });
       return { ok: true, duLieu: viec, canhBao: [] };
     } catch {
-      return ketQuaLoi('Không thể xếp việc sinh ảnh. Hãy thử lại.');
+      return ketQuaLoi('Không thể xếp việc tạo ảnh. Hãy thử lại.');
     }
   };
 }
@@ -97,21 +97,21 @@ export function taoDichVuDocAnh(phuThuocCoDinh?: PhuThuocSinhAnh) {
     jobId       : string;
   }): Promise<KetQuaStudio<TrangThaiSinhAnh>> => {
     const jobId = donId(thamSo.jobId);
-    if (!jobId) return ketQuaLoi('Việc sinh ảnh không hợp lệ.');
+    if (!jobId) return ketQuaLoi('Việc tạo ảnh không hợp lệ.');
 
     try {
       const phuThuoc = phuThuocCoDinh ?? await phuThuocMacDinh();
       const job      = await phuThuoc.createRepo(thamSo.workspaceId).jobs.layTheoId(jobId);
-      if (!job) return ketQuaLoi('Không tìm thấy việc sinh ảnh trong không gian làm việc này.');
+      if (!job) return ketQuaLoi('Không tìm thấy việc tạo ảnh trong không gian làm việc này.');
 
       const anh = job.trangThai === 'xong' ? donAnh(job.ketQua, thamSo.workspaceId) : null;
-      if (job.trangThai === 'xong' && !anh) return ketQuaLoi('Kết quả sinh ảnh không hợp lệ.');
+      if (job.trangThai === 'xong' && !anh) return ketQuaLoi('Kết quả tạo ảnh không hợp lệ.');
       const loi = job.trangThai === 'loi' || job.trangThai === 'huy'
-        ? 'Không thể sinh ảnh cho bài này.'
+        ? 'Không thể tạo ảnh cho bài này.'
         : null;
       return { ok: true, duLieu: { trangThai: job.trangThai, anh, loi }, canhBao: [] };
     } catch {
-      return ketQuaLoi('Không thể đọc trạng thái sinh ảnh. Hãy thử lại.');
+      return ketQuaLoi('Không thể đọc trạng thái tạo ảnh. Hãy thử lại.');
     }
   };
 }

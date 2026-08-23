@@ -61,10 +61,10 @@ function donTrangThai(viec: ViecTheoDoi, job: DongJob): TrangThaiBaiTrongLo {
     const banNhap = donKetQuaSinhBai(job.ketQua);
     return banNhap
       ? { ...viec, trangThai: 'xong', banNhap, loi: null }
-      : { ...viec, trangThai: 'loi', banNhap: null, loi: 'Kết quả sinh bài không hợp lệ.' };
+      : { ...viec, trangThai: 'loi', banNhap: null, loi: 'Kết quả tạo bài không hợp lệ.' };
   }
   if (job.trangThai === 'loi' || job.trangThai === 'huy') {
-    return { ...viec, trangThai: job.trangThai, banNhap: null, loi: 'Không thể sinh bài này.' };
+    return { ...viec, trangThai: job.trangThai, banNhap: null, loi: 'Không thể tạo bài này.' };
   }
   return { ...viec, trangThai: job.trangThai, banNhap: null, loi: null };
 }

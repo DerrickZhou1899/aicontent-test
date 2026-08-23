@@ -14,7 +14,7 @@ import './de-xuat-ket-qua.css';
 
 export const metadata: Metadata = {
   title       : 'Đề xuất hôm nay — AI Content',
-  description : 'Sinh ý tưởng nội dung từ hồ sơ thương hiệu và dữ liệu kênh.',
+  description : 'Tạo ý tưởng nội dung từ hồ sơ thương hiệu và dữ liệu kênh.',
 };
 
 export default async function TrangDeXuat() {

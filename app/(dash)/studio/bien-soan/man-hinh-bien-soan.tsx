@@ -144,7 +144,7 @@ export function ManHinhBienSoan({ yTuong, ideaIdMacDinh }: ThuocTinhManHinh) {
               </select>
             </label>
             <button className="btn btn--primary" type="submit" disabled={dangChay}>
-              {dangChay ? 'Đang tạo bản nháp…' : 'Sinh bản nháp'}
+              {dangChay ? 'Đang tạo bản nháp…' : 'Tạo bản nháp'}
             </button>
           </form>
         )}

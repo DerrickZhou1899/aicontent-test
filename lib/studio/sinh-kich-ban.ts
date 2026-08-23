@@ -146,10 +146,10 @@ export function taoDichVuSinhKichBan(phuThuocCoDinh?: PhuThuocSinhKichBan) {
         repo.yTuong.layChiTietTheoId(thamSo.ideaId), repo.hoSo.lay(),
       ]);
     } catch {
-      return ketQuaLoi('Không thể đọc dữ liệu để sinh kịch bản. Hãy thử lại.');
+      return ketQuaLoi('Không thể đọc dữ liệu để tạo kịch bản. Hãy thử lại.');
     }
     if (!yTuong) return ketQuaLoi('Không tìm thấy ý tưởng trong không gian làm việc này.');
-    if (!hoSo) return ketQuaLoi('Hồ sơ thương hiệu chưa sẵn sàng để sinh kịch bản.');
+    if (!hoSo) return ketQuaLoi('Hồ sơ thương hiệu chưa sẵn sàng để tạo kịch bản.');
 
     let duLieuPhu : [Dong | null, Dong | null, Dong | null, Dong[]];
     try {
@@ -160,7 +160,7 @@ export function taoDichVuSinhKichBan(phuThuocCoDinh?: PhuThuocSinhKichBan) {
         repo.insight.list(50),
       ]);
     } catch {
-      return ketQuaLoi('Không thể đọc dữ liệu để sinh kịch bản. Hãy thử lại.');
+      return ketQuaLoi('Không thể đọc dữ liệu để tạo kịch bản. Hãy thử lại.');
     }
     const [truCot, chanDung, sanPham, insight] = duLieuPhu;
     let ketQuaMay : KetQuaMay;
@@ -174,15 +174,15 @@ export function taoDichVuSinhKichBan(phuThuocCoDinh?: PhuThuocSinhKichBan) {
         khongGianLamViec : thamSo.workspaceId,
       });
     } catch {
-      return ketQuaLoi('Không thể gửi việc sinh kịch bản. Hãy thử lại sau ít phút.');
+      return ketQuaLoi('Không thể gửi việc tạo kịch bản. Hãy thử lại sau ít phút.');
     }
     if (ketQuaMay.trangThai !== 'xong' || !ketQuaMay.ketQua) {
-      return ketQuaLoi(ketQuaMay.loi ?? 'Việc sinh kịch bản chưa hoàn tất. Hãy thử lại.');
+      return ketQuaLoi(ketQuaMay.loi ?? 'Việc tạo kịch bản chưa hoàn tất. Hãy thử lại.');
     }
     const banNhap = donKetQuaKichBan(ketQuaMay.ketQua);
     return banNhap
       ? { ok: true, duLieu: banNhap, canhBao: [] }
-      : ketQuaLoi('Kết quả sinh kịch bản không hợp lệ. Hãy thử lại.');
+      : ketQuaLoi('Kết quả tạo kịch bản không hợp lệ. Hãy thử lại.');
   };
 }
 

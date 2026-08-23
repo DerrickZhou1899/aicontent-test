@@ -89,9 +89,9 @@ export function taoDichVuSinhHangLoat(phuThuocCoDinh?: PhuThuocSinhHangLoat) {
         Promise.all(ideaIds.map((id) => repo.yTuong.layChiTietTheoId(id))),
       ]);
     } catch {
-      return ketQuaLoi('Không thể đọc dữ liệu để sinh hàng loạt. Hãy thử lại.');
+      return ketQuaLoi('Không thể đọc dữ liệu để tạo hàng loạt. Hãy thử lại.');
     }
-    if (!hoSo) return ketQuaLoi('Hồ sơ thương hiệu chưa sẵn sàng để sinh bài.');
+    if (!hoSo) return ketQuaLoi('Hồ sơ thương hiệu chưa sẵn sàng để tạo bài.');
     if (yTuong.some((muc) => muc === null)) {
       return ketQuaLoi('Có ý tưởng không thuộc không gian làm việc này.');
     }
@@ -108,7 +108,7 @@ export function taoDichVuSinhHangLoat(phuThuocCoDinh?: PhuThuocSinhHangLoat) {
         return dungDuLieuVaoSinhBai(muc, hoSo, truCot, chanDung, sanPham, insight);
       }));
     } catch {
-      return ketQuaLoi('Không thể đọc dữ liệu để sinh hàng loạt. Hãy thử lại.');
+      return ketQuaLoi('Không thể đọc dữ liệu để tạo hàng loạt. Hãy thử lại.');
     }
 
     const ketQuaXep = await Promise.allSettled(duLieuVao.map((duLieu, viTri) => phuThuoc.chayNhiemVu({
@@ -130,7 +130,7 @@ export function taoDichVuSinhHangLoat(phuThuocCoDinh?: PhuThuocSinhHangLoat) {
     });
     return duLieu.length > 0
       ? { ok: true, duLieu, canhBao }
-      : ketQuaLoi('Không thể xếp việc sinh bài. Hãy thử lại.');
+      : ketQuaLoi('Không thể xếp việc tạo bài. Hãy thử lại.');
   };
 }
 

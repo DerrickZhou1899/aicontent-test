@@ -93,7 +93,7 @@ test('service đổi kết quả hoàn tất sai định dạng thành lỗi an 
   assert.equal(ketQua.ok, true);
   assert.deepEqual(ketQua.duLieu[0], {
     ideaId: 'idea-a', jobId: 'job-a', trangThai: 'loi', banNhap: null,
-    loi: 'Kết quả sinh bài không hợp lệ.',
+    loi: 'Kết quả tạo bài không hợp lệ.',
   });
 });
 
@@ -104,6 +104,6 @@ test('service không trả lỗi thô của worker ra ngoài', async () => {
   const ketQua = await taoDichVu(phuThuoc)({ workspaceId: 'ws-a', viec: [VIEC[0]] });
 
   assert.equal(ketQua.ok, true);
-  assert.equal(ketQua.duLieu[0].loi, 'Không thể sinh bài này.');
+  assert.equal(ketQua.duLieu[0].loi, 'Không thể tạo bài này.');
   assert.equal(JSON.stringify(ketQua).includes('khong-duoc-lo'), false);
 });

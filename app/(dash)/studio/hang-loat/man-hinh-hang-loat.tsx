@@ -89,7 +89,7 @@ export function ManHinhHangLoat({ yTuong }: ThuocTinh) {
         <p className="o__goi-y">Đã chọn {daChon.length}/{SO_BAI_TOI_DA} ý tưởng.</p>
 
         {yTuong.length === 0 ? (
-          <p className="trong">Chưa có ý tưởng mới để sinh bài.</p>
+          <p className="trong">Chưa có ý tưởng mới để tạo bài.</p>
         ) : (
           <form action={guiXepLoMoi} onSubmit={batDauLoMoi}>
             <div className="muc-ds">
@@ -118,7 +118,7 @@ export function ManHinhHangLoat({ yTuong }: ThuocTinh) {
               type="submit"
               disabled={dangChay || daChon.length === 0}
             >
-              {dangChay ? 'Đang xếp lô…' : `Sinh ${daChon.length} bài`}
+              {dangChay ? 'Đang tạo bài…' : `Tạo ${daChon.length} bài`}
             </button>
           </form>
         )}
@@ -126,7 +126,7 @@ export function ManHinhHangLoat({ yTuong }: ThuocTinh) {
 
       <section className="panel" aria-labelledby="trang-thai-lo" aria-live="polite" aria-busy={dangChay || daKetThuc < danhSach.length}>
         <p className="eyebrow">02 · Hàng đợi</p>
-        <h2 id="trang-thai-lo">Tiến độ sinh bài</h2>
+        <h2 id="trang-thai-lo">Tiến độ tạo bài</h2>
         {!ketQua ? <p className="trong">Các bài vừa xếp sẽ xuất hiện tại đây.</p> : null}
         {ketQua && !ketQua.ok ? <p role="alert">{ketQua.loi}</p> : null}
         {ketQua?.canhBao.map((canhBao) => (

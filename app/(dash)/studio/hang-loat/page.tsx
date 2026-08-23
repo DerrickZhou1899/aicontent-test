@@ -9,8 +9,8 @@ import '../../brand/brand.css';
 import '../studio.css';
 
 export const metadata: Metadata = {
-  title       : 'Sinh hàng loạt — AI Content',
-  description : 'Chọn ý tưởng và xếp hàng đợi sinh bài cho kế hoạch nội dung hôm nay.',
+  title       : 'Tạo hàng loạt — AI Content',
+  description : 'Chọn ý tưởng và xếp hàng đợi tạo bài cho kế hoạch nội dung hôm nay.',
 };
 
 export default async function TrangHangLoat() {
@@ -29,7 +29,7 @@ export default async function TrangHangLoat() {
             <Icon name="i-sparkle" size={13} />
             Studio nội dung
           </span>
-          <h1 className="page-title">Sinh hàng loạt</h1>
+          <h1 className="page-title">Tạo hàng loạt</h1>
           <p className="page-sub">
             Chọn tối đa 10 ý tưởng để chuẩn bị một lô bài cho hôm nay.
           </p>
