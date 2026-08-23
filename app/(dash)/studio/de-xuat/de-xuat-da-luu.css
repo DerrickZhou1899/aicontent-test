@@ -148,6 +148,35 @@
   text-underline-offset: 3px;
 }
 
+.y-tuong-da-luu__hanh-dong {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.y-tuong-da-luu__xoa {
+  background: transparent;
+  border: 0;
+  color: var(--clay);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 0;
+}
+
+.y-tuong-da-luu__xoa:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.y-tuong-da-luu__da-dung {
+  color: var(--ink-3);
+  font-size: 12px;
+  margin-top: 12px;
+  text-align: right;
+}
+
 @media (max-width: 760px) {
   .y-tuong-da-luu {
     padding: 20px;

@@ -91,5 +91,18 @@ export function ideasRepo(db: KetNoiDrizzle, workspaceId: string) {
         .returning();
       return dong ?? null;
     },
+
+    async xoaChuaDung(id: string): Promise<Idea | null> {
+      // Điều kiện nằm ngay trong DELETE để ý tưởng vừa được dùng không bị xóa bởi request đến chậm.
+      const [dong] = await db
+        .delete(ideas)
+        .where(and(
+          eq(ideas.workspaceId, workspaceId),
+          eq(ideas.id, id),
+          eq(ideas.daDung, false),
+        ))
+        .returning();
+      return dong ?? null;
+    },
   };
 }

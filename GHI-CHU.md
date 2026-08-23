@@ -22,6 +22,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Chống lưu trùng khi nhiều request nhận cùng một job hoàn tất.
 - [x] Giao diện gửi yêu cầu và hiển thị kết quả đề xuất.
 - [x] Danh sách ý tưởng đã lưu và mở nguồn tham khảo.
+- [x] Xóa nhanh ý tưởng chưa dùng mà không vượt phạm vi workspace.
 - [x] Lời nhắc sinh bài bám ý tưởng, hồ sơ và ràng buộc độ dài.
 - [x] Dịch vụ sinh bản nháp từ một ý tưởng trong workspace.
 - [x] Giao diện chọn ý tưởng, sinh và chỉnh sửa bản nháp.
@@ -93,6 +94,7 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `workers/image/`: gọi Gemini, lưu file, tạo asset và chạy vòng lặp riêng cho job ảnh.
 - `app/(dash)/studio/de-xuat/`: gửi yêu cầu đề xuất và hiển thị kết quả để người dùng duyệt.
 - `app/(dash)/studio/de-xuat/danh-sach-y-tuong.tsx`: hiển thị kho ý tưởng đã lưu và mở đúng bài nguồn.
+- `app/(dash)/studio/de-xuat/nut-xoa-y-tuong.tsx`: xác nhận và xóa nhanh ý tưởng chưa dùng.
 - `app/(dash)/studio/bien-soan/`: chọn ý tưởng, sinh bản đầu, sửa bài và gọi sinh kịch bản.
 - `app/(dash)/studio/bien-soan/xem-kich-ban.tsx`: chọn thời lượng và hiển thị khung hình, lời thoại từng cảnh.
 - `app/(dash)/studio/bien-soan/xem-anh.tsx`: xếp job, hỏi tiến độ và hiển thị ảnh của bài đã lưu.

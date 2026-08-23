@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import { workspaceHienTai } from '@/lib/auth/current-workspace';
 import { nguoiDungHienTai } from '@/lib/auth/nguoi-dung-tu-phien';
+import { createRepo } from '@/lib/data-access';
 import { deXuatYTuong } from '@/lib/studio/de-xuat';
 import type { BeMat, KetQuaStudio, YTuongDeXuat } from '@/lib/studio/kieu';
 
@@ -30,4 +31,13 @@ export async function guiDeXuat(
 
   if (ketQua.ok) revalidatePath('/studio/de-xuat');
   return ketQua;
+}
+
+export async function xoaYTuong(form: FormData): Promise<void> {
+  const ideaId = form.get('ideaId');
+  if (typeof ideaId !== 'string' || ideaId.trim() === '') return;
+
+  const repo  = createRepo(await workspaceHienTai());
+  const daXoa = await repo.yTuong.xoaChuaDung(ideaId.trim());
+  if (daXoa) revalidatePath('/studio/de-xuat');
 }

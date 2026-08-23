@@ -40,3 +40,26 @@ test('sinh thành công làm mới danh sách đã lưu', () => {
 
   assert.match(maNguon, /revalidatePath\(['"]\/studio\/de-xuat['"]\)/);
 });
+
+test('ý tưởng chưa dùng có nút xác nhận xóa nhanh', () => {
+  const danhSach = doc('danh-sach-y-tuong.tsx');
+  const nutXoa   = doc('nut-xoa-y-tuong.tsx');
+
+  assert.match(danhSach, /<NutXoaYTuong/);
+  assert.match(danhSach, /daDung=\{yTuong\.daDung\}/);
+  assert.match(nutXoa, /window\.confirm/);
+  assert.match(nutXoa, /Xóa ý tưởng/);
+  assert.match(nutXoa, /Đã dùng/);
+  assert.match(nutXoa, /useFormStatus/);
+});
+
+test('action xóa chỉ nhận ID và lấy workspace từ phiên', () => {
+  const maNguon = doc('actions.ts');
+
+  assert.match(maNguon, /export async function xoaYTuong/);
+  assert.match(maNguon, /form\.get\(['"]ideaId['"]\)/);
+  assert.match(maNguon, /createRepo\(await workspaceHienTai\(\)\)/);
+  assert.match(maNguon, /xoaChuaDung\(/);
+  assert.match(maNguon, /revalidatePath\(['"]\/studio\/de-xuat['"]\)/);
+  assert.doesNotMatch(maNguon, /form\.get\(['"]workspaceId['"]\)/);
+});

@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 import type { YTuongChiTiet } from '@/lib/data-access/ideas';
 
+import { NutXoaYTuong } from './nut-xoa-y-tuong';
+
 type ThuocTinh = {
   danhSach : YTuongChiTiet[];
 };
@@ -77,6 +79,11 @@ export function DanhSachYTuong({ danhSach }: ThuocTinh) {
                 <strong>Biên soạn ý tưởng</strong>
               </Link>
               <NguonThamKhao yTuong={yTuong} />
+              <NutXoaYTuong
+                ideaId={yTuong.id}
+                tieuDe={yTuong.tieuDe}
+                daDung={yTuong.daDung}
+              />
             </article>
           ))}
         </div>

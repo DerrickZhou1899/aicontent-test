@@ -78,6 +78,23 @@ test('nhanQuyenSuDung chi claim y tuong chua dung trong workspace', async () => 
   assert.match(cau, /returning/);
 });
 
+test('xoaChuaDung chỉ xóa ý tưởng chưa dùng trong workspace', async () => {
+  const { ketNoi, nhatKy } = ketNoiGhiSql();
+  const id   = randomUUID();
+  const repo = ideasRepo(ketNoi, 'ws-A');
+
+  assert.equal(typeof repo.xoaChuaDung, 'function');
+  await repo.xoaChuaDung(id);
+
+  assert.equal(nhatKy.length, 1);
+  const { cau } = nhatKy[0];
+  assert.match(cau, /^delete from "ideas"/);
+  assert.match(cau, /where .*"workspace_id" = \$\d+/);
+  assert.match(cau, /where .*"id" = \$\d+/);
+  assert.match(cau, /where .*"da_dung" = \$\d+/);
+  assert.match(cau, /returning/);
+});
+
 test('migration tieu de backfill du lieu cu truoc khi bat buoc', () => {
   const duongDan = path.join(__dirname, '../db/migrations/0009_add_idea_title.sql');
   const sql      = fs.readFileSync(duongDan, 'utf8');
