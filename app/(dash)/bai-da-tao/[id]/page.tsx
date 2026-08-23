@@ -21,7 +21,7 @@ export default async function TrangChiTietBanNhap({
 }) {
   const { id }   = await params;
   const repo     = createRepo(await workspaceHienTai());
-  const banNhap  = await repo.contents.layTheoId(id);
+  const banNhap  = await repo.contents.layBanNhapChiTietTheoId(id);
   if (!banNhap || banNhap.trangThai !== 'ban_nhap') notFound();
 
   const assets = await repo.asset.theoNoiDung([id]);
@@ -41,7 +41,14 @@ export default async function TrangChiTietBanNhap({
           <p className="page-sub">Chỉnh nội dung và tạo ảnh trước khi đưa bài vào lịch đăng.</p>
         </div>
       </div>
-      <TrinhSuaBanNhap banNhap={{ id: banNhap.id, noiDung: banNhap.noiDung ?? '' }} anhBanDau={anhBanDau} />
+      <TrinhSuaBanNhap
+        banNhap={{
+          id             : banNhap.id,
+          tieuDeYTuong   : banNhap.tieuDeYTuong,
+          noiDung        : banNhap.noiDung ?? '',
+        }}
+        anhBanDau={anhBanDau}
+      />
     </>
   );
 }

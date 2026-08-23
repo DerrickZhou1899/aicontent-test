@@ -8,8 +8,9 @@ import { XemAnh } from '../../studio/bien-soan/xem-anh';
 import { guiSuaBanNhap } from '../actions';
 
 type BanNhap = {
-  id      : string;
-  noiDung : string;
+  id            : string;
+  tieuDeYTuong  : string | null;
+  noiDung       : string;
 };
 
 export function TrinhSuaBanNhap({
@@ -36,6 +37,10 @@ export function TrinhSuaBanNhap({
       <section className="panel chi-tiet-ban-nhap__noi-dung">
         <p className="bien-soan-buoc">01 · Nội dung bài đăng</p>
         <h2>Chỉnh sửa bản nháp</h2>
+        <div className="chi-tiet-ban-nhap__y-tuong">
+          <span>Tên ý tưởng</span>
+          <strong>{banNhap.tieuDeYTuong ?? 'Ý tưởng gốc không còn tồn tại'}</strong>
+        </div>
         <textarea
           aria-label="Nội dung bản nháp"
           value={noiDung}

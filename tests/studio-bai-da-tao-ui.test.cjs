@@ -14,8 +14,9 @@ test('trang bài đã tạo chỉ đọc bản nháp trong workspace hiện tạ
 
   assert.match(maNguon, /workspaceHienTai\(\)/);
   assert.match(maNguon, /createRepo\(/);
-  assert.match(maNguon, /contents\.list\(\{ trangThai: 'ban_nhap'/);
+  assert.match(maNguon, /contents\.listBanNhapChiTiet\(/);
   assert.match(maNguon, /Bản nháp đã lưu/);
+  assert.match(maNguon, /muc\.tieuDeYTuong/);
   assert.match(maNguon, /muc\.noiDung/);
 });
 
@@ -45,10 +46,12 @@ test('trang chi tiết chỉ đọc bản nháp trong workspace và cho phép ch
   const actions  = readFileSync(join(goc, 'app', '(dash)', 'bai-da-tao', 'actions.ts'), 'utf8');
 
   assert.match(trang, /workspaceHienTai\(\)/);
-  assert.match(trang, /contents\.layTheoId\(id\)/);
+  assert.match(trang, /contents\.layBanNhapChiTietTheoId\(id\)/);
   assert.match(trang, /trangThai !== 'ban_nhap'/);
   assert.match(trang, /asset\.theoNoiDung\(\[id\]\)/);
   assert.match(trinhSua, /<textarea/);
+  assert.match(trinhSua, /Tên ý tưởng/);
+  assert.match(trinhSua, /banNhap\.tieuDeYTuong/);
   assert.match(trinhSua, /Lưu thay đổi/);
   assert.match(trinhSua, /<XemAnh contentId=\{banNhap\.id\}/);
   assert.match(actions, /workspaceHienTai\(\)/);

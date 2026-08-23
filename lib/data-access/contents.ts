@@ -6,9 +6,9 @@
  * chứng minh là nó thực sự chặn đọc chéo không gian làm việc.
  */
 
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, getTableColumns, sql } from 'drizzle-orm';
 
-import { contents } from '@/db/schema/index';
+import { contents, ideas } from '@/db/schema/index';
 
 import type { KetNoiDrizzle } from './guard';
 
@@ -16,6 +16,11 @@ type LocNoiDung = {
   beMat?     : typeof contents.$inferSelect.beMat;
   trangThai? : typeof contents.$inferSelect.trangThai;
   gioiHan?   : number;
+};
+
+const cotBanNhapChiTiet = {
+  ...getTableColumns(contents),
+  tieuDeYTuong : ideas.tieuDe,
 };
 
 export function contentsRepo(db: KetNoiDrizzle, workspaceId: string) {
@@ -32,6 +37,26 @@ export function contentsRepo(db: KetNoiDrizzle, workspaceId: string) {
         .where(and(...dieuKien))
         .orderBy(desc(contents.ngayTao), desc(contents.id))
         .limit(loc?.gioiHan ?? 50);
+    },
+
+    async listBanNhapChiTiet(gioiHan = 200) {
+      return db
+        .select(cotBanNhapChiTiet)
+        .from(contents)
+        .leftJoin(ideas, and(eq(ideas.id, contents.ideaId), eq(ideas.workspaceId, workspaceId)))
+        .where(and(eq(contents.workspaceId, workspaceId), eq(contents.trangThai, 'ban_nhap')))
+        .orderBy(desc(contents.ngayTao), desc(contents.id))
+        .limit(gioiHan);
+    },
+
+    async layBanNhapChiTietTheoId(id: string) {
+      const [dong] = await db
+        .select(cotBanNhapChiTiet)
+        .from(contents)
+        .leftJoin(ideas, and(eq(ideas.id, contents.ideaId), eq(ideas.workspaceId, workspaceId)))
+        .where(and(eq(contents.id, id), eq(contents.workspaceId, workspaceId)))
+        .limit(1);
+      return dong ?? null;
     },
 
     /**

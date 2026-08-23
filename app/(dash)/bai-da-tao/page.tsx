@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function TrangBaiDaTao() {
   const repo = createRepo(await workspaceHienTai());
-  const bai  = await repo.contents.list({ trangThai: 'ban_nhap', gioiHan: 200 });
+  const bai  = await repo.contents.listBanNhapChiTiet();
   const assets = await repo.asset.theoNoiDung(bai.map((muc) => muc.id));
   const baiCoAnh = new Set(
     assets.filter((muc) => muc.loai === 'anh' && muc.duongDan).map((muc) => muc.contentId),
@@ -48,6 +48,9 @@ export default async function TrangBaiDaTao() {
                   <span>Bản nháp {String(viTri + 1).padStart(2, '0')}</span>
                   <span>{muc.beMat.replaceAll('_', ' ')}</span>
                 </div>
+                <h2 className="the-ban-nhap__tieu-de">
+                  {muc.tieuDeYTuong ?? 'Ý tưởng gốc không còn tồn tại'}
+                </h2>
                 <p className="the-ban-nhap__noi-dung">{muc.noiDung}</p>
                 <div className="the-ban-nhap__chan">
                   <span className={baiCoAnh.has(muc.id) ? 'nhan-anh nhan-anh--co' : 'nhan-anh'}>
