@@ -5,6 +5,7 @@ import { useActionState, useEffect, useEffectEvent, useRef, useState } from 'rea
 import type { ViecTheoDoi } from '@/lib/studio/trang-thai-hang-loat';
 
 import { guiDocTrangThaiLo, guiXepLo, type TrangThaiXepLo } from './actions';
+import { NutLuuHangLoat } from './nut-luu-hang-loat';
 
 type YTuongChon = {
   id     : string;
@@ -19,6 +20,17 @@ type ThuocTinh = {
 const SO_BAI_TOI_DA                   = 10;
 const TRANG_THAI_DAU : TrangThaiXepLo = null;
 const TRANG_THAI_KET_THUC              = ['xong', 'loi', 'huy'];
+const TEN_TRANG_THAI : Record<string, string> = {
+  cho       : 'Chờ xử lý',
+  dang_chay : 'Đang tạo bài',
+  xong      : 'Đã tạo xong',
+  loi       : 'Tạo bài thất bại',
+  huy       : 'Đã hủy',
+};
+
+function tenTrangThai(trangThai: string) {
+  return TEN_TRANG_THAI[trangThai] ?? 'Đang xử lý';
+}
 
 export function ManHinhHangLoat({ yTuong }: ThuocTinh) {
   const maLoHienTai                         = useRef(0);
@@ -80,6 +92,9 @@ export function ManHinhHangLoat({ yTuong }: ThuocTinh) {
       : [];
   const daKetThuc = danhSach.filter((muc) => TRANG_THAI_KET_THUC.includes(muc.trangThai)).length;
   const phanTram  = danhSach.length === 0 ? 0 : Math.round((daKetThuc / danhSach.length) * 100);
+  const baiCanLuu = danhSach.flatMap((muc) => muc.banNhap
+    ? [{ ideaId: muc.ideaId, banNhap: muc.banNhap }]
+    : []);
 
   return (
     <div className="hai-cot">
@@ -144,19 +159,24 @@ export function ManHinhHangLoat({ yTuong }: ThuocTinh) {
             <div className="muc-ds">
               {danhSach.map((muc) => (
                 <article className="muc" key={muc.jobId}>
+                  <small className="o__goi-y">Ý tưởng gốc</small>
                   <p className="muc__ten">{tenYTuong(muc.ideaId)}</p>
                   {muc.banNhap ? (
                     <>
+                      <small className="o__goi-y">Bài đăng đã tạo</small>
                       <h3>{muc.banNhap.tieuDe}</h3>
                       <p className="cot-be-mat__than">{muc.banNhap.noiDung}</p>
                       <small className="o__goi-y">{muc.banNhap.hashtag.join(' ')}</small>
                     </>
                   ) : (
-                    <small className="o__goi-y">{muc.loi ?? `Trạng thái: ${muc.trangThai}`}</small>
+                    <small className="o__goi-y">{muc.loi ?? `Trạng thái: ${tenTrangThai(muc.trangThai)}`}</small>
                   )}
                 </article>
               ))}
             </div>
+            {daKetThuc === danhSach.length && baiCanLuu.length > 0
+              ? <NutLuuHangLoat bai={baiCanLuu} />
+              : null}
           </>
         ) : null}
       </section>

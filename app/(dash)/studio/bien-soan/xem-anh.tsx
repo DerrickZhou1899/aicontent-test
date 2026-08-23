@@ -22,10 +22,16 @@ function urlMedia(duongDan: string): string {
   return `/api/media/${duongDan.split('/').map(encodeURIComponent).join('/')}`;
 }
 
-export function XemAnh({ contentId }: { contentId: string }) {
+export function XemAnh({
+  contentId,
+  anhBanDau = null,
+}: {
+  contentId  : string;
+  anhBanDau? : AnhDaSinh | null;
+}) {
   const [jobId, datJobId]           = useState<string | null>(null);
   const [trangThai, datTrangThai]   = useState<string | null>(null);
-  const [anh, datAnh]               = useState<AnhDaSinh | null>(null);
+  const [anh, datAnh]               = useState<AnhDaSinh | null>(anhBanDau);
   const [loi, datLoi]               = useState<string | null>(null);
   const [dangGui, batDauGui]        = useTransition();
 

@@ -66,7 +66,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Link className="nav__link" href="/studio/hang-loat"><Icon name="i-copy" size={18} />Tạo hàng loạt</Link>
           <Link className="nav__link" href="/studio/so-giong"><Icon name="i-eye" size={18} />So 4 giọng</Link>
           <Link className="nav__link" href="/templates" aria-current="page"><Icon name="i-file" size={18} />Mẫu nội dung</Link>
-          <a className="nav__link" href="#"><Icon name="i-folder" size={18} />Bài đã tạo</a>
+          <Link className="nav__link" href="/bai-da-tao"><Icon name="i-folder" size={18} />Bài đã tạo</Link>
           <Link className="nav__link" href="/bai-da-dang"><Icon name="i-file" size={18} />Bài đã đăng</Link>
           <Link className="nav__link" href="/kenh-ngoai"><Icon name="i-trend" size={18} />Kênh ngoài kia</Link>
           <span className="nav__link nav__link--soon"><Icon name="i-calendar" size={18} />Lịch đăng<span className="nav__soon">SẮP CÓ</span></span>

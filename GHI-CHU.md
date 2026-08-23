@@ -9,7 +9,7 @@ Hoàn thiện luồng sản xuất nội dung từ dữ liệu có sẵn trong h
 1. Sinh và lưu ý tưởng có neo vào dữ liệu thật.
 2. Từ một ý tưởng sinh bài đăng, cho phép chỉnh sửa và lưu bản nháp.
 3. Từ một ý tưởng sinh kịch bản quay theo từng phân cảnh.
-4. Mở rộng sang sinh hàng loạt và sinh ảnh sau khi ba mốc đầu ổn định.
+4. Mở rộng sang tạo hàng loạt và tạo ảnh sau khi ba mốc đầu ổn định.
 
 Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 bài Facebook mỗi ngày.
 
@@ -33,13 +33,15 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - [x] Sinh và hiển thị kịch bản quay theo từng phân cảnh.
 - [x] Chỉnh sửa từng phân cảnh và lưu kịch bản vào kho nội dung.
 - [x] Xếp tối đa 10 job sinh bài một lượt, không chờ trong request.
-- [x] Đọc và chuẩn hóa trạng thái cả lô bằng một truy vấn theo workspace.
+- [x] Đọc trạng thái cả lô theo workspace và hiển thị bằng câu tiếng Việt dễ hiểu.
 - [x] Action xếp lô và đọc tiến độ luôn lấy workspace từ phiên đăng nhập.
 - [x] Trang chọn tối đa 10 ý tưởng chưa dùng và hiển thị các job vừa xếp.
 - [x] Tự động đọc tiến độ đến khi cả lô kết thúc và hiển thị bài hoàn tất.
 - [x] Tạo hàng loạt.
+- [x] Lưu tối đa 10 bản nháp trong một giao dịch, không để lại lô lưu dở.
+- [x] Xem lại bản nháp đã lưu tại `/bai-da-tao` và mở trang này từ kết quả hàng loạt.
 - [x] Đăng ký nhiệm vụ sinh ảnh qua hàng đợi và tách khỏi worker văn bản.
-- [x] Xếp job sinh ảnh cho bài đã lưu và đọc trạng thái theo workspace.
+- [x] Xếp job tạo ảnh cho bài đã lưu và đọc trạng thái theo workspace.
 - [x] Worker gọi Gemini, lưu byte ảnh vào kho media và tạo asset cho bài.
 - [x] Giao diện tự theo dõi job và hiển thị ảnh qua tuyến media có kiểm quyền.
 - [x] Sinh ảnh.
@@ -101,6 +103,8 @@ Mục tiêu sử dụng cuối cùng là giúp chủ shop chuẩn bị đủ 10 
 - `app/(dash)/studio/hang-loat/actions.ts`: nối service xếp lô và đọc trạng thái với workspace trong phiên.
 - `app/(dash)/studio/hang-loat/page.tsx`: đọc ý tưởng chưa dùng của workspace để chuẩn bị lô.
 - `app/(dash)/studio/hang-loat/man-hinh-hang-loat.tsx`: giới hạn lựa chọn, hỏi tiến độ và hiển thị bài hoàn tất.
+- `lib/studio/sua-ban-nhap.ts`: chỉ cho sửa bản nháp thuộc workspace hiện tại và cập nhật lại câu mở đầu.
+- `app/(dash)/bai-da-tao/`: tách bản nháp thành thẻ, mở trang chỉnh sửa và dùng lại luồng tạo ảnh đã có.
 - `tests/`: kiểm tra hợp đồng, hành vi, cô lập workspace và rollback.
 
 ## Kết quả kiểm tra
@@ -113,7 +117,7 @@ node --test <toàn bộ tệp *.test.* trong tests/>
 node node_modules/next/dist/bin/next build
 ```
 
-Kết quả gần nhất: `331/331` test pass, không bỏ qua ca nào; TypeScript và production build đều thoát mã 0. Các ca HTTP dùng `AICONTENT_TEST_URL=http://127.0.0.1:6980` để khớp địa chỉ IPv4 của máy chủ kiểm tra trên Windows.
+Kết quả gần nhất: `319/319` test pass, không bỏ qua ca nào; TypeScript và production build đều thoát mã 0. Các ca HTTP dùng `AICONTENT_TEST_URL=http://127.0.0.1:6980` để khớp địa chỉ IPv4 của máy chủ kiểm tra trên Windows.
 
 ## Giới hạn môi trường
 
@@ -122,5 +126,5 @@ Kết quả gần nhất: `331/331` test pass, không bỏ qua ca nào; TypeScri
 
 ## Việc tiếp theo
 
-1. Rà soát thủ công luồng kịch bản và sinh hàng loạt trên dữ liệu seed.
+1. Rà soát thủ công luồng tạo hàng loạt, mở bản nháp và lưu nội dung đã sửa trên dữ liệu seed.
 2. Chỉ chạy lại worker ảnh khi dự án Gemini đã bật billing.

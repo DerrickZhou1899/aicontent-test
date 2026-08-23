@@ -59,3 +59,33 @@ test('màn hình hỏi tiến độ đến khi cả lô kết thúc và hiển t
   assert.match(maNguon, /muc\.banNhap\.noiDung/);
   assert.match(maNguon, /muc\.banNhap\.hashtag/);
 });
+
+test('màn hình đổi mã trạng thái thành câu dễ hiểu', () => {
+  const maNguon = doc('man-hinh-hang-loat.tsx');
+
+  assert.match(maNguon, /cho\s*:\s*'Chờ xử lý'/);
+  assert.match(maNguon, /dang_chay\s*:\s*'Đang tạo bài'/);
+  assert.match(maNguon, /xong\s*:\s*'Đã tạo xong'/);
+  assert.match(maNguon, /tenTrangThai\(muc\.trangThai\)/);
+  assert.doesNotMatch(maNguon, /`Trạng thái: \$\{muc\.trangThai\}`/);
+});
+
+test('màn hình cho lưu các bản nháp đã tạo cùng lúc', () => {
+  const maNguon = doc('man-hinh-hang-loat.tsx');
+  const nutLuu  = doc('nut-luu-hang-loat.tsx');
+
+  assert.match(maNguon, /<NutLuuHangLoat bai=\{baiCanLuu\}/);
+  assert.match(maNguon, /muc\.banNhap/);
+  assert.match(nutLuu, /`Lưu \$\{bai\.length\} bản nháp`/);
+  assert.match(nutLuu, /guiLuuHangLoat\(bai\)/);
+  assert.match(nutLuu, /Đã lưu \{ketQua\.duLieu\.soBai\} bản nháp/);
+  assert.match(nutLuu, /href="\/bai-da-tao"/);
+  assert.match(nutLuu, /Xem bản nháp đã lưu/);
+});
+
+test('mỗi kết quả phân biệt ý tưởng gốc và bài đăng đã tạo', () => {
+  const maNguon = doc('man-hinh-hang-loat.tsx');
+
+  assert.match(maNguon, />Ý tưởng gốc</);
+  assert.match(maNguon, />Bài đăng đã tạo</);
+});

@@ -1,6 +1,8 @@
 'use server';
 
 import { workspaceHienTai } from '@/lib/auth/current-workspace';
+import { nguoiDungHienTai } from '@/lib/auth/nguoi-dung-tu-phien';
+import { luuHangLoat, type BaiCanLuu } from '@/lib/studio/luu-hang-loat';
 import {
   sinhHangLoat,
   type ViecSinhBai,
@@ -36,5 +38,17 @@ export async function guiDocTrangThaiLo(
   return docTrangThaiLo({
     workspaceId : await workspaceHienTai(),
     viec,
+  });
+}
+
+export async function guiLuuHangLoat(bai: BaiCanLuu[]) {
+  const [workspaceId, nguoiDung] = await Promise.all([
+    workspaceHienTai(),
+    nguoiDungHienTai(),
+  ]);
+  return luuHangLoat({
+    workspaceId,
+    nguoiTao : nguoiDung.userId,
+    bai,
   });
 }

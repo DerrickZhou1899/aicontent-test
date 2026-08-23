@@ -31,3 +31,13 @@ test('action polling kiểm tra cấu trúc danh sách trước khi gọi servic
   assert.match(maNguon, /typeof muc\?\.ideaId/);
   assert.match(maNguon, /typeof muc\?\.jobId/);
 });
+
+test('action lưu hàng loạt lấy workspace và người dùng từ phiên', () => {
+  const maNguon = readFileSync(duongDan, 'utf8');
+
+  assert.match(maNguon, /export async function guiLuuHangLoat/);
+  assert.match(maNguon, /workspaceHienTai\(\)/);
+  assert.match(maNguon, /nguoiDungHienTai\(\)/);
+  assert.match(maNguon, /luuHangLoat\(/);
+  assert.doesNotMatch(maNguon, /thamSo\.workspaceId|thamSo\.nguoiTao/);
+});
